@@ -15,7 +15,6 @@ export const StyledPopover = styled.div(({ width }: PopoverProps) => [
     border-gray-300
     bg-white
     rounded-md
-    mt-2
     border-solid
     flex
     flex-col

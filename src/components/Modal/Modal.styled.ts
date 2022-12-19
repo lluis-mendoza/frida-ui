@@ -1,3 +1,4 @@
+import { BiX } from 'react-icons/bi';
 import tw, { css, styled } from 'twin.macro';
 
 interface ModalProps {
@@ -64,3 +65,33 @@ export const ModalContainer = styled.div(({ width, height }: ModalProps) => [
     animation-timing-function: ease-in-out;
   `,
 ]);
+
+export const ModalHeader = tw.div`
+  w-full
+  flex
+  flex-row
+  justify-between
+`;
+export const ModalTitle = tw.span`
+  font-semibold
+`;
+
+export const CloseButton = tw.button`
+  outline-none
+`;
+export const CloseIcon = tw(BiX)`
+  w-9
+  h-9
+  text-gray-400
+  hover:text-gray-500
+`;
+
+export const modalSizeLarge = tw``;
+export const modalSizeMedium = tw`p-5 text-2xl `;
+export const modalSizeSmall = tw``;
+
+export const ModalSizes = {
+  sm: modalSizeSmall,
+  md: modalSizeMedium,
+  lg: modalSizeLarge,
+};

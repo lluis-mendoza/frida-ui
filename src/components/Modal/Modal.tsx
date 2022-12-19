@@ -7,14 +7,34 @@ import {
 } from 'react-aria';
 import { OverlayTriggerState } from 'react-stately';
 
-import { ModalBg, ModalContainer, Underlay } from './Modal.styled';
+import {
+  CloseButton,
+  CloseIcon,
+  ModalBg,
+  ModalContainer,
+  ModalHeader,
+  ModalSizes,
+  ModalTitle,
+  Underlay,
+} from './Modal.styled';
+
+type ModalSize = 'sm' | 'md' | 'lg';
 
 interface ModalProps extends AriaModalOverlayProps {
   className?: string;
+  title?: string;
+  size?: ModalSize;
   children: ReactNode;
   state: OverlayTriggerState;
 }
-export function Modal({ state, children, className, ...props }: ModalProps) {
+export function Modal({
+  state,
+  children,
+  className,
+  title,
+  size = 'md',
+  ...props
+}: ModalProps) {
   const ref = useRef(null);
   const { modalProps, underlayProps } = useModalOverlay(props, state, ref);
   return (
@@ -25,7 +45,18 @@ export function Modal({ state, children, className, ...props }: ModalProps) {
             <Underlay {...underlayProps}>
               <ModalBg />
               <FocusScope contain restoreFocus autoFocus>
-                <ModalContainer {...modalProps} className={className} ref={ref}>
+                <ModalContainer
+                  {...modalProps}
+                  css={[ModalSizes[size]]}
+                  className={className}
+                  ref={ref}
+                >
+                  <ModalHeader>
+                    <ModalTitle>{title}</ModalTitle>
+                    <CloseButton onClick={() => state.close()}>
+                      <CloseIcon />
+                    </CloseButton>
+                  </ModalHeader>
                   {children}
                 </ModalContainer>
               </FocusScope>

@@ -4,6 +4,7 @@ export const List = tw.ul`
     w-full
     overflow-auto
     outline-none
+    list-none
 `;
 export const ItemSection = tw.li`
     pt-2
