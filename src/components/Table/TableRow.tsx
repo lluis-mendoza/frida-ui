@@ -11,7 +11,7 @@ const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
   const { table, rowFocused } = useTableContext();
 
   const _row = row.subRows.length === 1 ? row.subRows[0] : row;
-  const selected = _row.getIsSelected();
+  const isSelected = _row.getIsSelected();
   const fixColumnOrder = (cells: Array<Cell<TData, unknown>>) =>
     table
       .getAllColumns()
@@ -21,8 +21,8 @@ const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
     <BodyRow
       data-row-index={_row.index}
       key={_row.id}
-      selected={selected}
-      focused={rowFocused !== null && rowFocused === _row.index}
+      isSelected={isSelected}
+      isFocused={rowFocused !== null && rowFocused === _row.index}
     >
       {fixColumnOrder(_row.getAllCells()).map((cell) => (
         <BodyCell key={cell.id} width={cell.column.getSize()}>

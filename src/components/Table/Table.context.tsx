@@ -1,13 +1,14 @@
 import { Table } from '@tanstack/react-table';
 import { createContext, useContext } from 'react';
 
-import { RowFocused } from './Table';
+import { RowFocused } from './Table.model';
 
 interface IProps {
   children: React.ReactNode;
   table: Table<any>;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
+  onKeyboardUpdate?: (index: number) => void;
   rowFocused: RowFocused;
   scrollDown?: boolean;
   setScrollDown?: (data: boolean) => void;
@@ -18,6 +19,7 @@ interface ITableContext {
   table: Table<any>;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
+  onKeyboardUpdate?: (index: number) => void;
   rowFocused: RowFocused;
   scrollDown?: boolean;
   setScrollDown?: (data: boolean) => void;
@@ -28,6 +30,7 @@ const TableContext = createContext<ITableContext>({
   table: {} as any,
   onClick: () => undefined,
   onDoubleClick: () => undefined,
+  onKeyboardUpdate: () => undefined,
   rowFocused: null,
   scrollDown: false,
   setScrollDown: () => undefined,

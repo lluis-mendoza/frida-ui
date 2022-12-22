@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import React, { ReactNode, useRef } from 'react';
 import {
   AriaModalOverlayProps,
@@ -38,18 +39,27 @@ export function Modal({
   const ref = useRef(null);
   const { modalProps, underlayProps } = useModalOverlay(props, state, ref);
   return (
-    <>
+    <AnimatePresence>
       {state.isOpen && (
         <OverlayContainer>
           {React.cloneElement(
             <Underlay {...underlayProps}>
-              <ModalBg />
+              <ModalBg
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.75 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: 'easeOut', duration: 0.3 }}
+              />
               <FocusScope contain restoreFocus autoFocus>
                 <ModalContainer
                   {...modalProps}
                   css={[ModalSizes[size]]}
                   className={className}
                   ref={ref}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 50, scale: 0.9 }}
+                  transition={{ ease: 'easeOut', duration: 0.2 }}
                 >
                   <ModalHeader>
                     <ModalTitle>{title}</ModalTitle>
@@ -67,6 +77,6 @@ export function Modal({
           )}
         </OverlayContainer>
       )}
-    </>
+    </AnimatePresence>
   );
 }

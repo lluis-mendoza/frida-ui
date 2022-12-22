@@ -23,11 +23,13 @@ export const Row = tw.div`
 export const HeaderRow = tw(Row)`
     bg-gray-100
 `;
-export const BodyRow = styled(Row)(() => [
-  tw`
-
-    `,
-]);
+interface BodyRowProps {
+  isSelected: boolean;
+  isFocused: boolean;
+}
+export const BodyRow = styled(Row)(
+  ({ isSelected, isFocused }: BodyRowProps) => [isFocused && tw`bg-blue-200`]
+);
 
 interface CellProps {
   width?: number;
@@ -35,11 +37,11 @@ interface CellProps {
 }
 export const Cell = styled.div(({ width, autoSize }: CellProps) => [
   tw`
-        items-center
-        inline-flex
-        text-left
-        mx-5
-        my-auto
+    items-center
+    inline-flex
+    text-left
+    mx-5
+    my-auto
     `,
   width != null &&
     css`

@@ -2,6 +2,12 @@ import { useRef } from 'react';
 import { AriaCheckboxProps, useCheckbox, VisuallyHidden } from 'react-aria';
 import { useToggleState } from 'react-stately';
 
+import {
+  ChecboxIcon,
+  CheckboxContainer,
+  CheckboxWrapper,
+} from './Checkbox.styled';
+
 interface CheckBoxProps extends AriaCheckboxProps {}
 
 export default function Checkbox(props: CheckBoxProps) {
@@ -9,13 +15,16 @@ export default function Checkbox(props: CheckBoxProps) {
   const ref = useRef<HTMLInputElement>(null);
   const { inputProps } = useCheckbox(props, state, ref);
 
+  const checkboxState = {
+    isSelected: state.isSelected,
+  };
   return (
-    <label className="flex items-center group">
+    <CheckboxContainer className="group">
       <VisuallyHidden>
         <input {...inputProps} ref={ref} />
       </VisuallyHidden>
-      <div aria-hidden="true">
-        <svg className="stroke-current w-3 h-3" viewBox="0 0 18 18">
+      <CheckboxWrapper {...checkboxState} aria-hidden="true">
+        <ChecboxIcon viewBox="0 0 18 18">
           <polyline
             points="1 9 7 14 15 4"
             fill="none"
@@ -26,9 +35,9 @@ export default function Checkbox(props: CheckBoxProps) {
               transition: 'all 400ms',
             }}
           />
-        </svg>
-      </div>
+        </ChecboxIcon>
+      </CheckboxWrapper>
       <span>{props.children}</span>
-    </label>
+    </CheckboxContainer>
   );
 }

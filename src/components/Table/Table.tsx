@@ -29,11 +29,10 @@ import {
 import { useEffect, useMemo } from 'react';
 
 import { TableProvider } from './Table.context';
+import { RowFocused } from './Table.model';
 import { TableContainer } from './Table.styled';
 import TableBody from './TableBody';
 import TableHeader from './TableHeader';
-
-export type RowFocused = number | null;
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
@@ -72,6 +71,7 @@ interface TableProps<TData extends RowData> {
   updateData?: (rowIndex: number, columnId: string, value: unknown) => void;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
+  onKeyboardUpdate?: (index: number) => void;
   rowFocused?: RowFocused;
   enableKeyboard?: boolean;
   scrollDown?: boolean;
@@ -91,6 +91,7 @@ const Table = <TData extends RowData>({
   updateData,
   onClick,
   onDoubleClick,
+  onKeyboardUpdate,
   enableKeyboard,
   scrollDown,
   setScrollDown,
@@ -126,6 +127,7 @@ const Table = <TData extends RowData>({
     table,
     onClick,
     onDoubleClick,
+    onKeyboardUpdate,
     scrollDown,
     setScrollDown,
     rowFocused,

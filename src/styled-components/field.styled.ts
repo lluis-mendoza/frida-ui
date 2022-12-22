@@ -27,6 +27,8 @@ export const FieldWrapper = tw.div`
     ring-0
     shadow-sm
     gap-4
+    bg-gray-50
+    text-gray-700
     border-gray-300
     hover:border-gray-400
     ring-blue-300

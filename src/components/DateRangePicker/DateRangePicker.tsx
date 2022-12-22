@@ -21,6 +21,7 @@ import { DateValue } from '../DatePicker';
 import { Dialog } from '../Dialog';
 import { Popover } from '../Popover';
 
+export { RangeValue } from '@react-types/shared';
 interface DateRangePickerProps<T extends DateValue>
   extends AriaDateRangePickerProps<T> {
   size?: FieldSize;

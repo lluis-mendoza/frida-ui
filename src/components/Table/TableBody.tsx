@@ -1,4 +1,6 @@
 import { createRef, KeyboardEvent, MouseEvent } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import useScrollbarSize from 'react-scrollbar-size';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
@@ -12,6 +14,7 @@ const TableBody = () => {
     table,
     onClick,
     onDoubleClick,
+    onKeyboardUpdate,
     scrollDown,
     setScrollDown,
     enableKeyboard,
@@ -37,46 +40,52 @@ const TableBody = () => {
     if (
       !(enableKeyboard ?? false) ||
       rowFocused === null ||
-      onClick === undefined
+      onKeyboardUpdate === undefined
     )
       return;
     e.preventDefault();
     const key = e.key;
-    if (key === 'ArrowUp' && rowFocused > 0) onClick(rowFocused - 1);
-    else if (key === 'ArrowDown' && rowFocused < rows.length - 1)
-      onClick(rowFocused + 1);
+    if (key === 'ArrowUp' && rowFocused > 0) {
+      onKeyboardUpdate(rowFocused - 1);
+      listRef.current?.scrollToItem(rowFocused - 1, 'smart');
+    } else if (key === 'ArrowDown' && rowFocused < rows.length - 1) {
+      onKeyboardUpdate(Number(rowFocused + 1));
+      listRef.current?.scrollToItem(rowFocused + 1, 'smart');
+    }
   };
   return (
-    <BodyContainer tabIndex={0} onKeyDown={handleKeyDown}>
-      <AutoSizer disableWidth style={{ width: '100%' }}>
-        {({ height }) => (
-          <List
-            height={height - 1}
-            itemCount={rows.length}
-            width={totalColumnSize}
-            style={{
-              minWidth: '100%',
-            }}
-            itemSize={47}
-            ref={listRef}
-            useIsScrolling
-          >
-            {({ index, style }) => {
-              const row = rows[index];
-              return (
-                <div
-                  key={index}
-                  style={style}
-                  onClick={(e) => handleClick(e, index)}
-                >
-                  <TableRow row={row} />
-                </div>
-              );
-            }}
-          </List>
-        )}
-      </AutoSizer>
-    </BodyContainer>
+    <DndProvider backend={HTML5Backend}>
+      <BodyContainer tabIndex={0} onKeyDown={handleKeyDown}>
+        <AutoSizer disableWidth style={{ width: '100%' }}>
+          {({ height }) => (
+            <List
+              height={height - 1}
+              itemCount={rows.length}
+              width={totalColumnSize}
+              style={{
+                minWidth: '100%',
+              }}
+              itemSize={47}
+              ref={listRef}
+              useIsScrolling
+            >
+              {({ index, style }) => {
+                const row = rows[index];
+                return (
+                  <div
+                    key={index}
+                    style={style}
+                    onClick={(e) => handleClick(e, index)}
+                  >
+                    <TableRow row={row} />
+                  </div>
+                );
+              }}
+            </List>
+          )}
+        </AutoSizer>
+      </BodyContainer>
+    </DndProvider>
   );
 };
 export default TableBody;

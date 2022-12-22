@@ -24,6 +24,8 @@ export const StyledInput = styled.input(() => [
   w-full
   outline-none
   appearance-none
+  bg-inherit
+  text-inherit
   `,
 ]);
 

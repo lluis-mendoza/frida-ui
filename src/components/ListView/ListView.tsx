@@ -16,6 +16,7 @@ interface ListViewProps<T>
     LabelAriaProps {
   rowSize?: ListRowSize;
 }
+
 export default function ListView<T extends object>({
   rowSize = 'md',
   ...props
