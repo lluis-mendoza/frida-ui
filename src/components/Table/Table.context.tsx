@@ -24,6 +24,7 @@ interface ITableContext {
   scrollDown?: boolean;
   setScrollDown?: (data: boolean) => void;
   enableKeyboard?: boolean;
+  loading?: boolean;
 }
 
 const TableContext = createContext<ITableContext>({
@@ -35,6 +36,7 @@ const TableContext = createContext<ITableContext>({
   scrollDown: false,
   setScrollDown: () => undefined,
   enableKeyboard: undefined,
+  loading: undefined,
 });
 export const TableProvider = ({ children, ...props }: IProps) => {
   return (

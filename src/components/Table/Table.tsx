@@ -33,6 +33,7 @@ import { RowFocused } from './Table.model';
 import { TableContainer } from './Table.styled';
 import TableBody from './TableBody';
 import TableHeader from './TableHeader';
+import { createSelectionColumn } from './TableSelection';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
@@ -107,9 +108,17 @@ const Table = <TData extends RowData>({
   );
   const _initialState = useMemo(() => initialState, [initialState]);
   const _state = useMemo(() => state, [state]);
+  const _columns = useMemo(() => {
+    let cols = columns;
+    if (rowSelection !== undefined) {
+      cols = [createSelectionColumn(), ...columns];
+    }
+    return cols;
+  }, [columns, rowSelection]);
+
   const table = useReactTable({
     data,
-    columns,
+    columns: _columns,
     defaultColumn,
     initialState: _initialState,
     state: _state,
@@ -132,6 +141,7 @@ const Table = <TData extends RowData>({
     setScrollDown,
     rowFocused,
     enableKeyboard,
+    loading,
   };
   return (
     <TableContainer>

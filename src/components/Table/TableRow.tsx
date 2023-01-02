@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Cell, flexRender, Row, RowData } from '@tanstack/react-table';
 
+import { Skeleton } from '../Skeleton';
 import { useTableContext } from './Table.context';
 import { BodyCell, BodyRow } from './Table.styled';
 
@@ -8,7 +9,7 @@ interface TableRowProps<TData extends RowData> {
   row: Row<TData>;
 }
 const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
-  const { table, rowFocused } = useTableContext();
+  const { table, rowFocused, loading } = useTableContext();
 
   const _row = row.subRows.length === 1 ? row.subRows[0] : row;
   const isSelected = _row.getIsSelected();
@@ -16,6 +17,10 @@ const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
     table
       .getAllColumns()
       .map((column) => cells.find((cell) => cell.column.id === column.id)!);
+  const renderCell = (cell: Cell<TData, unknown>) => {
+    if (loading ?? false) return <Skeleton />;
+    return flexRender(cell.column.columnDef.cell, cell.getContext());
+  };
 
   return (
     <BodyRow
@@ -26,7 +31,7 @@ const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
     >
       {fixColumnOrder(_row.getAllCells()).map((cell) => (
         <BodyCell key={cell.id} width={cell.column.getSize()}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {renderCell(cell)}
         </BodyCell>
       ))}
     </BodyRow>

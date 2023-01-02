@@ -14,6 +14,7 @@ export * from './Modal';
 export * from './Modal/hooks';
 export * from './Popover';
 export * from './Select';
+export * from './Skeleton';
 export * from './Table';
 export * from './Tabs';
 export * from './TimeField';

@@ -7,9 +7,11 @@ export const CheckboxContainer = tw.label`
 
 interface CheckboxState {
   isSelected: boolean;
+  isIndeterminate: boolean;
 }
-export const CheckboxWrapper = styled.div(({ isSelected }: CheckboxState) => [
-  tw`
+export const CheckboxWrapper = styled.div(
+  ({ isSelected, isIndeterminate }: CheckboxState) => [
+    tw`
         rounded
         border-gray-300
         border-2
@@ -20,15 +22,20 @@ export const CheckboxWrapper = styled.div(({ isSelected }: CheckboxState) => [
         justify-center
         items-center
     `,
-  isSelected &&
-    tw`
-        bg-blue-600
-        border-blue-600
-        focus-within:border-blue-400
-        focus-within:hover:border-blue-500
+    (isIndeterminate || isSelected) &&
+      tw`
+    bg-blue-600
+    border-blue-600
+    focus-within:border-blue-400
+    focus-within:hover:border-blue-500
+  `,
+    isSelected &&
+      tw`
+
         focus-within:ring-1
     `,
-]);
+  ]
+);
 
 export const ChecboxIcon = tw.svg`
     stroke-gray-100

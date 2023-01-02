@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { AriaCheckboxProps, useCheckbox, VisuallyHidden } from 'react-aria';
 import { useToggleState } from 'react-stately';
 
@@ -11,12 +11,16 @@ import {
 interface CheckBoxProps extends AriaCheckboxProps {}
 
 export default function Checkbox(props: CheckBoxProps) {
+  const { isIndeterminate } = props;
   const state = useToggleState(props);
   const ref = useRef<HTMLInputElement>(null);
   const { inputProps } = useCheckbox(props, state, ref);
-
+  useEffect(() => {
+    console.log(isIndeterminate);
+  }, [isIndeterminate]);
   const checkboxState = {
     isSelected: state.isSelected,
+    isIndeterminate,
   };
   return (
     <CheckboxContainer className="group">
@@ -25,16 +29,29 @@ export default function Checkbox(props: CheckBoxProps) {
       </VisuallyHidden>
       <CheckboxWrapper {...checkboxState} aria-hidden="true">
         <ChecboxIcon viewBox="0 0 18 18">
-          <polyline
-            points="1 9 7 14 15 4"
-            fill="none"
-            strokeWidth={3}
-            strokeDasharray={22}
-            strokeDashoffset={state.isSelected ? 44 : 66}
-            style={{
-              transition: 'all 400ms',
-            }}
-          />
+          {isIndeterminate ?? false ? (
+            <polyline
+              points="4 9 14 9"
+              fill="none"
+              strokeWidth={3}
+              strokeDasharray={22}
+              strokeDashoffset={isIndeterminate ?? false ? 44 : 66}
+              style={{
+                transition: 'all 400ms',
+              }}
+            />
+          ) : (
+            <polyline
+              points="1 9 7 14 15 4"
+              fill="none"
+              strokeWidth={3}
+              strokeDasharray={22}
+              strokeDashoffset={state.isSelected ? 44 : 66}
+              style={{
+                transition: 'all 400ms',
+              }}
+            />
+          )}
         </ChecboxIcon>
       </CheckboxWrapper>
       <span>{props.children}</span>
