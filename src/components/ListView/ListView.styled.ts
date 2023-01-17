@@ -34,7 +34,7 @@ export const ListRow = styled.div(({ isSelected }: ListRowProps) => [
         border
         border-gray-300
         border-t-transparent
-        first:border-t-gray-300
+        first-of-type:border-t-gray-300
     `,
   isSelected &&
     tw`

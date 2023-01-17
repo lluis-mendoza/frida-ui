@@ -35,7 +35,7 @@ export const ModalContainer = styled(motion.div)(
   border-solid
   flex
   flex-col
-  items-center 
+  items-center
   `,
     css({
       width,
@@ -53,7 +53,11 @@ export const ModalHeader = tw.div`
 export const ModalTitle = tw.span`
   font-semibold
 `;
-
+export const ModalContent = tw.div`
+  overflow-hidden
+  w-full
+  h-full
+`;
 export const CloseButton = tw.button`
   outline-none
 `;

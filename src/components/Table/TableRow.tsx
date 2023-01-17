@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Cell, flexRender, Row, RowData } from '@tanstack/react-table';
+import { useEffect } from 'react';
 
 import { Skeleton } from '../Skeleton';
 import { useTableContext } from './Table.context';

@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro';
+import tw, { css, styled } from 'twin.macro';
 
 interface FieldContainerProps {
   block?: boolean;
@@ -29,14 +29,19 @@ export const FieldWrapper = tw.div`
     gap-4
     bg-gray-50
     text-gray-700
-    border-gray-300
-    hover:border-gray-400
-    ring-blue-300
-    focus-within:border-blue-400
-    focus-within:hover:border-blue-500
     focus-within:ring-1
 `;
 
+export type FieldVariant = 'default' | 'warning' | 'error';
+const fieldVariantDefault = tw`border-gray-300 hover:border-gray-400 ring-blue-300 focus-within:border-blue-400 focus-within:hover:border-blue-500`;
+const fieldVariantWarining = tw`border-yellow-300 hover:border-yellow-400 ring-blue-300 focus-within:border-blue-400 focus-within:hover:border-blue-500`;
+const fieldVariantError = tw`border-red-300 hover:border-red-400 ring-red-300 focus-within:border-red-400 focus-within:hover:border-red-500`;
+
+export const FieldVariants = {
+  default: fieldVariantDefault,
+  warning: fieldVariantWarining,
+  error: fieldVariantError,
+};
 export type FieldSize = 'sm' | 'md' | 'lg';
 const fieldSizeLarge = tw`text-lg px-5 h-12 min-w-[3rem]`;
 const fieldSizeMedium = tw`text-base px-3 h-11 min-w-[3rem]`;
@@ -52,9 +57,25 @@ export const Label = tw.span`
     font-semibold
     text-gray-700
     leading-tight
+    mb-[0.15rem]
 `;
-export const FieldButton = tw.button`
-    outline-none
-    h-8
-    w-8
+export const FieldButton = styled.button(() => [
+  tw`
+  outline-none
+  h-6
+  w-6
+  `,
+  css`
+    & svg {
+      height: 100%;
+      width: auto;
+    }
+  `,
+]);
+
+export const FieldError = tw.div`
+  text-red-500
+  text-sm
+  font-semibold
+  mt-2
 `;

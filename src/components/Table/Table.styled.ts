@@ -1,3 +1,4 @@
+import { BiSearch } from 'react-icons/bi';
 import tw, { css, styled } from 'twin.macro';
 
 export const TableContainer = tw.div`
@@ -28,7 +29,13 @@ interface BodyRowProps {
   isFocused: boolean;
 }
 export const BodyRow = styled(Row)(
-  ({ isSelected, isFocused }: BodyRowProps) => [isFocused && tw`bg-blue-200`]
+  ({ isSelected, isFocused }: BodyRowProps) => [
+    tw`
+      hover:bg-gray-100/[0.75]
+    `,
+    isFocused && tw`bg-blue-200 hover:bg-blue-300/[0.75]`,
+    isSelected && tw`bg-blue-200 hover:bg-blue-300/[0.75]`,
+  ]
 );
 
 interface CellProps {
@@ -60,7 +67,27 @@ export const BodyCell = tw(Cell)`
   text-base
 `;
 export const HeaderCell = tw(Cell)`
-    text-blue-500
+    text-gray-700
     font-semibold
     text-base
 `;
+export const FilterButton = tw.button`
+  outline-none
+  relative
+  appearance-none
+  rounded
+  border-none
+  select-none
+  hover:bg-gray-200
+  p-1
+  mx-[0.2rem]
+`;
+interface FilterSearchIconProps {
+  hasFilterValue: boolean;
+}
+export const FilterSearchIcon = styled(BiSearch)(
+  ({ hasFilterValue }: FilterSearchIconProps) => [
+    tw`stroke-[0.05rem]`,
+    hasFilterValue && tw`text-blue-600`,
+  ]
+);

@@ -1,5 +1,14 @@
-import { getDayOfWeek, isSameDay } from '@internationalized/date';
-import { useRef } from 'react';
+import {
+  CalendarDate,
+  DateValue,
+  getDayOfWeek,
+  getLocalTimeZone,
+  isSameDay,
+  isSameMonth,
+  isToday,
+} from '@internationalized/date';
+import { RangeValue } from '@react-types/shared';
+import { useEffect, useRef, useState } from 'react';
 import {
   AriaCalendarCellProps,
   mergeProps,
@@ -9,99 +18,120 @@ import {
 } from 'react-aria';
 import { CalendarState, RangeCalendarState } from 'react-stately';
 
+import { DayCell } from './Calendar.styled';
+import { PreviewDates, previewDatesService } from './services';
+
 interface CalendarCellProps extends AriaCalendarCellProps {
   state: CalendarState | RangeCalendarState;
+  currentMonth: CalendarDate;
 }
-export function CalendarCell({ state, date }: CalendarCellProps) {
-  const ref = useRef(null);
+function isDateValue(value: any) {
+  return (value as DateValue)?.day !== undefined;
+}
+function isRangeValue<T>(value: any) {
+  return (value as RangeValue<T>)?.start !== undefined;
+}
+function isInsideRange(value: DateValue, range: RangeValue<DateValue>) {
+  return range.start.compare(value) <= 0 && range.end.compare(value) >= 0;
+}
 
-  const {
-    cellProps,
-    buttonProps,
-    isSelected,
-    isOutsideVisibleRange,
-    isDisabled,
-    formattedDate,
-    isInvalid,
-  } = useCalendarCell(
+export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
+  const ref = useRef(null);
+  const [previewDates, setPreviewDates] = useState<PreviewDates>(null);
+  const { cellProps, buttonProps, formattedDate } = useCalendarCell(
     {
       date,
     },
     state,
     ref
   );
+  const value = state.value;
+  const anchorDate = (state as RangeCalendarState)?.anchorDate;
+  const isAnchorDate = anchorDate !== null && isSameDay(anchorDate, date);
 
-  // The start and end date of the selected range will have
-  // an emphasized appearance.
-  const isSelectionStart = state.visibleRange
-    ? isSameDay(date, state.visibleRange.start)
-    : isSelected;
-  const isSelectionEnd = state.visibleRange
-    ? isSameDay(date, state.visibleRange.end)
-    : isSelected;
+  useEffect(() => {
+    console.log(anchorDate);
+  }, [anchorDate]);
+  const isSelected =
+    (isDateValue(value) && date.compare(value as DateValue) === 0) ||
+    (isRangeValue(value) && anchorDate !== null
+      ? isSameDay(anchorDate, date)
+      : isInsideRange(date, value as RangeValue<DateValue>));
+  useEffect(() => {
+    const previewDatesSubject$ = previewDatesService
+      .getSubject()
+      .subscribe((_previewDates) => setPreviewDates(_previewDates));
+    return () => previewDatesSubject$.unsubscribe();
+  }, []);
 
-  // We add rounded corners on the left for the first day of the month,
-  // the first day of each week, and the start date of the selection.
-  // We add rounded corners on the right for the last day of the month,
-  // the last day of each week, and the end date of the selection.
+  const timeZone = getLocalTimeZone();
+  const isOutsideMonth = !isSameMonth(currentMonth, date);
   const { locale } = useLocale();
   const dayOfWeek = getDayOfWeek(date, locale);
-  const isRoundedLeft =
-    isSelected && (isSelectionStart || dayOfWeek === 0 || date.day === 1);
-  const isRoundedRight =
-    isSelected &&
-    (isSelectionEnd ||
-      dayOfWeek === 6 ||
-      date.day === date.calendar.getDaysInMonth(date));
+  const isStartWeek = dayOfWeek === 0;
+  const isStartMonth = date.day === 1;
+  const isEndWeek = dayOfWeek === 6;
+  const isEndMonth = date.day === date.calendar.getDaysInMonth(date);
 
-  const { focusProps, isFocusVisible } = useFocusRing();
+  const isDatePreview = (previewDates as DateValue)?.compare?.(date) === 0;
+  const isDateEqualDateRangeStart =
+    (previewDates as RangeValue<DateValue>)?.start !== undefined &&
+    isSameDay(date, (previewDates as RangeValue<DateValue>).start);
+  const isDateEqualDateRangeEnd =
+    (previewDates as RangeValue<DateValue>)?.end !== undefined &&
+    isSameDay(date, (previewDates as RangeValue<DateValue>).end);
+
+  const isPreview =
+    isDatePreview ||
+    (isRangeValue(previewDates) &&
+      isInsideRange(date, previewDates as RangeValue<DateValue>));
+
+  const isPreviewStart =
+    isDatePreview || isDateEqualDateRangeStart || isStartWeek || isStartMonth;
+
+  const isPreviewEnd =
+    isDatePreview || isDateEqualDateRangeEnd || isEndWeek || isEndMonth;
+
+  const selectionRange = state as RangeCalendarState;
+  const hasSelectionRange = selectionRange?.value?.start !== undefined;
+  const isStartSelectionRange =
+    hasSelectionRange && isSameDay(date, selectionRange.value.start);
+  const isEndSelectionRange =
+    hasSelectionRange && isSameDay(date, selectionRange.value.end);
+
+  const isSelectedStart =
+    isSelected &&
+    (!hasSelectionRange ||
+      isAnchorDate ||
+      isStartSelectionRange ||
+      isStartWeek ||
+      isStartMonth);
+  const isSelectedEnd =
+    isSelected &&
+    (!hasSelectionRange ||
+      isAnchorDate ||
+      isEndSelectionRange ||
+      isEndWeek ||
+      isEndMonth);
+
+  const { focusProps } = useFocusRing();
 
   return (
-    <td
-      {...cellProps}
-      className={`py-0.5 relative ${isFocusVisible ? 'z-10' : 'z-0'}`}
-    >
-      <div
+    <td {...cellProps}>
+      <DayCell
         {...mergeProps(buttonProps, focusProps)}
+        isToday={isToday(date, timeZone)}
+        isOutsideMonth={isOutsideMonth}
+        isPreview={isPreview}
+        isPreviewStart={isPreviewStart}
+        isPreviewEnd={isPreviewEnd}
+        isSelected={isSelected}
+        isSelectedStart={isSelectedStart}
+        isSelectedEnd={isSelectedEnd}
         ref={ref}
-        hidden={isOutsideVisibleRange}
-        tw="w-10 h-10"
-        className={`w-10 h-10 outline-none group ${
-          isRoundedLeft ? 'rounded-l-full' : ''
-        } ${isRoundedRight ? 'rounded-r-full' : ''} ${
-          isSelected ? (isInvalid ? 'bg-red-300' : 'bg-vioconst-300') : ''
-        } ${isDisabled ? 'disabled' : ''}`}
       >
-        <div
-          className={`w-full h-full rounded-full flex items-center justify-center ${
-            isDisabled && !isInvalid ? 'text-gray-400' : ''
-          } ${
-            // Focus ring, visible while the cell has keyboard focus.
-            isFocusVisible
-              ? 'ring-2 group-focus:z-2 ring-vioconst-600 ring-offset-2'
-              : ''
-          } ${
-            // Darker selection background for the start and end.
-            isSelectionStart || isSelectionEnd
-              ? isInvalid
-                ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'bg-vioconst-600 text-white hover:bg-vioconst-700'
-              : ''
-          } ${
-            // Hover state for cells in the middle of the range.
-            isSelected && !isDisabled && !(isSelectionStart || isSelectionEnd)
-              ? isInvalid
-                ? 'hover:bg-red-400'
-                : 'hover:bg-vioconst-400'
-              : ''
-          } ${
-            // Hover state for non-selected cells.
-            !isSelected && !isDisabled ? 'hover:bg-vioconst-100' : ''
-          } cursor-default`}
-        >
-          {formattedDate}
-        </div>
-      </div>
+        {formattedDate}
+      </DayCell>
     </td>
   );
 }

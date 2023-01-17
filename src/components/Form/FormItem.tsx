@@ -1,5 +1,6 @@
-import { cloneElement, Fragment, ReactElement } from 'react';
+import React, { cloneElement, ReactElement } from 'react';
 import {
+  FieldErrors,
   FieldPath,
   FieldValues,
   useController,
@@ -11,17 +12,27 @@ interface FormItemProps<
   TFieldName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > extends UseControllerProps<TFieldValues, TFieldName> {
   children: ReactElement;
+  errors?: FieldErrors;
 }
 export function FormItem<TFormValues extends Record<string, unknown>>({
   children,
+  errors,
   ...controllerProps
 }: FormItemProps<TFormValues>) {
-  const { field } = useController(controllerProps);
-
-  const value = field.value;
+  const { name } = controllerProps;
+  const {
+    field: { value, onChange },
+  } = useController(controllerProps);
+  const error = errors?.[name];
+  const variant = error !== undefined ? 'error' : 'default';
   return (
-    <Fragment>
-      {cloneElement(children, { value, onChange: field.onChange })}
-    </Fragment>
+    <React.Fragment>
+      {cloneElement(children, {
+        value,
+        onChange,
+        variant,
+        errorMessage: error?.message,
+      })}
+    </React.Fragment>
   );
 }

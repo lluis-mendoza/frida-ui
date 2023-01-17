@@ -1,24 +1,28 @@
 import tw, { styled } from 'twin.macro';
 
 export const ListGroupContainer = tw.div`
-    relative
-    flex
-    flex-col
-    w-full
+  relative
+  flex
+  flex-col
+  w-full
+  flex-1
 `;
 export const ListGroupWrapper = tw.div`
   relative
   inline-flex
   flex-col
+  flex-1
 `;
 export const Label = tw.span`
   text-sm
   font-semibold
   text-slate-500
   leading-tight
+  mb-1
 `;
 interface ListRowProps {
   isSelected: boolean;
+  isFirstItem: boolean;
 }
 
 export type ListRowSize = 'sm' | 'md' | 'lg';
@@ -32,33 +36,35 @@ export const ListRowSizes = {
   lg: listRowSizeLarge,
 };
 
-export const ListRow = styled.div(({ isSelected }: ListRowProps) => [
-  tw`
-        relative
-        outline-none
-        cursor-default
-        inline-flex
-        flex-row
-        w-full
-        items-center
-        px-3
-        border-gray-300
-        border-t
-        first:border-t-0
-    `,
-  isSelected &&
+export const ListRowWrapper = styled.div(
+  ({ isSelected, isFirstItem }: ListRowProps) => [
     tw`
-        bg-blue-200/75
-        hover:bg-blue-200
-        !border-blue-600
-        border-t
-    `,
-]);
-
-export const ListCell = tw.div`
-    relative
     inline-flex
-    flex-row
+    items-center
+    relative
+    h-full
+    w-full
+    outline-none
+    cursor-default
+    px-3
+    border-gray-300
+    border-t-1
+    `,
+    isSelected &&
+      tw`
+      bg-blue-200/75
+      hover:bg-blue-200
+      !border-blue-600
+      border-t
+    `,
+    isFirstItem && tw`border-t-0`,
+  ]
+);
+
+export const ListRow = tw.div`
+    relative
+    w-full
+    flex
     items-center
     justify-center
     gap-4

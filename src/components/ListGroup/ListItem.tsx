@@ -5,18 +5,19 @@ import { ListState } from 'react-stately';
 
 import { ListCheckbox } from '../ListGroup/ListCheckbox';
 import {
-  ListCell,
   ListRow,
   ListRowSize,
   ListRowSizes,
+  ListRowWrapper,
 } from './ListGroup.styled';
 
 interface ListItemProps {
   size: ListRowSize;
   item: Node<unknown>;
   state: ListState<unknown>;
+  isFirstItem: boolean;
 }
-export function ListItem({ item, state, size }: ListItemProps) {
+export function ListItem({ item, state, size, isFirstItem }: ListItemProps) {
   const ref = useRef(null);
   const { rowProps, gridCellProps, isSelected, isDisabled, isPressed } =
     useGridListItem({ node: item }, state, ref);
@@ -30,16 +31,17 @@ export function ListItem({ item, state, size }: ListItemProps) {
     state.selectionManager.selectionBehavior === 'toggle';
 
   return (
-    <ListRow
+    <ListRowWrapper
       {...rowProps}
       {...listCellState}
+      isFirstItem={isFirstItem}
       css={ListRowSizes[size]}
       ref={ref}
     >
-      <ListCell {...gridCellProps}>
+      <ListRow {...gridCellProps}>
         {showCheckbox && <ListCheckbox item={item} state={state} />}
         {item.rendered}
-      </ListCell>
-    </ListRow>
+      </ListRow>
+    </ListRowWrapper>
   );
 }

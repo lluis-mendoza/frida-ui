@@ -32,11 +32,5 @@ export const StyledInput = styled.input(() => [
 export const InputVariants = {
   default: tw`border-gray-300 focus-within:border-blue-600/[.70]`,
   warning: tw`border-amber-600 focus-within:border-amber-600/[.70]`,
-  error: tw``,
-};
-export const InputSizes = {
-  sm: tw`px-3 py-1`,
-  md: tw`px-3 py-1`,
-  lg: tw`px-3 py-1`,
-  xl: tw`px-4 py-3 text-xl`,
+  error: tw`border-red-300 focus-within:border-red-600/[0.70]`,
 };

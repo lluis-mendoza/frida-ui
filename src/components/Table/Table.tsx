@@ -29,7 +29,7 @@ import {
 import { useEffect, useMemo } from 'react';
 
 import { TableProvider } from './Table.context';
-import { RowFocused } from './Table.model';
+import { FilterType, RowFocused } from './Table.model';
 import { TableContainer } from './Table.styled';
 import TableBody from './TableBody';
 import TableHeader from './TableHeader';
@@ -37,7 +37,7 @@ import { createSelectionColumn } from './TableSelection';
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
-    // filterType?: FilterType;
+    filterType?: FilterType;
     // editable?: boolean;
     // editableProps?: EditableProps;
     autoSize?: boolean;
@@ -64,7 +64,6 @@ interface TableProps<TData extends RowData> {
       PaginationTableState &
       RowSelectionTableState
   >;
-  rowSelection?: RowSelectionState;
   setRowSelection?: OnChangeFn<RowSelectionState>;
   groupBy?: GroupingState;
   toggleAllRowsExpanded?: boolean;
@@ -83,7 +82,6 @@ const Table = <TData extends RowData>({
   columns,
   initialState,
   state,
-  rowSelection,
   setRowSelection,
   groupBy,
   toggleAllRowsExpanded,
@@ -97,9 +95,10 @@ const Table = <TData extends RowData>({
   scrollDown,
   setScrollDown,
 }: TableProps<TData>) => {
-  useEffect(() => {
-    console.log(columns);
-  }, [columns]);
+  const _data = useMemo(
+    () => (loading ?? false ? Array(30).fill({}) : data),
+    [loading, data]
+  );
   const defaultColumn = useMemo(
     () => ({
       size: 250,
@@ -110,24 +109,27 @@ const Table = <TData extends RowData>({
   const _state = useMemo(() => state, [state]);
   const _columns = useMemo(() => {
     let cols = columns;
-    if (rowSelection !== undefined) {
+    if (_state?.rowSelection !== undefined) {
       cols = [createSelectionColumn(), ...columns];
     }
     return cols;
-  }, [columns, rowSelection]);
+  }, [columns, _state?.rowSelection]);
 
   const table = useReactTable({
-    data,
+    data: _data,
     columns: _columns,
     defaultColumn,
     initialState: _initialState,
     state: _state,
     getExpandedRowModel: getExpandedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
+    // onGroupingChange: setGrouping,
+    // onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    onRowSelectionChange: setRowSelection,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
   });

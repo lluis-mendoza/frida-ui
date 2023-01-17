@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 
 import { useTableContext } from './Table.context';
 import { HeaderCell, HeaderRow } from './Table.styled';
+import { TableFilter } from './TableFilters';
 
 const TableHeader = () => {
   const { table } = useTableContext();
@@ -25,12 +26,10 @@ const TableHeader = () => {
                 Boolean(header.column.columnDef?.meta?.autoSize) || false
               }
             >
-              {header.column.getCanFilter()
-                ? null
-                : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+              {flexRender(header.column.columnDef.header, header.getContext())}
+              {header.column.getCanFilter() ? (
+                <TableFilter column={header.column} table={table} />
+              ) : null}
             </HeaderCell>
           ))}
         </HeaderRow>

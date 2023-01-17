@@ -1,38 +1,41 @@
-import { getWeeksInMonth } from '@internationalized/date';
-import { useCalendarGrid, useLocale } from 'react-aria';
+import { CalendarDate, getWeeksInMonth } from '@internationalized/date';
+import { AriaCalendarGridProps, useCalendarGrid, useLocale } from 'react-aria';
 import { CalendarState, RangeCalendarState } from 'react-stately';
 
+import { WeekDay, WeekDays } from './Calendar.styled';
 import { CalendarCell } from './CalendarCell';
 
-interface CalendarGridProps {
+interface CalendarGridProps extends AriaCalendarGridProps {
   state: CalendarState | RangeCalendarState;
+  startDate: CalendarDate;
 }
 export function CalendarGrid({ state, ...props }: CalendarGridProps) {
   const { locale } = useLocale();
   const { gridProps, headerProps, weekDays } = useCalendarGrid(props, state);
-
-  // Get the number of weeks in the month so we can render the proper number of rows.
   const weeksInMonth = getWeeksInMonth(state.visibleRange.start, locale);
 
   return (
-    <table {...gridProps} cellPadding="0" tw="flex-1">
-      <thead {...headerProps} tw="text-gray-600">
+    <table {...gridProps} cellPadding="0">
+      <WeekDays {...headerProps}>
         <tr>
           {weekDays.map((day, index) => (
-            <th tw="text-center" key={index}>
-              {day}
-            </th>
+            <WeekDay key={index}>{day}</WeekDay>
           ))}
         </tr>
-      </thead>
+      </WeekDays>
       <tbody>
         {Array.from(Array(weeksInMonth).keys()).map((weekIndex) => (
           <tr key={weekIndex}>
             {state
-              .getDatesInWeek(weekIndex)
+              .getDatesInWeek(weekIndex, props.startDate)
               .map((date, i) =>
                 date != null ? (
-                  <CalendarCell key={i} state={state} date={date} />
+                  <CalendarCell
+                    key={i}
+                    state={state}
+                    date={date}
+                    currentMonth={props.startDate}
+                  />
                 ) : (
                   <td key={i} />
                 )

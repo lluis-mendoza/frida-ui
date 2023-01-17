@@ -9,6 +9,8 @@ import {
   FieldContainer,
   FieldSize,
   FieldSizes,
+  FieldVariant,
+  FieldVariants,
   FieldWrapper,
   Label,
 } from '../../styled-components';
@@ -19,9 +21,11 @@ type TimeValue = Time | CalendarDateTime | ZonedDateTime;
 interface TimeFieldProps<T extends TimeValue> extends AriaTimeFieldProps<T> {
   onChange?: (value: TimeValue) => void;
   size?: FieldSize;
+  variant?: FieldVariant;
 }
 export default function TimeField<T extends TimeValue>({
   size = 'md',
+  variant = 'default',
   ...props
 }: TimeFieldProps<T>) {
   const { locale } = useLocale();
@@ -36,7 +40,10 @@ export default function TimeField<T extends TimeValue>({
   return (
     <FieldContainer>
       <Label {...labelProps}>{label}</Label>
-      <FieldWrapper {...fieldProps} css={[FieldSizes[size]]}>
+      <FieldWrapper
+        {...fieldProps}
+        css={[FieldVariants[variant], FieldSizes[size]]}
+      >
         <div tw="flex flex-row">
           {state.segments.map((segment, i) => (
             <DateSegment key={i} segment={segment} state={state} />

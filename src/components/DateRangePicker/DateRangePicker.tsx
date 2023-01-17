@@ -1,6 +1,8 @@
+import { CalendarDate, CalendarDateTime } from '@internationalized/date';
 import { RangeValue } from '@react-types/shared';
 import { useRef } from 'react';
 import {
+  AriaDatePickerProps,
   AriaDateRangePickerProps,
   useButton,
   useDateRangePicker,
@@ -9,28 +11,42 @@ import { BiCalendarEvent as CalendarIcon } from 'react-icons/bi';
 import { useDateRangePickerState } from 'react-stately';
 
 import {
+  FieldButton,
   FieldContainer,
+  FieldError,
   FieldSize,
   FieldSizes,
+  FieldVariant,
+  FieldVariants,
   FieldWrapper,
   Label,
 } from '../../styled-components';
 import { RangeCalendar } from '../Calendar/RangeCalendar';
-import { DateField } from '../DateField/DateField';
 import { DateValue } from '../DatePicker';
 import { Dialog } from '../Dialog';
 import { Popover } from '../Popover';
+import { DateRangeField } from './DateRangeField';
 
 export { RangeValue } from '@react-types/shared';
+export interface StaticDateRange {
+  label: string;
+  startDate: CalendarDateTime;
+  endDate: CalendarDateTime;
+}
 interface DateRangePickerProps<T extends DateValue>
   extends AriaDateRangePickerProps<T> {
   size?: FieldSize;
+  variant?: FieldVariant;
   onChange?: (value: RangeValue<DateValue>) => void;
   className?: string;
+  staticDateRange?: StaticDateRange;
 }
+
 export function DateRangePicker<T extends DateValue>({
   size = 'md',
+  variant = 'default',
   className,
+  errorMessage,
   ...props
 }: DateRangePickerProps<T>) {
   const state = useDateRangePickerState(props);
@@ -49,18 +65,22 @@ export function DateRangePicker<T extends DateValue>({
   return (
     <FieldContainer className={className}>
       <Label {...labelProps}>{props.label}</Label>
-      <FieldWrapper {...groupProps} css={[FieldSizes[size]]} ref={ref}>
-        <div tw="inline-flex">
-          <DateField {...startFieldProps} />
-          <span aria-hidden="true" tw="px-2">
-            -
-          </span>
-          <DateField {...endFieldProps} />
-        </div>
-        <button {...buttonProps} ref={buttonRef}>
+      <FieldWrapper
+        {...groupProps}
+        css={[FieldVariants[variant], FieldSizes[size]]}
+        ref={ref}
+      >
+        <DateRangeField
+          startFieldProps={startFieldProps as AriaDatePickerProps<CalendarDate>}
+          endFieldProps={endFieldProps as AriaDatePickerProps<CalendarDate>}
+        />
+        <FieldButton {...buttonProps} ref={buttonRef}>
           <CalendarIcon />
-        </button>
+        </FieldButton>
       </FieldWrapper>
+      {errorMessage !== undefined ? (
+        <FieldError>{errorMessage}</FieldError>
+      ) : null}
       {state.isOpen && (
         <Popover triggerRef={ref} state={state} placement="bottom start">
           <Dialog {...dialogProps}>

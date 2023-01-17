@@ -13,6 +13,7 @@ import {
   CloseIcon,
   ModalBg,
   ModalContainer,
+  ModalContent,
   ModalHeader,
   ModalSizes,
   ModalTitle,
@@ -67,7 +68,7 @@ export function Modal({
                       <CloseIcon />
                     </CloseButton>
                   </ModalHeader>
-                  {children}
+                  <ModalContent>{children}</ModalContent>
                 </ModalContainer>
               </FocusScope>
             </Underlay>,

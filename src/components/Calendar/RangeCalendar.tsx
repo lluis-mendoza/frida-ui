@@ -1,6 +1,9 @@
-import { createCalendar } from '@internationalized/date';
-import { RangeValue } from '@react-types/shared';
-import { useRef } from 'react';
+import {
+  createCalendar,
+  DateDuration,
+  isSameDay,
+} from '@internationalized/date';
+import { useEffect, useRef } from 'react';
 import {
   AriaRangeCalendarProps,
   useLocale,
@@ -9,39 +12,70 @@ import {
 import { useRangeCalendarState } from 'react-stately';
 
 import { DateValue } from '../DatePicker';
-import { CalendarGrid } from './CalendarGrid';
+import { RangeValue } from '../DateRangePicker';
+import {
+  CalendarContainer,
+  MonthsWrapper,
+  NextMonthButton,
+  NextMonthIcon,
+  PrevMonthButton,
+  PrevMonthIcon,
+  RangeCalendarWrapper,
+} from './Calendar.styled';
+import { DefinedRange } from './DefinedRange';
+import Month from './Month';
+import { previewDatesService } from './services';
 
 interface RangeCalendarProps<T extends DateValue>
   extends AriaRangeCalendarProps<T> {
-  visibleMonths?: number;
+  visibleDuration?: DateDuration;
   onChange?: (value: RangeValue<DateValue>) => void;
 }
-export function RangeCalendar<T extends DateValue>(
-  props: RangeCalendarProps<T>
-) {
+export function RangeCalendar<T extends DateValue>({
+  visibleDuration = { months: 2 },
+  ...props
+}: RangeCalendarProps<T>) {
   const { locale } = useLocale();
   const state = useRangeCalendarState({
     ...props,
     locale,
     createCalendar,
+    visibleDuration,
   });
 
   const ref = useRef(null);
-  const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useRangeCalendar(props, state, ref);
+  const { calendarProps, prevButtonProps, nextButtonProps } = useRangeCalendar(
+    props,
+    state,
+    ref
+  );
+  useEffect(() => {
+    if (
+      isSameDay(state.highlightedRange.start, state.value.start) &&
+      isSameDay(state.highlightedRange.end, state.value.end)
+    ) {
+      previewDatesService.setSubject(null);
+    } else previewDatesService.setSubject(state.highlightedRange);
+  }, [state.highlightedRange, state.value]);
 
   return (
-    <div {...calendarProps} ref={ref} className="inline-block">
-      <div className="flex items-center pb-4">
-        <h2 className="flex-1 font-bold text-xl ml-2">{title}</h2>
-        {/* <CalendarButton {...prevButtonProps}>
-              <ChevronLeftIcon className="h-6 w-6" />
-            </CalendarButton>
-            <CalendarButton {...nextButtonProps}>
-              <ChevronRightIcon className="h-6 w-6" />
-      </CalendarButton> */}
-      </div>
-      <CalendarGrid state={state} />
-    </div>
+    <CalendarContainer {...calendarProps} ref={ref}>
+      <RangeCalendarWrapper>
+        <DefinedRange state={state} />
+        <MonthsWrapper>
+          <PrevMonthButton {...prevButtonProps}>
+            <PrevMonthIcon />
+          </PrevMonthButton>
+          <NextMonthButton {...nextButtonProps}>
+            <NextMonthIcon />
+          </NextMonthButton>
+          {Array(visibleDuration.months)
+            .fill(null)
+            .map((_, i) => (
+              <Month key={i} state={state} offset={{ months: i }} />
+            ))}
+        </MonthsWrapper>
+      </RangeCalendarWrapper>
+    </CalendarContainer>
   );
 }

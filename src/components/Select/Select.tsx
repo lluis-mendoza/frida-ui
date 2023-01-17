@@ -10,8 +10,11 @@ import { SelectProps as SelectStateProps, useSelectState } from 'react-stately';
 
 import {
   FieldContainer,
+  FieldError,
   FieldSize,
   FieldSizes,
+  FieldVariant,
+  FieldVariants,
   FieldWrapper,
   Label,
 } from '../../styled-components';
@@ -23,9 +26,12 @@ interface SelectProps<T extends object>
   extends SelectStateProps<T>,
     AriaSelectOptions<T> {
   size?: FieldSize;
+  variant?: FieldVariant;
 }
 export default function Select<T extends object>({
   size = 'md',
+  variant = 'default',
+  errorMessage,
   ...props
 }: SelectProps<T>) {
   const refWrapper = useRef<HTMLDivElement>(null);
@@ -49,7 +55,11 @@ export default function Select<T extends object>({
         label={props.label}
         name={props.name}
       />
-      <FieldWrapper css={FieldSizes[size]} tw="min-w-[10rem]" ref={refWrapper}>
+      <FieldWrapper
+        css={[FieldVariants[variant], FieldSizes[size]]}
+        tw="min-w-[10rem]"
+        ref={refWrapper}
+      >
         <SelectButton {...buttonProps} ref={refButton}>
           <SelectValue {...valueProps} hasValue={state.selectedItem !== null}>
             {state.selectedItem !== null
@@ -59,6 +69,9 @@ export default function Select<T extends object>({
           <SelectorIcon />
         </SelectButton>
       </FieldWrapper>
+      {errorMessage !== undefined ? (
+        <FieldError>{errorMessage}</FieldError>
+      ) : null}
       {state.isOpen && (
         <Popover
           state={state}

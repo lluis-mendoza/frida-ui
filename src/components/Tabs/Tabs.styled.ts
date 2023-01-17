@@ -5,6 +5,7 @@ export const Container = tw.div`
     relative
     flex
     flex-col
+    h-full
     flex-auto
     overflow-hidden
 `;

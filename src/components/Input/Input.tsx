@@ -1,14 +1,16 @@
-import { ReactNode, useRef } from 'react';
+import { ReactNode, RefObject, useRef } from 'react';
 import { AriaTextFieldProps, useTextField } from 'react-aria';
 
 import {
   FieldContainer,
+  FieldError,
   FieldSize,
   FieldSizes,
+  FieldVariants,
   FieldWrapper,
   Label,
 } from '../../styled-components';
-import { InputVariants, StyledInput } from './Input.styled';
+import { StyledInput } from './Input.styled';
 import Password from './Password';
 
 export type InputVariant = 'default' | 'warning' | 'error';
@@ -27,6 +29,8 @@ export interface InputProps extends AriaTextFieldProps {
   prefix?: ReactNode;
   sufix?: ReactNode;
   block?: boolean;
+  inputRef?: RefObject<HTMLInputElement>;
+  className?: string;
 }
 
 function Input({
@@ -36,19 +40,25 @@ function Input({
   prefix,
   sufix,
   block,
+  inputRef,
+  errorMessage,
+  className,
   ...props
 }: InputProps) {
   const ref = useRef(null);
   const { label } = props;
   const { labelProps, inputProps } = useTextField(props, ref);
   return (
-    <FieldContainer block={block}>
-      {label !== null ? <Label {...labelProps}>{label}</Label> : null}
-      <FieldWrapper css={[InputVariants[variant], FieldSizes[size]]}>
+    <FieldContainer block={block} className={className}>
+      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      <FieldWrapper css={[FieldVariants[variant], FieldSizes[size]]}>
         {prefix}
-        <StyledInput {...inputProps} type={type} />
+        <StyledInput {...inputProps} type={type} ref={inputRef} />
         {sufix}
       </FieldWrapper>
+      {errorMessage !== undefined ? (
+        <FieldError>{errorMessage}</FieldError>
+      ) : null}
     </FieldContainer>
   );
 }

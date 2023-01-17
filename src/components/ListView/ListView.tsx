@@ -27,7 +27,9 @@ export default function ListView<T extends object>({
   const { labelProps, fieldProps } = useLabel(props);
   return (
     <Fragment>
-      <label {...labelProps}>{props.label}</label>
+      {props.label !== undefined && (
+        <label {...labelProps}>{props.label}</label>
+      )}
       <ListViewContainer
         {...gridProps}
         {...fieldProps}

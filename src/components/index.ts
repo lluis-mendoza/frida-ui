@@ -1,5 +1,6 @@
 export * from './Button';
 export * from './Calendar';
+export * from './Calendar/services';
 export * from './Checkbox';
 export * from './DateField';
 export * from './DatePicker';
@@ -15,6 +16,9 @@ export * from './Modal/hooks';
 export * from './Popover';
 export * from './Select';
 export * from './Skeleton';
+export * from './Spinner';
+export * from './StatusLight';
 export * from './Table';
+export * from './Table/TableFilters';
 export * from './Tabs';
 export * from './TimeField';

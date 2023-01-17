@@ -1,5 +1,4 @@
 import { ColumnDef, RowData } from '@tanstack/react-table';
-import { Row } from 'react-stately';
 
 import { Checkbox } from '../Checkbox';
 

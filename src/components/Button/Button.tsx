@@ -1,6 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import { AriaButtonProps, useButton } from 'react-aria';
 
+import Spinner from '../Spinner/Spinner';
 import {
   ButtonColors,
   ButtonSizes,
@@ -18,6 +19,8 @@ interface ButtonProps extends AriaButtonProps {
   block?: boolean;
   prefix?: ReactNode;
   sufix?: ReactNode;
+  loading?: boolean;
+  className?: string;
 }
 
 export default function Button({
@@ -27,6 +30,8 @@ export default function Button({
   block,
   prefix,
   sufix,
+  loading,
+  className,
   ...props
 }: ButtonProps) {
   const { isDisabled } = props;
@@ -40,7 +45,11 @@ export default function Button({
       block={block}
       ref={ref}
       css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
+      className={className}
     >
+      {(loading ?? false) && (
+        <Spinner variant={variant} color={color} size={size} />
+      )}
       {prefix}
       {props.children}
       {sufix}

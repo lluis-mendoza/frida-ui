@@ -11,8 +11,11 @@ import { useDatePickerState } from 'react-stately';
 import {
   FieldButton,
   FieldContainer,
+  FieldError,
   FieldSize,
   FieldSizes,
+  FieldVariant,
+  FieldVariants,
   FieldWrapper,
   Label,
 } from '../../styled-components';
@@ -24,9 +27,12 @@ import { Popover } from '../Popover';
 export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
 interface DatePickerProps<T extends DateValue> extends AriaDatePickerProps<T> {
   size?: FieldSize;
+  variant?: FieldVariant;
 }
 export function DatePicker<T extends DateValue>({
   size = 'md',
+  variant = 'default',
+  errorMessage,
   ...props
 }: DatePickerProps<T>) {
   const state = useDatePickerState(props);
@@ -44,12 +50,19 @@ export function DatePicker<T extends DateValue>({
   return (
     <FieldContainer>
       <Label {...labelProps}>{props.label}</Label>
-      <FieldWrapper {...groupProps} css={[FieldSizes[size]]} ref={ref}>
+      <FieldWrapper
+        {...groupProps}
+        css={[FieldVariants[variant], FieldSizes[size]]}
+        ref={ref}
+      >
         <DateField {...fieldProps} />
         <FieldButton {...buttonProps} ref={buttonRef}>
           <CalendarIcon />
         </FieldButton>
       </FieldWrapper>
+      {errorMessage !== undefined ? (
+        <FieldError>{errorMessage}</FieldError>
+      ) : null}
       {false && (
         <Popover triggerRef={ref} state={state} placement="bottom start">
           <Dialog {...dialogProps}>
