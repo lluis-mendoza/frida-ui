@@ -1,7 +1,7 @@
 import { ReactNode, useRef } from 'react';
 import { AriaDialogProps, useDialog } from 'react-aria';
 
-interface DialogProps extends AriaDialogProps {
+export interface DialogProps extends AriaDialogProps {
   title?: string;
   children: ReactNode;
 }

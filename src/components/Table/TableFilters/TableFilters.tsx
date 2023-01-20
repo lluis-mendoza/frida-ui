@@ -13,8 +13,8 @@ export const TableFilter = ({
 }) => {
   const filterType = column.columnDef.meta?.filterType;
   const filters = {
-    SEARCH: SearchFilter,
-    SELECT: SelectFilter,
+    search: SearchFilter,
+    select: SelectFilter,
   };
   const renderFilter = () => {
     if (

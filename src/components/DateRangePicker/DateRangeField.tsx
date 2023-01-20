@@ -26,7 +26,7 @@ export function DateRangeField({
     if (staticRange !== undefined) return <span>{staticRange.label}</span>;
   }
   return (
-    <div tw="inline-flex">
+    <div tw="inline-flex flex-shrink-0">
       <DateField {...startFieldProps} />
       <span aria-hidden="true" tw="px-2">
         -

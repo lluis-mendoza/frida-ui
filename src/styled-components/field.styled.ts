@@ -34,7 +34,7 @@ export const FieldWrapper = tw.div`
 
 export type FieldVariant = 'default' | 'warning' | 'error';
 const fieldVariantDefault = tw`border-gray-300 hover:border-gray-400 ring-blue-300 focus-within:border-blue-400 focus-within:hover:border-blue-500`;
-const fieldVariantWarining = tw`border-yellow-300 hover:border-yellow-400 ring-blue-300 focus-within:border-blue-400 focus-within:hover:border-blue-500`;
+const fieldVariantWarining = tw`border-yellow-300 hover:border-yellow-400 ring-yellow-300 focus-within:border-yellow-400 focus-within:hover:border-yellow-500`;
 const fieldVariantError = tw`border-red-300 hover:border-red-400 ring-red-300 focus-within:border-red-400 focus-within:hover:border-red-500`;
 
 export const FieldVariants = {
@@ -64,6 +64,7 @@ export const FieldButton = styled.button(() => [
   outline-none
   h-6
   w-6
+  flex-shrink-0
   `,
   css`
     & svg {

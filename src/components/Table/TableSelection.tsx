@@ -19,6 +19,7 @@ export function createSelectionColumn<
     ),
     cell: ({ row }) => (
       <Checkbox
+        key={row.id}
         {...{
           defaultSelected: row.getIsSelected(),
           isIndeterminate: row.getIsSomeSelected(),

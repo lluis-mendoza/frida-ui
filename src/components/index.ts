@@ -1,6 +1,6 @@
+export * from './Badge';
 export * from './Button';
 export * from './Calendar';
-export * from './Calendar/services';
 export * from './Checkbox';
 export * from './DateField';
 export * from './DatePicker';

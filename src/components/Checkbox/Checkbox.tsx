@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { AriaCheckboxProps, useCheckbox, VisuallyHidden } from 'react-aria';
 import { useToggleState } from 'react-stately';
 
@@ -13,6 +13,13 @@ interface CheckBoxProps extends AriaCheckboxProps {}
 export default function Checkbox(props: CheckBoxProps) {
   const { isIndeterminate } = props;
   const state = useToggleState(props);
+  const oldState = useRef(state.isSelected);
+  /* useEffect(() => {
+    if (oldState.current !== state.isSelected) {
+      console.log('change');
+      oldState.current = state.isSelected;
+    }
+  }, [state.isSelected]); */
   const ref = useRef<HTMLInputElement>(null);
   const { inputProps } = useCheckbox(props, state, ref);
   const checkboxState = {

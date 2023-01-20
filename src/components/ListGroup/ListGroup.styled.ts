@@ -48,7 +48,7 @@ export const ListRowWrapper = styled.div(
     cursor-default
     px-3
     border-gray-300
-    border-t-1
+    border-t-[1px]
     `,
     isSelected &&
       tw`

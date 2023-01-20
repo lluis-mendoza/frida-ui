@@ -22,7 +22,7 @@ import {
 
 type ModalSize = 'sm' | 'md' | 'lg';
 
-interface ModalProps extends AriaModalOverlayProps {
+export interface ModalProps extends AriaModalOverlayProps {
   className?: string;
   title?: string;
   size?: ModalSize;
@@ -63,7 +63,9 @@ export function Modal({
                   transition={{ ease: 'easeOut', duration: 0.2 }}
                 >
                   <ModalHeader>
-                    <ModalTitle>{title}</ModalTitle>
+                    {title !== undefined ? (
+                      <ModalTitle>{title}</ModalTitle>
+                    ) : null}
                     <CloseButton onClick={() => state.close()}>
                       <CloseIcon />
                     </CloseButton>

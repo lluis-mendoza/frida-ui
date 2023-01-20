@@ -10,7 +10,6 @@ import { FilterButton, FilterSearchIcon } from '../Table.styled';
 
 export const SearchFilter = ({
   column,
-  table,
 }: {
   column: Column<any, unknown>;
   table: Table<any>;
