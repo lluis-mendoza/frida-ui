@@ -52,6 +52,7 @@ export const ModalHeader = tw.div`
 `;
 export const ModalTitle = tw.span`
   font-semibold
+  text-2xl
 `;
 export const ModalContent = tw.div`
   overflow-hidden
@@ -69,7 +70,7 @@ export const CloseIcon = tw(BiX)`
 `;
 
 export const modalSizeLarge = tw``;
-export const modalSizeMedium = tw`p-5 text-2xl `;
+export const modalSizeMedium = tw`p-5`;
 export const modalSizeSmall = tw``;
 
 export const ModalSizes = {

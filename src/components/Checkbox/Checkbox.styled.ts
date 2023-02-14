@@ -3,20 +3,36 @@ import tw, { styled } from 'twin.macro';
 export const CheckboxContainer = tw.label`
     flex
     items-center
+    relative
+`;
+export const CheckboxInput = tw.input`
+  absolute
+  inset-0
+  w-full
+  h-full
+  opacity-0
+  z-10
 `;
 
+export const checkboxSizeLarge = tw`text-lg h-8 w-8`;
+export const checkboxSizeMedium = tw`text-base h-5 w-5`;
+export const checkboxSizeSmall = tw`text-xs h-4 w-4`;
+
+export const CheckboxSizes = {
+  sm: checkboxSizeSmall,
+  md: checkboxSizeMedium,
+  lg: checkboxSizeLarge,
+};
 interface CheckboxState {
   isSelected: boolean;
   isIndeterminate: boolean;
 }
-export const CheckboxWrapper = styled.div(
+export const CheckboxWrapper = styled.span(
   ({ isSelected, isIndeterminate }: CheckboxState) => [
     tw`
         rounded
         border-gray-300
         border-2
-        w-5
-        h-5
         flex
         flex-shrink-0
         justify-center
@@ -39,6 +55,6 @@ export const CheckboxWrapper = styled.div(
 
 export const ChecboxIcon = tw.svg`
     stroke-gray-100
-    w-3
-    h-3
+    h-full
+    w-full
 `;

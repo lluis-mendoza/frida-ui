@@ -4,11 +4,12 @@ import {
   useOverlayTriggerState,
 } from 'react-stately';
 
-export interface ModalStateProps extends OverlayTriggerProps {}
+interface ModalStateProps extends OverlayTriggerProps {}
 export interface ModalState extends OverlayTriggerState {}
 
-export function useModal({ ...props }: ModalStateProps): ModalState {
-  const state = useOverlayTriggerState(props);
+export function useModal(props?: ModalStateProps): ModalState {
+  const _props = props ?? {};
+  const state = useOverlayTriggerState(_props);
 
   return state;
 }

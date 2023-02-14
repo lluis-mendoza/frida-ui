@@ -20,7 +20,7 @@ export const SearchFilter = ({
   const columnFilterValue = (column.getFilterValue() ?? '') as string;
   const headerName =
     column.columnDef.header?.toString().toLocaleLowerCase() ?? '';
-  const hasFilterValue = columnFilterValue.length > 0;
+  const isFiltered = column.getIsFiltered();
   useEffect(() => {
     if (state.isOpen) focus();
   }, [state.isOpen, focus]);
@@ -33,13 +33,13 @@ export const SearchFilter = ({
   return (
     <React.Fragment>
       <FilterButton ref={buttonRef} onClick={handleButtonClick}>
-        <FilterSearchIcon hasFilterValue={hasFilterValue} />
+        <FilterSearchIcon isFiltered={isFiltered} />
       </FilterButton>
       {state.isOpen && (
         <Popover
           state={state}
           triggerRef={buttonRef}
-          placement="bottom end"
+          placement="bottom start"
           tw="mt-2"
         >
           <div tw="p-1">
@@ -50,6 +50,7 @@ export const SearchFilter = ({
               inputRef={inputRef}
               value={columnFilterValue}
               onChange={handleInputChange}
+              onInput={(e) => e.stopPropagation()}
             />
           </div>
         </Popover>

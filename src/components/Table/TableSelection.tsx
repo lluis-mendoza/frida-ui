@@ -7,23 +7,29 @@ export function createSelectionColumn<
 >(): ColumnDef<TData> {
   return {
     id: 'select',
-    size: 20,
+    size: 20 + 16 * 2,
+    minSize: 20 + 16 * 2,
+    maxSize: 20 + 16 * 2,
     header: ({ table }) => (
       <Checkbox
+        animate={false}
+        aria-label={`select column`}
         {...{
           isSelected: table.getIsAllRowsSelected(),
           isIndeterminate: table.getIsSomeRowsSelected(),
-          onChange: (e) => table.toggleAllRowsSelected(e),
+          onChange: table.toggleAllRowsSelected,
         }}
       />
     ),
     cell: ({ row }) => (
       <Checkbox
-        key={row.id}
+        animate={false}
+        key={row.index}
+        aria-label={`Select row with id: ${row.id}`}
         {...{
           defaultSelected: row.getIsSelected(),
           isIndeterminate: row.getIsSomeSelected(),
-          onChange: (e) => row.toggleSelected(e),
+          onChange: row.toggleSelected,
         }}
       />
     ),

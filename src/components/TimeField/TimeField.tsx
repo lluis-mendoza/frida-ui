@@ -5,53 +5,54 @@ import { BiTime } from 'react-icons/bi';
 import { useTimeFieldState } from 'react-stately';
 
 import {
-  FieldButton,
   FieldContainer,
-  FieldSize,
+  FieldProps,
   FieldSizes,
-  FieldVariant,
   FieldVariants,
   FieldWrapper,
   Label,
+  Row,
 } from '../../styled-components';
 import { DateSegment } from './DateSegment';
 
 type TimeValue = Time | CalendarDateTime | ZonedDateTime;
 
-interface TimeFieldProps<T extends TimeValue> extends AriaTimeFieldProps<T> {
+interface TimeFieldProps<T extends TimeValue>
+  extends AriaTimeFieldProps<T>,
+    FieldProps {
   onChange?: (value: TimeValue) => void;
-  size?: FieldSize;
-  variant?: FieldVariant;
 }
 export default function TimeField<T extends TimeValue>({
   size = 'md',
   variant = 'default',
+  block,
+  className,
+  errorMessage,
   ...props
 }: TimeFieldProps<T>) {
   const { locale } = useLocale();
-  const { label } = props;
+  const { label, isDisabled } = props;
   const state = useTimeFieldState({
     ...props,
     locale,
   });
   const ref = useRef(null);
   const { labelProps, fieldProps } = useTimeField(props, state, ref);
-
   return (
     <FieldContainer>
-      <Label {...labelProps}>{label}</Label>
+      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
       <FieldWrapper
-        {...fieldProps}
         css={[FieldVariants[variant], FieldSizes[size]]}
+        isDisabled={isDisabled}
       >
-        <div tw="flex flex-row">
+        <Row {...fieldProps}>
           {state.segments.map((segment, i) => (
             <DateSegment key={i} segment={segment} state={state} />
           ))}
+        </Row>
+        <div>
+          <BiTime tw="h-6 w-6" />
         </div>
-        <FieldButton>
-          <BiTime />
-        </FieldButton>
       </FieldWrapper>
     </FieldContainer>
   );

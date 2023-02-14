@@ -3,6 +3,7 @@ import { AriaDatePickerProps } from 'react-aria';
 
 import { DateField } from '../DateField';
 import { StaticDateRange } from './DateRangePicker';
+import { DateFieldContainer, StaticRangeLabel } from './DateRangePicker.styled';
 import { defaultStaticRanges } from './DateRangePicker.utils';
 
 interface DateRangeFieldProps {
@@ -23,15 +24,16 @@ export function DateRangeField({
       ({ startDate, endDate }) =>
         isSameDay(startDateProps, startDate) && isSameDay(endDateProps, endDate)
     );
-    if (staticRange !== undefined) return <span>{staticRange.label}</span>;
+    if (staticRange !== undefined)
+      return <StaticRangeLabel>{staticRange.label}</StaticRangeLabel>;
   }
   return (
-    <div tw="inline-flex flex-shrink-0">
+    <DateFieldContainer>
       <DateField {...startFieldProps} />
       <span aria-hidden="true" tw="px-2">
         -
       </span>
       <DateField {...endFieldProps} />
-    </div>
+    </DateFieldContainer>
   );
 }

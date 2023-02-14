@@ -1,39 +1,40 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Cell, flexRender, Row, RowData } from '@tanstack/react-table';
-import { useEffect } from 'react';
+import { MouseEvent } from 'react';
 
-import { Skeleton } from '../Skeleton';
 import { useTableContext } from './Table.context';
-import { BodyCell, BodyRow } from './Table.styled';
+import { BodyRow } from './Table.styled';
+import TableCell from './TableCell';
 
-interface TableRowProps<TData extends RowData> {
-  row: Row<TData>;
+interface TableRowProps {
+  index: number;
 }
-const TableRow = <TData extends RowData>({ row }: TableRowProps<TData>) => {
-  const { table, rowFocused, loading } = useTableContext();
-
-  const _row = row.subRows.length === 1 ? row.subRows[0] : row;
-  const isSelected = _row.getIsSelected();
-  const fixColumnOrder = (cells: Array<Cell<TData, unknown>>) =>
-    table
-      .getAllColumns()
-      .map((column) => cells.find((cell) => cell.column.id === column.id)!);
-  const renderCell = (cell: Cell<TData, unknown>) => {
-    if (loading ?? false) return <Skeleton />;
-    return flexRender(cell.column.columnDef.cell, cell.getContext());
+const TableRow = ({ index }: TableRowProps) => {
+  const { table, onClick, onDoubleClick, rowFocused } = useTableContext();
+  const { rows } = table.getRowModel();
+  const rowHeight = 47;
+  const isSingleGrouped = rows[index].subRows.length === 1;
+  const row = isSingleGrouped ? rows[index].subRows[0] : rows[index];
+  const { id } = row;
+  const isSelected = row.getIsSelected();
+  const cells = table
+    .getAllColumns()
+    .map((col) => row.getAllCells().find((cell) => cell.column.id === col.id)!);
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    const eventDetail = event.detail;
+    if (eventDetail === 1 && onClick != null) onClick(row.index);
+    else if (eventDetail === 2 && onDoubleClick != null)
+      onDoubleClick(row.index);
   };
-
   return (
     <BodyRow
-      data-row-index={_row.index}
-      key={_row.id}
+      onClick={handleClick}
+      key={id}
       isSelected={isSelected}
-      isFocused={rowFocused !== null && rowFocused === _row.index}
+      isFocused={rowFocused !== null && rowFocused === row.index}
+      height={rowHeight}
     >
-      {fixColumnOrder(_row.getAllCells()).map((cell) => (
-        <BodyCell key={cell.id} width={cell.column.getSize()}>
-          {renderCell(cell)}
-        </BodyCell>
+      {cells.map((cell, index) => (
+        <TableCell cell={cell} key={index} isSingleGrouped={isSingleGrouped} />
       ))}
     </BodyRow>
   );

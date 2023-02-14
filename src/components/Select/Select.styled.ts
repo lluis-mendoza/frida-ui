@@ -10,5 +10,10 @@ export const SelectButton = tw.button`
 `;
 
 export const SelectValue = styled.span(
-  ({ hasValue }: { hasValue: boolean }) => [!hasValue && tw`!text-gray-400`]
+  ({ hasValue }: { hasValue: boolean }) => [
+    tw`
+      whitespace-nowrap
+    `,
+    !hasValue && tw`!text-gray-400`,
+  ]
 );

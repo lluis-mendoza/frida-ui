@@ -20,10 +20,10 @@ export function DefinedRange({
     state.setValue({ start: startDate, end: endDate });
   };
   const handleMouseOver = (startDate: DateValue, endDate: DateValue) => {
-    previewDatesService.setSubject({ start: startDate, end: endDate });
+    previewDatesService.next({ start: startDate, end: endDate });
   };
   const handleMouseLeave = () => {
-    previewDatesService.setSubject(null);
+    previewDatesService.next(null);
   };
   return (
     <StaticRangeWrapper>

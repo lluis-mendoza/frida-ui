@@ -45,24 +45,22 @@ export function CalendarCell({ state, date, currentMonth }: CalendarCellProps) {
     state,
     ref
   );
-  const value = state.value;
-  const anchorDate = (state as RangeCalendarState)?.anchorDate;
-  const isAnchorDate = anchorDate !== null && isSameDay(anchorDate, date);
-
   useEffect(() => {
-    console.log(anchorDate);
-  }, [anchorDate]);
-  const isSelected =
-    (isDateValue(value) && date.compare(value as DateValue) === 0) ||
-    (isRangeValue(value) && anchorDate !== null
-      ? isSameDay(anchorDate, date)
-      : isInsideRange(date, value as RangeValue<DateValue>));
-  useEffect(() => {
-    const previewDatesSubject$ = previewDatesService
-      .getSubject()
-      .subscribe((_previewDates) => setPreviewDates(_previewDates));
+    const previewDatesSubject$ = previewDatesService.subscribe(
+      (_previewDates) => setPreviewDates(_previewDates)
+    );
     return () => previewDatesSubject$.unsubscribe();
   }, []);
+
+  const value = state.value;
+  const anchorDate = (state as RangeCalendarState)?.anchorDate ?? null;
+  const isAnchorDate = anchorDate !== null && isSameDay(anchorDate, date);
+
+  const isSelected = isRangeValue(value)
+    ? anchorDate !== null
+      ? isSameDay(anchorDate, date)
+      : isInsideRange(date, value as RangeValue<DateValue>)
+    : isDateValue(value) && date.compare(value as DateValue) === 0;
 
   const timeZone = getLocalTimeZone();
   const isOutsideMonth = !isSameMonth(currentMonth, date);

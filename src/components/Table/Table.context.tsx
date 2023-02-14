@@ -1,11 +1,12 @@
 import { Table } from '@tanstack/react-table';
-import { createContext, useContext } from 'react';
+import { createContext, RefObject, useContext } from 'react';
 
 import { RowFocused } from './Table.model';
 
 interface IProps {
   children: React.ReactNode;
   table: Table<any>;
+  containerRef: RefObject<HTMLDivElement>;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
   onKeyboardUpdate?: (index: number) => void;
@@ -17,6 +18,7 @@ interface IProps {
 
 interface ITableContext {
   table: Table<any>;
+  containerRef: RefObject<HTMLDivElement>;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
   onKeyboardUpdate?: (index: number) => void;
@@ -29,6 +31,7 @@ interface ITableContext {
 
 const TableContext = createContext<ITableContext>({
   table: {} as any,
+  containerRef: {} as any,
   onClick: () => undefined,
   onDoubleClick: () => undefined,
   onKeyboardUpdate: () => undefined,

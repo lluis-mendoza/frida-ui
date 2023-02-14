@@ -1,5 +1,10 @@
 import tw, { css, styled } from 'twin.macro';
 
+export interface FieldProps extends FieldContainerProps {
+  size?: FieldSize;
+  variant?: FieldVariant;
+  className?: string;
+}
 interface FieldContainerProps {
   block?: boolean;
 }
@@ -10,27 +15,38 @@ export const FieldContainer = styled.div(({ block }: FieldContainerProps) => [
     flex-col
     text-left
     w-auto
+    m-[2px]
     `,
   (block ?? false) && tw`w-full`,
 ]);
-
-export const FieldWrapper = tw.div`
-    relative
-    inline-flex
-    justify-between
-    flex-row
-    items-center
-    rounded-md
-    overflow-hidden
-    border-2
-    px-2
-    ring-0
-    shadow-sm
-    gap-4
-    bg-gray-50
-    text-gray-700
-    focus-within:ring-1
-`;
+interface FieldWrapperProps {
+  isDisabled?: boolean;
+}
+export const FieldWrapper = styled.div(({ isDisabled }: FieldWrapperProps) => [
+  tw`
+  relative
+  w-fit
+  min-w-full
+  inline-flex
+  flex-row
+  justify-between
+  items-center
+  ring-0
+  gap-4
+  bg-gray-50
+  text-gray-700
+  focus-within:ring-2
+`,
+  (isDisabled ?? false) &&
+    tw`
+    focus-within:border-gray-300
+    focus-within:hover:border-gray-400
+    focus-within:ring-0
+    cursor-not-allowed
+    bg-gray-100
+    [&>*]:!text-gray-400
+    [&>*]:!pointer-events-none`,
+]);
 
 export type FieldVariant = 'default' | 'warning' | 'error';
 const fieldVariantDefault = tw`border-gray-300 hover:border-gray-400 ring-blue-300 focus-within:border-blue-400 focus-within:hover:border-blue-500`;
@@ -43,9 +59,9 @@ export const FieldVariants = {
   error: fieldVariantError,
 };
 export type FieldSize = 'sm' | 'md' | 'lg';
-const fieldSizeLarge = tw`text-lg px-5 h-12 min-w-[3rem]`;
-const fieldSizeMedium = tw`text-base px-3 h-11 min-w-[3rem]`;
-const fieldSizeSmall = tw`text-xs px-2 h-6 min-w-[1.5rem]`;
+const fieldSizeLarge = tw`text-lg px-6 h-14 min-w-[3rem] rounded-xl border-[3px]`;
+const fieldSizeMedium = tw`text-base px-4 h-12 min-w-[3rem] rounded-xl border-[2px]`;
+const fieldSizeSmall = tw`text-sm px-3 h-8 min-w-[1.5rem] rounded-md border-2`;
 
 export const FieldSizes = {
   sm: fieldSizeSmall,
@@ -58,6 +74,7 @@ export const Label = tw.span`
     text-gray-700
     leading-tight
     mb-[0.15rem]
+    whitespace-nowrap
 `;
 export const FieldButton = styled.button(() => [
   tw`

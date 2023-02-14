@@ -1,42 +1,27 @@
-import { createRef, KeyboardEvent, MouseEvent } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import useScrollbarSize from 'react-scrollbar-size';
-import AutoSizer from 'react-virtualized-auto-sizer';
-import { FixedSizeList as List } from 'react-window';
+import { KeyboardEvent } from 'react';
+import { useVirtual } from 'react-virtual';
 
+import { Empty } from '../Empty';
 import { useTableContext } from './Table.context';
-import { BodyContainer } from './Table.styled';
+import { BodyCell, BodyContainer, EmptyContainer, Row } from './Table.styled';
 import TableRow from './TableRow';
 
 const TableBody = () => {
-  const {
-    table,
-    onClick,
-    onDoubleClick,
-    onKeyboardUpdate,
-    scrollDown,
-    setScrollDown,
-    enableKeyboard,
-    rowFocused,
-  } = useTableContext();
-
-  const listRef = createRef<List>();
+  const { table, containerRef, enableKeyboard, rowFocused, onKeyboardUpdate } =
+    useTableContext();
   const { rows } = table.getRowModel();
-  const { width } = useScrollbarSize();
-
-  const totalColumnSize =
-    table
-      .getAllFlatColumns()
-      .map((column) => column.getSize() + 40)
-      .reduce((partialSum, a) => partialSum + a, 0) + width;
-
-  const handleClick = (event: MouseEvent<HTMLDivElement>, index: number) => {
-    const eventDetail = event.detail;
-    if (eventDetail === 1 && onClick != null) onClick(index);
-    else if (eventDetail === 2 && onDoubleClick != null) onDoubleClick(index);
-  };
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+  const rowVirtualizer = useVirtual({
+    parentRef: containerRef,
+    size: rows.length,
+    overscan: 10,
+  });
+  const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
+  const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start ?? 0 : 0;
+  const paddingBottom =
+    virtualRows.length > 0
+      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end ?? 0)
+      : 0;
+  const handleKeyDown = (e: KeyboardEvent<HTMLTableSectionElement>) => {
     if (
       !(enableKeyboard ?? false) ||
       rowFocused === null ||
@@ -47,45 +32,32 @@ const TableBody = () => {
     const key = e.key;
     if (key === 'ArrowUp' && rowFocused > 0) {
       onKeyboardUpdate(rowFocused - 1);
-      listRef.current?.scrollToItem(rowFocused - 1, 'smart');
+      // listRef.current?.scrollToItem(rowFocused - 1, 'smart');
     } else if (key === 'ArrowDown' && rowFocused < rows.length - 1) {
       onKeyboardUpdate(Number(rowFocused + 1));
-      listRef.current?.scrollToItem(rowFocused + 1, 'smart');
+      // listRef.current?.scrollToItem(rowFocused + 1, 'smart');
     }
   };
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <BodyContainer tabIndex={0} onKeyDown={handleKeyDown}>
-        <AutoSizer disableWidth style={{ width: '100%' }}>
-          {({ height }) => (
-            <List
-              height={height - 1}
-              itemCount={rows.length}
-              width={totalColumnSize}
-              style={{
-                minWidth: '100%',
-              }}
-              itemSize={47}
-              ref={listRef}
-              useIsScrolling
-            >
-              {({ index, style }) => {
-                const row = rows[index];
-                return (
-                  <div
-                    key={index}
-                    style={style}
-                    onClick={(e) => handleClick(e, index)}
-                  >
-                    <TableRow row={row} />
-                  </div>
-                );
-              }}
-            </List>
-          )}
-        </AutoSizer>
+  const isEmpty = rows.length === 0;
+  if (isEmpty)
+    return (
+      <BodyContainer>
+        <EmptyContainer width={containerRef.current?.offsetWidth}>
+          <BodyCell>
+            <Empty />
+          </BodyCell>
+        </EmptyContainer>
       </BodyContainer>
-    </DndProvider>
+    );
+  return (
+    <BodyContainer tabIndex={0} onKeyDown={handleKeyDown}>
+      {paddingTop > 0 && <Row height={paddingTop} />}
+      {virtualRows.map((virtualRow, index) => (
+        <TableRow key={index} index={virtualRow.index} />
+      ))}
+      {paddingBottom > 0 && <Row height={paddingBottom} />}
+    </BodyContainer>
   );
 };
+
 export default TableBody;

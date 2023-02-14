@@ -1,9 +1,5 @@
 import tw, { styled } from 'twin.macro';
 
-export const DateFieldWrapper = tw.div`
-    flex
-    flex-row
-`;
 interface DateSegmentWrapperProps {
   isEditable: boolean;
 }
@@ -19,7 +15,7 @@ export const DateSegmentWrapper = styled.div(
     focus:bg-blue-500
     focus:text-white
     `,
-    isEditable ? tw`text-gray-800` : tw`text-gray-500`,
+    isEditable ? tw`text-inherit` : tw`text-gray-500`,
   ]
 );
 

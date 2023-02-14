@@ -46,19 +46,20 @@ export const SelectFilter = ({
         <Popover
           state={state}
           triggerRef={buttonRef}
-          placement="bottom end"
+          placement="bottom start"
           tw="mt-2"
         >
           <div tw="p-1">
             {uniqueValues.map((value, index) => (
-              <div key={index} tw="flex flex-row gap-2">
+              <div key={index} tw="flex flex-row items-center gap-2">
                 <Checkbox
+                  size="sm"
                   isSelected={columnFilterValues.includes(value)}
                   onChange={(isSelected) =>
                     handleChangeCheckbox(isSelected, value)
                   }
                 />
-                <span tw="text-base text-gray-800">{value}</span>
+                <span tw="text-base text-gray-800 font-semibold">{value}</span>
               </div>
             ))}
           </div>

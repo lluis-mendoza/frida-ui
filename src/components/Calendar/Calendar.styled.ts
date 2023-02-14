@@ -8,7 +8,7 @@ export const CalendarContainer = tw.div`
   inline-block
   w-full
 `;
-export const RangeCalendarWrapper = tw.div`
+export const CalendarWrapper = tw.div`
   inline-flex
   p-4
   gap-2
@@ -23,6 +23,7 @@ const MonthButton = tw(Button)`
   rounded-md
   outline-none
   bg-gray-50
+  hover:bg-gray-100
   text-gray-600
 `;
 

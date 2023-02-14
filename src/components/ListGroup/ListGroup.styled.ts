@@ -54,8 +54,6 @@ export const ListRowWrapper = styled.div(
       tw`
       bg-blue-200/75
       hover:bg-blue-200
-      !border-blue-600
-      border-t
     `,
     isFirstItem && tw`border-t-0`,
   ]

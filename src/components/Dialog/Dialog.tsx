@@ -10,7 +10,7 @@ export function Dialog({ title, children, ...props }: DialogProps) {
   const { dialogProps } = useDialog(props, ref);
 
   return (
-    <div {...dialogProps} ref={ref}>
+    <div {...dialogProps} ref={ref} tw="overflow-hidden">
       {children}
     </div>
   );

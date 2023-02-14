@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { Key, useRef } from 'react';
 import {
   AriaSelectOptions,
   HiddenSelect,
@@ -27,36 +27,45 @@ interface SelectProps<T extends object>
     AriaSelectOptions<T> {
   size?: FieldSize;
   variant?: FieldVariant;
+  value?: Key | null | undefined;
+  onChange?: ((key: Key) => any) | undefined;
 }
 export default function Select<T extends object>({
   size = 'md',
   variant = 'default',
   errorMessage,
+  value,
+  onChange,
   ...props
 }: SelectProps<T>) {
   const refWrapper = useRef<HTMLDivElement>(null);
   const refButton = useRef(null);
-  const state = useSelectState(props);
-
+  const _props = {
+    ...props,
+    selectedKey: value ?? props.selectedKey,
+    onSelectionChange: onChange ?? props.onSelectionChange,
+  };
+  const state = useSelectState(_props);
+  const { label, name, isDisabled } = _props;
   const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
-    props,
+    _props,
     state,
     refButton
   );
-
   const { buttonProps } = useButton(triggerProps, refButton);
 
   return (
     <FieldContainer>
-      <Label {...labelProps}>{props.label}</Label>
+      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
       <HiddenSelect
         state={state}
         triggerRef={refButton}
-        label={props.label}
-        name={props.name}
+        label={label}
+        name={name}
       />
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
+        isDisabled={isDisabled}
         tw="min-w-[10rem]"
         ref={refWrapper}
       >

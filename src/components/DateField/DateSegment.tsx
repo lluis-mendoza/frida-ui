@@ -24,15 +24,10 @@ export function DateSegment({ segment, state }: DateSegmentProps) {
       ref={ref}
       style={{
         ...segmentProps.style,
-        /* minWidth:
-          segment.maxValue != null
-            ? `${String(segment.maxValue).length}ch`
-            : undefined, */
       }}
       isEditable={segment.isEditable}
       className="group"
     >
-      {/* Always reserve space for the placeholder, to prevent layout shift when editing. */}
       <DateSegmentPlaceholder
         aria-hidden="true"
         isPlaceholder={segment.isPlaceholder}

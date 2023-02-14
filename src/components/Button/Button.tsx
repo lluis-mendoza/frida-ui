@@ -1,5 +1,10 @@
 import { ReactNode, useRef } from 'react';
-import { AriaButtonProps, useButton } from 'react-aria';
+import {
+  AriaButtonProps,
+  mergeProps,
+  useButton,
+  useFocusRing,
+} from 'react-aria';
 
 import Spinner from '../Spinner/Spinner';
 import {
@@ -12,6 +17,7 @@ import {
 type ButtonSize = 'sm' | 'md' | 'lg';
 type ButtonColor = 'primary' | 'success' | 'info' | 'warning' | 'error';
 type ButtonVariant = 'text' | 'contained' | 'outlined';
+
 interface ButtonProps extends AriaButtonProps {
   size?: ButtonSize;
   variant?: ButtonVariant;
@@ -34,16 +40,15 @@ export default function Button({
   className,
   ...props
 }: ButtonProps) {
-  const { isDisabled } = props;
   const ref = useRef(null);
   const { buttonProps } = useButton(props, ref);
-
+  const { focusProps, isFocusVisible } = useFocusRing();
   return (
     <StyledButton
-      {...buttonProps}
-      isDisabled={isDisabled}
-      block={block}
+      {...mergeProps(focusProps, buttonProps)}
       ref={ref}
+      isFocusVisible={isFocusVisible}
+      block={block}
       css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
       className={className}
     >

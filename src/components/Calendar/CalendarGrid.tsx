@@ -29,7 +29,7 @@ export function CalendarGrid({ state, ...props }: CalendarGridProps) {
             {state
               .getDatesInWeek(weekIndex, props.startDate)
               .map((date, i) =>
-                date != null ? (
+                date !== null ? (
                   <CalendarCell
                     key={i}
                     state={state}

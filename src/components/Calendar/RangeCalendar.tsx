@@ -15,12 +15,12 @@ import { DateValue } from '../DatePicker';
 import { RangeValue } from '../DateRangePicker';
 import {
   CalendarContainer,
+  CalendarWrapper,
   MonthsWrapper,
   NextMonthButton,
   NextMonthIcon,
   PrevMonthButton,
   PrevMonthIcon,
-  RangeCalendarWrapper,
 } from './Calendar.styled';
 import { DefinedRange } from './DefinedRange';
 import Month from './Month';
@@ -54,13 +54,13 @@ export function RangeCalendar<T extends DateValue>({
       isSameDay(state.highlightedRange.start, state.value.start) &&
       isSameDay(state.highlightedRange.end, state.value.end)
     ) {
-      previewDatesService.setSubject(null);
-    } else previewDatesService.setSubject(state.highlightedRange);
+      previewDatesService.next(null);
+    } else previewDatesService.next(state.highlightedRange);
   }, [state.highlightedRange, state.value]);
 
   return (
     <CalendarContainer {...calendarProps} ref={ref}>
-      <RangeCalendarWrapper>
+      <CalendarWrapper>
         <DefinedRange state={state} />
         <MonthsWrapper>
           <PrevMonthButton {...prevButtonProps}>
@@ -75,7 +75,7 @@ export function RangeCalendar<T extends DateValue>({
               <Month key={i} state={state} offset={{ months: i }} />
             ))}
         </MonthsWrapper>
-      </RangeCalendarWrapper>
+      </CalendarWrapper>
     </CalendarContainer>
   );
 }

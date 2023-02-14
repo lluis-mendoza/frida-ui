@@ -1,52 +1,58 @@
-import { createCalendar } from '@internationalized/date';
+import { createCalendar, DateDuration } from '@internationalized/date';
 import { useRef } from 'react';
-import {
-  AriaCalendarProps,
-  useCalendar,
-  useDateFormatter,
-  useLocale,
-} from 'react-aria';
+import { AriaCalendarProps, useCalendar, useLocale } from 'react-aria';
 import { useCalendarState } from 'react-stately';
 
 import { DateValue } from '../DatePicker';
-import { CalendarGrid } from './CalendarGrid';
+import {
+  CalendarContainer,
+  CalendarWrapper,
+  MonthsWrapper,
+  NextMonthButton,
+  NextMonthIcon,
+  PrevMonthButton,
+  PrevMonthIcon,
+} from './Calendar.styled';
+import Month from './Month';
 
 interface CalendarProps<T extends DateValue> extends AriaCalendarProps<T> {
-  visibleMonths?: number;
+  visibleDuration?: DateDuration;
   onChange?: (value: DateValue) => void;
 }
-export function Calendar<T extends DateValue>(props: CalendarProps<T>) {
+export function Calendar<T extends DateValue>({
+  visibleDuration = { months: 2 },
+  ...props
+}: CalendarProps<T>) {
   const { locale } = useLocale();
   const state = useCalendarState({
     ...props,
     locale,
     createCalendar,
-  });
-  const monthDateFormatter = useDateFormatter({
-    month: 'long',
-    year: 'numeric',
-    timeZone: state.timeZone,
+    visibleDuration,
   });
   const ref = useRef(null);
-  const { calendarProps, prevButtonProps, nextButtonProps, title } =
-    useCalendar(props, state);
+  const { calendarProps, prevButtonProps, nextButtonProps } = useCalendar(
+    props,
+    state
+  );
 
   return (
-    <div {...calendarProps} ref={ref} tw="inline-block text-gray-800">
-      <div tw="flex items-center pb-4">
-        <h2 tw="flex-1 font-bold text-xl ml-2">
-          {monthDateFormatter.format(
-            state.visibleRange.start.toDate(state.timeZone)
-          )}
-        </h2>
-        {/* <CalendarButton {...prevButtonProps}>
-          <ChevronLeftIcon className="h-6 w-6" />
-        </CalendarButton>
-        <CalendarButton {...nextButtonProps}>
-          <ChevronRightIcon className="h-6 w-6" />
-  </CalendarButton> */}
-      </div>
-      <CalendarGrid state={state} />
-    </div>
+    <CalendarContainer {...calendarProps} ref={ref}>
+      <CalendarWrapper>
+        <MonthsWrapper>
+          <PrevMonthButton {...prevButtonProps}>
+            <PrevMonthIcon />
+          </PrevMonthButton>
+          <NextMonthButton {...nextButtonProps}>
+            <NextMonthIcon />
+          </NextMonthButton>
+          {Array(visibleDuration.months)
+            .fill(null)
+            .map((_, i) => (
+              <Month key={i} state={state} offset={{ months: i }} />
+            ))}
+        </MonthsWrapper>
+      </CalendarWrapper>
+    </CalendarContainer>
   );
 }

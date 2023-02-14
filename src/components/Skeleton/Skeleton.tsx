@@ -1,6 +1,5 @@
 import { StyledSkeleton } from './Skeleton.styled';
 
-interface SkeletonProps {}
-export default function Skeleton(props: SkeletonProps) {
+export default function Skeleton() {
   return <StyledSkeleton />;
 }
