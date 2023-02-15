@@ -132,7 +132,7 @@ export default function ListView<T extends object>({
             <List
               height={height - 1}
               itemCount={flatItems.length}
-              width={width}
+              width={width - 1}
               itemSize={ItemSizes[rowSize]}
               itemData={itemData}
               ref={listRef}

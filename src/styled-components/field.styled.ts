@@ -15,7 +15,7 @@ export const FieldContainer = styled.div(({ block }: FieldContainerProps) => [
     flex-col
     text-left
     w-auto
-    m-[2px]
+    p-[2px]
     `,
   (block ?? false) && tw`w-full`,
 ]);
