@@ -53,7 +53,8 @@ export default function Select<T extends object>({
     refButton
   );
   const { buttonProps } = useButton(triggerProps, refButton);
-
+  const hasValue =
+    state.selectedItem !== null && state.selectedItem !== undefined;
   return (
     <FieldContainer>
       {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
@@ -70,10 +71,8 @@ export default function Select<T extends object>({
         ref={refWrapper}
       >
         <SelectButton {...buttonProps} ref={refButton}>
-          <SelectValue {...valueProps} hasValue={state.selectedItem !== null}>
-            {state.selectedItem !== null
-              ? state.selectedItem.rendered
-              : 'Seleccione...'}
+          <SelectValue {...valueProps} hasValue={hasValue}>
+            {hasValue ? state.selectedItem.rendered : 'Seleccione...'}
           </SelectValue>
           <SelectorIcon />
         </SelectButton>

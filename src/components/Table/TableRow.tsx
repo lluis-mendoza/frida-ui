@@ -9,17 +9,22 @@ interface TableRowProps {
   index: number;
 }
 const TableRow = ({ index }: TableRowProps) => {
-  const { table, onClick, onDoubleClick, rowFocused } = useTableContext();
+  const { table, onClick, onDoubleClick, rowFocused, rowsDisabled } =
+    useTableContext();
   const { rows } = table.getRowModel();
   const rowHeight = 47;
   const isSingleGrouped = rows[index].subRows.length === 1;
   const row = isSingleGrouped ? rows[index].subRows[0] : rows[index];
   const { id } = row;
+
   const isSelected = row.getIsSelected();
+  const isFocused = rowFocused !== null && rowFocused === row.index;
+  const isDisabled = rowsDisabled?.includes(index);
   const cells = table
     .getAllColumns()
     .map((col) => row.getAllCells().find((cell) => cell.column.id === col.id)!);
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (isDisabled) return;
     const eventDetail = event.detail;
     if (eventDetail === 1 && onClick != null) onClick(row.index);
     else if (eventDetail === 2 && onDoubleClick != null)
@@ -30,7 +35,8 @@ const TableRow = ({ index }: TableRowProps) => {
       onClick={handleClick}
       key={id}
       isSelected={isSelected}
-      isFocused={rowFocused !== null && rowFocused === row.index}
+      isFocused={isFocused}
+      isDisabled={isDisabled}
       height={rowHeight}
     >
       {cells.map((cell, index) => (

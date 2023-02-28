@@ -98,7 +98,8 @@ export const DayCell = styled.div(
     outline-none
     text-gray-800
   `,
-    isToday &&
+    !isOutsideMonth &&
+      isToday &&
       css`
         &:after {
           content: '';
@@ -111,8 +112,8 @@ export const DayCell = styled.div(
           border-radius: 2px;
         }
       `,
-    isToday && tw`after:bg-blue-600`,
-    isToday && isSelected && tw`after:bg-white`,
+    !isOutsideMonth && isToday && tw`after:bg-blue-600`,
+    !isOutsideMonth && isToday && isSelected && tw`after:bg-white`,
     isOutsideMonth && tw`text-gray-300`,
     isPreview &&
       !isOutsideMonth &&

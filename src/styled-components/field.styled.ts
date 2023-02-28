@@ -59,9 +59,9 @@ export const FieldVariants = {
   error: fieldVariantError,
 };
 export type FieldSize = 'sm' | 'md' | 'lg';
-const fieldSizeLarge = tw`text-lg px-6 h-14 min-w-[3rem] rounded-xl border-[3px]`;
-const fieldSizeMedium = tw`text-base px-4 h-12 min-w-[3rem] rounded-xl border-[2px]`;
-const fieldSizeSmall = tw`text-sm px-3 h-8 min-w-[1.5rem] rounded-md border-2`;
+const fieldSizeLarge = tw`text-lg px-6 h-14 rounded-xl border-[3px]`;
+const fieldSizeMedium = tw`text-base px-4 h-12 rounded-xl border-[2px]`;
+const fieldSizeSmall = tw`text-sm px-3 h-8 rounded-md border-2`;
 
 export const FieldSizes = {
   sm: fieldSizeSmall,

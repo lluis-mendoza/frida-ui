@@ -1,6 +1,9 @@
-import React from 'react';
+type AlertVariant = 'error' | 'warning' | 'success';
 
-function Alert() {
+interface AlertProps {
+  variant: AlertVariant;
+}
+function Alert({ variant }: AlertProps) {
   return <div>Alert</div>;
 }
 

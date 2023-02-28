@@ -60,14 +60,17 @@ export const HeaderRow = tw(Row)`
 interface BodyRowProps {
   isSelected: boolean;
   isFocused: boolean;
+  isDisabled: boolean;
 }
 export const BodyRow = styled(Row)(
-  ({ isSelected, isFocused }: BodyRowProps) => [
+  ({ isSelected, isFocused, isDisabled }: BodyRowProps) => [
     tw`
       hover:bg-gray-100/[0.75]
     `,
     isFocused && tw`bg-blue-200 hover:bg-blue-300/[0.75]`,
     isSelected && tw`bg-blue-200 hover:bg-blue-300/[0.75]`,
+    isDisabled &&
+      tw`bg-gray-50 hover:bg-gray-50 [&>*]:(text-gray-500! ) cursor-not-allowed`,
   ]
 );
 

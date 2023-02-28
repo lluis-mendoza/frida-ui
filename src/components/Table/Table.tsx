@@ -44,7 +44,6 @@ declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
     filterType?: FilterType;
     editable?: boolean;
-    // editableProps?: EditableProps;
     autoSize?: boolean;
     showOverflow?: boolean;
   }
@@ -69,7 +68,8 @@ export interface TableProps<TData extends RowData> {
       PaginationTableState &
       RowSelectionTableState
   >;
-  setRowSelection?: OnChangeFn<RowSelectionState>;
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
+  rowsDisabled?: number[];
   groupBy?: GroupingState;
   toggleAllRowsExpanded?: boolean;
   loading?: boolean;
@@ -87,7 +87,8 @@ const Table = <TData extends RowData>({
   columns,
   initialState,
   state,
-  setRowSelection,
+  onRowSelectionChange,
+  rowsDisabled = [],
   groupBy = [],
   toggleAllRowsExpanded,
   loading,
@@ -173,7 +174,7 @@ const Table = <TData extends RowData>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     meta: {
@@ -189,6 +190,7 @@ const Table = <TData extends RowData>({
     scrollDown,
     setScrollDown,
     rowFocused,
+    rowsDisabled,
     enableKeyboard,
     loading,
   };

@@ -29,7 +29,7 @@ export const SelectFilter = ({
   const uniqueValues = Array.from(
     column.getFacetedUniqueValues().keys()
   ) as string[];
-
+  const hasElements = uniqueValues.length > 0;
   const handleButtonClick = () => {
     state.toggle();
   };
@@ -42,7 +42,7 @@ export const SelectFilter = ({
       <FilterButton ref={buttonRef} onClick={handleButtonClick}>
         <BiFilter />
       </FilterButton>
-      {state.isOpen && (
+      {state.isOpen && hasElements && (
         <Popover
           state={state}
           triggerRef={buttonRef}

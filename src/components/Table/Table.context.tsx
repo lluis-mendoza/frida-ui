@@ -3,17 +3,8 @@ import { createContext, RefObject, useContext } from 'react';
 
 import { RowFocused } from './Table.model';
 
-interface IProps {
+interface IProps extends ITableContext {
   children: React.ReactNode;
-  table: Table<any>;
-  containerRef: RefObject<HTMLDivElement>;
-  onClick?: (index: number) => void;
-  onDoubleClick?: (index: number) => void;
-  onKeyboardUpdate?: (index: number) => void;
-  rowFocused: RowFocused;
-  scrollDown?: boolean;
-  setScrollDown?: (data: boolean) => void;
-  enableKeyboard?: boolean;
 }
 
 interface ITableContext {
@@ -23,6 +14,7 @@ interface ITableContext {
   onDoubleClick?: (index: number) => void;
   onKeyboardUpdate?: (index: number) => void;
   rowFocused: RowFocused;
+  rowsDisabled: number[];
   scrollDown?: boolean;
   setScrollDown?: (data: boolean) => void;
   enableKeyboard?: boolean;
@@ -36,6 +28,7 @@ const TableContext = createContext<ITableContext>({
   onDoubleClick: () => undefined,
   onKeyboardUpdate: () => undefined,
   rowFocused: null,
+  rowsDisabled: [],
   scrollDown: false,
   setScrollDown: () => undefined,
   enableKeyboard: undefined,

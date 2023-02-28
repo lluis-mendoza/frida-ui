@@ -61,7 +61,7 @@ export const ListViewWrapper = styled.div(
     `,
     itemsToShow !== undefined &&
       css`
-        height: ${itemsToShow * ItemSizes[rowSize] + itemsToShow}px;
+        height: ${itemsToShow * ItemSizes[rowSize] + itemsToShow + 10}px;
       `,
     maxItemsToShow !== undefined &&
       css`
@@ -73,9 +73,10 @@ export const ListViewWrapper = styled.div(
 interface ListRowWrapperProps {
   isSelected: boolean;
   isFirstItem: boolean;
+  isDisabled: boolean;
 }
 export const ListRowWrapper = styled.div(
-  ({ isSelected, isFirstItem }: ListRowWrapperProps) => [
+  ({ isSelected, isFirstItem, isDisabled }: ListRowWrapperProps) => [
     tw`
     relative
     h-full
@@ -93,6 +94,7 @@ export const ListRowWrapper = styled.div(
       hover:bg-blue-200
     `,
     isFirstItem && tw`border-t-0`,
+    isDisabled && tw`bg-gray-50`,
   ]
 );
 

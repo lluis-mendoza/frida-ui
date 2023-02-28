@@ -1,14 +1,14 @@
-import { CalendarDate, isSameDay } from '@internationalized/date';
+import { CalendarDate, DateValue, isSameDay } from '@internationalized/date';
 import { AriaDatePickerProps } from 'react-aria';
 
-import { DateField } from '../DateField';
+import { DateFieldContent } from '../DateField';
 import { StaticDateRange } from './DateRangePicker';
 import { DateFieldContainer, StaticRangeLabel } from './DateRangePicker.styled';
 import { defaultStaticRanges } from './DateRangePicker.utils';
 
 interface DateRangeFieldProps {
-  startFieldProps: AriaDatePickerProps<CalendarDate>;
-  endFieldProps: AriaDatePickerProps<CalendarDate>;
+  startFieldProps: AriaDatePickerProps<DateValue>;
+  endFieldProps: AriaDatePickerProps<DateValue>;
   staticDateRanges?: StaticDateRange[];
 }
 export function DateRangeField({
@@ -29,11 +29,11 @@ export function DateRangeField({
   }
   return (
     <DateFieldContainer>
-      <DateField {...startFieldProps} />
+      <DateFieldContent {...startFieldProps} granularity="day" />
       <span aria-hidden="true" tw="px-2">
         -
       </span>
-      <DateField {...endFieldProps} />
+      <DateFieldContent {...endFieldProps} granularity="day" />
     </DateFieldContainer>
   );
 }

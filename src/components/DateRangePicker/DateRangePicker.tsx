@@ -1,8 +1,7 @@
-import { CalendarDate, CalendarDateTime } from '@internationalized/date';
+import { CalendarDateTime } from '@internationalized/date';
 import { RangeValue } from '@react-types/shared';
 import { useRef } from 'react';
 import {
-  AriaDatePickerProps,
   AriaDateRangePickerProps,
   useButton,
   useDateRangePicker,
@@ -71,8 +70,8 @@ export function DateRangePicker<T extends DateValue>({
         ref={ref}
       >
         <DateRangeField
-          startFieldProps={startFieldProps as AriaDatePickerProps<CalendarDate>}
-          endFieldProps={endFieldProps as AriaDatePickerProps<CalendarDate>}
+          startFieldProps={startFieldProps}
+          endFieldProps={endFieldProps}
         />
         <FieldButton {...buttonProps} ref={buttonRef}>
           <CalendarIcon />
