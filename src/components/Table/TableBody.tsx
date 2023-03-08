@@ -13,7 +13,7 @@ const TableBody = () => {
   const rowVirtualizer = useVirtual({
     parentRef: containerRef,
     size: rows.length,
-    overscan: 10,
+    overscan: 4,
   });
   const { virtualItems: virtualRows, totalSize } = rowVirtualizer;
   const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start ?? 0 : 0;

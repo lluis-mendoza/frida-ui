@@ -163,11 +163,11 @@ export const FilterButton = tw.button`
   mx-[0.2rem]
 `;
 interface FilterSearchIconProps {
-  $isFiltered: boolean;
+  isFiltered: boolean;
 }
-export const FilterSearchIcon = styled(BiSearch)(
-  ({ $isFiltered }: FilterSearchIconProps) => [
-    tw`stroke-[0.05rem]`,
-    $isFiltered && tw`text-blue-600`,
-  ]
-);
+export const FilterSearchIcon = styled(BiSearch, {
+  shouldForwardProp: (prop: any) => prop !== 'isFiltered',
+})(({ isFiltered }: FilterSearchIconProps) => [
+  tw`stroke-[0.05rem]`,
+  isFiltered && tw`text-blue-600`,
+]);

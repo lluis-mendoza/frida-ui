@@ -45,6 +45,7 @@ export const SearchFilter = ({
           <div tw="p-1">
             <Input
               size="sm"
+              aria-label={headerName}
               type={InputType.TEXT}
               placeholder={`Buscar ${headerName}`}
               inputRef={inputRef}

@@ -42,7 +42,7 @@ export default function Select<T extends object>({
   const refButton = useRef(null);
   const _props = {
     ...props,
-    selectedKey: value ?? props.selectedKey,
+    selectedKey: value === undefined ? props.selectedKey : value,
     onSelectionChange: onChange ?? props.onSelectionChange,
   };
   const state = useSelectState(_props);

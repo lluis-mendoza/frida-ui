@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactElement, ReactNode, useRef } from 'react';
 import {
   AriaModalOverlayProps,
   FocusScope,
@@ -26,7 +26,7 @@ export interface ModalProps extends AriaModalOverlayProps {
   className?: string;
   title?: string;
   size?: ModalSize;
-  children: ReactNode;
+  children: ReactElement;
   state: OverlayTriggerState;
 }
 export function Modal({
@@ -70,7 +70,11 @@ export function Modal({
                       <CloseIcon />
                     </CloseButton>
                   </ModalHeader>
-                  <ModalContent>{children}</ModalContent>
+                  <ModalContent>
+                    {React.cloneElement(children, {
+                      closeModal: () => state.close(),
+                    })}
+                  </ModalContent>
                 </ModalContainer>
               </FocusScope>
             </Underlay>,
