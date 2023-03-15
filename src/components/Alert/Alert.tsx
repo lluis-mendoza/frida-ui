@@ -1,10 +1,27 @@
-type AlertVariant = 'error' | 'warning' | 'success';
+import {
+  AlertContainer,
+  AlertIcon,
+  AlertIcons,
+  AlertVariants,
+  CloseButton,
+  CloseIcon,
+} from './Alert.styled';
 
-interface AlertProps {
+type AlertVariant = 'error' | 'warning' | 'success' | 'info';
+
+export interface AlertProps {
   variant: AlertVariant;
+  message: string;
+  onClose?: () => void;
 }
-function Alert({ variant }: AlertProps) {
-  return <div>Alert</div>;
+export function Alert({ variant, message, onClose }: AlertProps) {
+  return (
+    <AlertContainer css={[AlertVariants[variant]]}>
+      <AlertIcon>{AlertIcons[variant]}</AlertIcon>
+      {message}
+      <CloseButton onClick={onClose}>
+        <CloseIcon />
+      </CloseButton>
+    </AlertContainer>
+  );
 }
-
-export default Alert;

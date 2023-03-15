@@ -25,9 +25,9 @@ function Checkbox({ animate = true, size = 'md', ...props }: CheckBoxProps) {
   const { isSelected } = state;
   const { isIndeterminate } = props;
   const renderIcon = () => {
+    if (isSelected) return <SelectedIcon animate={animate} />;
     if (isIndeterminate ?? false)
       return <IndeterminateIcon animate={animate} />;
-    if (isSelected) return <SelectedIcon animate={animate} />;
     return null;
   };
   return (

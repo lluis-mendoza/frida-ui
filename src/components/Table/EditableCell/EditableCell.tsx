@@ -1,6 +1,7 @@
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { CellContext, RowData } from '@tanstack/react-table';
-import React from 'react';
 
+import { TypeWithKey } from '../../../utilities/type-with-key';
 import { EditableBoolean } from './EditableBoolean';
 import { EditableString } from './EditableString';
 
@@ -16,27 +17,29 @@ export type EditableProps =
   | EditableTextProps
   | EditableNumberProps
   | EditableBooleanProps;
+
 export type EditableTypes = 'boolean' | 'number' | 'string';
 
+export interface EditableCellProps<TData extends unknown> {
+  context: CellContext<TData, unknown>;
+  isGrouped: boolean;
+}
+const editableCells: TypeWithKey<
+  <TData extends unknown>(props: EditableCellProps<TData>) => EmotionJSX.Element
+> = {
+  boolean: EditableBoolean,
+  number: EditableString,
+  string: EditableString,
+};
 export const EditableCell = <TData extends RowData>(
-  props: CellContext<TData, unknown>
+  context: CellContext<TData, unknown>
 ) => {
-  const value = props.getValue();
-  const cellType = typeof value;
-  const editableCells = {
-    boolean: EditableBoolean,
-    number: EditableString,
-    string: EditableString,
-  };
-  const renderEditableCell = () => {
-    if (
-      cellType !== 'undefined' &&
-      Object.keys(editableCells).find((p) => p === cellType) !== null
-    ) {
-      const Component = editableCells[cellType as EditableTypes];
-      return <Component {...props} />;
-    }
-    return <EditableString {...props} />;
-  };
-  return <React.Fragment>{renderEditableCell()}</React.Fragment>;
+  const columnId = context.column.id;
+  const value = context.getValue();
+  const isGrouped = context.row.subRows.length > 0;
+  const cellType = isGrouped
+    ? typeof context.row.subRows[0].getValue(columnId)
+    : typeof value;
+  const Component = editableCells[cellType] ?? EditableString;
+  return <Component context={context} isGrouped={isGrouped} />;
 };

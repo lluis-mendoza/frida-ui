@@ -36,6 +36,7 @@ export const ModalContainer = styled(motion.div)(
   flex
   flex-col
   items-center
+  overflow-hidden
   `,
     css({
       width,
@@ -52,10 +53,10 @@ export const ModalHeader = tw.div`
 `;
 export const ModalTitle = tw.span`
   font-semibold
-  text-2xl
+  md:text-2xl
+  text-xl
 `;
 export const ModalContent = tw.div`
-  overflow-hidden
   w-full
   h-full
 `;

@@ -13,3 +13,13 @@ export const Col = styled.div(() => [
         flex-col
     `,
 ]);
+
+export const Fill = tw.div`
+  flex-1
+  overflow-auto
+`;
+
+export const Wrapper = tw.div`
+  flex
+  flex-wrap
+`;

@@ -1,14 +1,18 @@
-import { CellContext, RowData } from '@tanstack/react-table';
+import { RowData } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
 import { Input } from '../../Input';
+import { EditableCellProps } from './EditableCell';
 
 export const EditableString = <TData extends RowData>({
-  getValue,
-  row: { index },
-  column: { id, columnDef },
-  table,
-}: CellContext<TData, unknown>) => {
+  context: {
+    getValue,
+    row: { index },
+    column: { id, columnDef },
+    table,
+  },
+  isGrouped,
+}: EditableCellProps<TData>) => {
   const value = getValue();
   const [innerValue, setInnerValue] = useState(value);
   const headerName = columnDef.header?.toString().toLocaleLowerCase() ?? '';

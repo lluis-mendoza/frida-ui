@@ -1,7 +1,7 @@
 import tw, { styled } from 'twin.macro';
 
 export const CheckboxContainer = tw.label`
-    flex
+    inline-flex
     items-center
     relative
 `;

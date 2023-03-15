@@ -27,23 +27,22 @@ import {
   useReactTable,
   VisibilityTableState,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import useScrollbarSize from 'react-scrollbar-size';
-import AutoSizer, { Size } from 'react-virtualized-auto-sizer';
+import { useMemo, useState } from 'react';
 
 import { TableProvider } from './Table.context';
 import { FilterType, RowFocused } from './Table.model';
-import { AutoSizeContainer, Container, TableContainer } from './Table.styled';
 import TableBody from './TableBody';
+import { TableContainer } from './TableContainer';
 import TableHeader from './TableHeader';
 import { createSelectionColumn } from './TableSelection';
 
-const defaultColSize = 150;
+export const DEFAULT_COL_SIZE = 150;
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {
     filterType?: FilterType;
     editable?: boolean;
+    sticky?: boolean;
     autoSize?: boolean;
     showOverflow?: boolean;
   }
@@ -101,18 +100,8 @@ const Table = <TData extends RowData>({
   scrollDown,
   setScrollDown,
 }: TableProps<TData>) => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [grouping, setGrouping] = useState<GroupingState>(groupBy);
-  const { width: scrollbarWidth } = useScrollbarSize();
-
-  const getTableWidth = () => containerRef.current?.offsetWidth;
-  const [tableWidth, setTableWidth] = useState<number | undefined>(
-    getTableWidth()
-  );
-  const handleResize = (size: Size) => {
-    setTableWidth(size.width);
-  };
 
   const _data = useMemo(
     () => (loading ?? false ? Array(30).fill({}) : data),
@@ -120,7 +109,7 @@ const Table = <TData extends RowData>({
   );
   const defaultColumn = useMemo(
     () => ({
-      size: defaultColSize,
+      size: DEFAULT_COL_SIZE,
       minSize: 20,
     }),
     []
@@ -133,27 +122,8 @@ const Table = <TData extends RowData>({
     if (rowSelection !== undefined) {
       cols = [createSelectionColumn(), ...columns];
     }
-    const hasAutoSizeColumns = cols.some(({ meta }) => meta?.autoSize);
-    if (!hasAutoSizeColumns) {
-      return cols;
-    }
-    const columnsWidth = cols.reduce(
-      (sum, { size = defaultColSize }) => sum + size,
-      0
-    );
-    const _tableWidth = tableWidth ?? columnsWidth;
-    const extraSize = _tableWidth - columnsWidth - scrollbarWidth;
-    if (extraSize <= 0) return cols;
-
-    const columnsWithAutoSize = columns.filter(({ meta }) => meta?.autoSize);
-    const extraSizePerColumn = extraSize / columnsWithAutoSize.length;
-    return cols.map((col) => {
-      const { meta, size = defaultColSize } = col;
-      return meta?.autoSize ?? false
-        ? { ...col, size: size + extraSizePerColumn }
-        : col;
-    });
-  }, [_state, columns, tableWidth, scrollbarWidth]);
+    return cols;
+  }, [_state, columns]);
 
   const table = useReactTable({
     data: _data,
@@ -180,10 +150,10 @@ const Table = <TData extends RowData>({
     meta: {
       updateData,
     },
+    autoResetAll: false,
   });
   const tableContext = {
     table,
-    containerRef,
     onClick,
     onDoubleClick,
     onKeyboardUpdate,
@@ -194,20 +164,13 @@ const Table = <TData extends RowData>({
     enableKeyboard,
     loading,
   };
+
   return (
     <TableProvider {...tableContext}>
-      <Container>
-        <AutoSizer onResize={handleResize}>
-          {({ height, width }) => (
-            <AutoSizeContainer height={height} width={width} ref={containerRef}>
-              <TableContainer>
-                <TableHeader />
-                <TableBody />
-              </TableContainer>
-            </AutoSizeContainer>
-          )}
-        </AutoSizer>
-      </Container>
+      <TableContainer>
+        <TableHeader />
+        <TableBody />
+      </TableContainer>
     </TableProvider>
   );
 };

@@ -5,9 +5,9 @@ import { StatusLightColors, StyledStatusLight } from './StatusLight.styled';
 export type StatusLightColor = 'green' | 'yellow' | 'blue' | 'red' | 'gray';
 interface StatusLightProps {
   children: ReactNode;
-  color: StatusLightColor;
+  color?: StatusLightColor;
 }
-export function StatusLight({ children, color }: StatusLightProps) {
+export function StatusLight({ children, color = 'green' }: StatusLightProps) {
   return (
     <StyledStatusLight css={[StatusLightColors[color]]}>
       {children}

@@ -1,15 +1,17 @@
 import { KeyboardEvent } from 'react';
 import { useVirtual } from 'react-virtual';
 
-import { Empty } from '../Empty';
 import { useTableContext } from './Table.context';
-import { BodyCell, BodyContainer, EmptyContainer, Row } from './Table.styled';
+import { BodyContainer, Row } from './Table.styled';
+import { useTableContainerContext } from './TableContainer';
 import TableRow from './TableRow';
 
 const TableBody = () => {
-  const { table, containerRef, enableKeyboard, rowFocused, onKeyboardUpdate } =
+  const { table, enableKeyboard, rowFocused, onKeyboardUpdate } =
     useTableContext();
+  const { containerRef } = useTableContainerContext();
   const { rows } = table.getRowModel();
+
   const rowVirtualizer = useVirtual({
     parentRef: containerRef,
     size: rows.length,
@@ -38,24 +40,13 @@ const TableBody = () => {
       // listRef.current?.scrollToItem(rowFocused + 1, 'smart');
     }
   };
-  const isEmpty = rows.length === 0;
-  if (isEmpty)
-    return (
-      <BodyContainer>
-        <EmptyContainer width={containerRef.current?.offsetWidth}>
-          <BodyCell>
-            <Empty />
-          </BodyCell>
-        </EmptyContainer>
-      </BodyContainer>
-    );
   return (
     <BodyContainer tabIndex={0} onKeyDown={handleKeyDown}>
-      {paddingTop > 0 && <Row height={paddingTop} />}
+      {paddingTop > 0 && <Row style={{ height: paddingTop }} />}
       {virtualRows.map((virtualRow, index) => (
         <TableRow key={index} index={virtualRow.index} />
       ))}
-      {paddingBottom > 0 && <Row height={paddingBottom} />}
+      {paddingBottom > 0 && <Row style={{ height: paddingBottom }} />}
     </BodyContainer>
   );
 };

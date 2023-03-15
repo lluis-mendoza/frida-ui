@@ -70,6 +70,7 @@
     "@types/react-transition-group": "^4.4.5",
     "@types/react-virtualized-auto-sizer": "^1.0.1",
     "@types/react-window": "^1.8.5",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.46.0",
     "babel-loader": "^9.1.0",
@@ -103,6 +104,7 @@
     "@emotion/styled": "^11.10.5",
     "@tanstack/react-table": "^8.7.3",
     "framer-motion": "^7.9.1",
+    "ismobilejs": "^1.1.1",
     "react-aria": "^3.21.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
@@ -116,6 +118,7 @@
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "^1.8.8",
     "rxjs": "^7.8.0",
-    "twin.macro": "^3.1.0"
+    "twin.macro": "^3.1.0",
+    "uuid": "^9.0.0"
   }
 }

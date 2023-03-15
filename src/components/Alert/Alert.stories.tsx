@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 
-import Alert from './Alert';
+import { Alert } from './Alert';
 
 export const Variants: ComponentStory<typeof Alert> = (args) => {
   return (

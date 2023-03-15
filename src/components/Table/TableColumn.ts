@@ -1,9 +1,17 @@
-import { AccessorFn, ColumnDef } from '@tanstack/react-table';
+import {
+  AccessorFn,
+  ColumnDef,
+  GroupingColumnDef,
+  Row,
+} from '@tanstack/react-table';
 
 export class TableColumn<T extends unknown> {
   private readonly id?: string;
   private readonly key: keyof T;
   private _cell?: ColumnDef<T>['cell'];
+  private _aggregatedCell?: GroupingColumnDef<T, unknown>['aggregatedCell'];
+  private _aggregationFn?: GroupingColumnDef<T, unknown>['aggregationFn'];
+
   private _accessorFn?: AccessorFn<T>;
   private _header?: ColumnDef<T>['header'];
   private _footer?: ColumnDef<T>['footer'];
@@ -16,8 +24,24 @@ export class TableColumn<T extends unknown> {
     this.key = idOrKey as keyof T;
   }
 
-  cell(ele: (value: string) => JSX.Element): TableColumn<T> {
-    this._cell = (info) => ele(info.getValue() as string);
+  cell(ele: (value: unknown) => JSX.Element): TableColumn<T> {
+    this._cell = (info) => ele(info.getValue());
+    return this;
+  }
+
+  aggregatedCell(ele: (value: unknown) => JSX.Element): TableColumn<T> {
+    this._aggregatedCell = (info) => ele(info.getValue());
+    return this;
+  }
+
+  aggregatedFn(
+    fn: (
+      columnId: string,
+      leafRows: Array<Row<T>>,
+      childRows: Array<Row<T>>
+    ) => unknown
+  ): TableColumn<T> {
+    this._aggregationFn = fn;
     return this;
   }
 
@@ -64,13 +88,18 @@ export class TableColumn<T extends unknown> {
       meta: this._meta,
       size: this._size,
     };
-
     if (this._cell !== undefined) {
       column.cell = this._cell;
     }
-
-    // @ts-expect-error: accessorFn property isn't available on ColumnDef
-    if (this._accessorFn != null) column.accessorFn = this._accessorFn;
+    if (this._aggregatedCell !== undefined) {
+      column.aggregatedCell = this._aggregatedCell;
+    }
+    if (this._aggregationFn !== undefined) {
+      column.aggregationFn = this._aggregationFn;
+    }
+    if (this._accessorFn != null)
+      // @ts-expect-error: accessorFn property isn't available on ColumnDef
+      column.accessorFn = this._accessorFn;
 
     return column;
   }

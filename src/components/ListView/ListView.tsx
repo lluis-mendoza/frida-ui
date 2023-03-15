@@ -95,6 +95,7 @@ export default function ListView<T extends object>({
   useEffect(() => {
     setItems(getItems(Array.from(state.collection)));
   }, [getItems, state.collection]);
+
   const flatItems = useMemo(
     () =>
       (function getItems(items): Array<ItemInfo<T>> {

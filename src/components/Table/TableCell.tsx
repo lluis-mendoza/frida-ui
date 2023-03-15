@@ -17,6 +17,9 @@ const TableCell = <TData extends RowData>({
 }: Props<TData>) => {
   const { loading } = useTableContext();
   const meta = cell.column.columnDef.meta;
+  const sticky = meta?.sticky ?? false;
+  const subRowsLength = cell.row.subRows.length;
+
   const renderCell = (cell: Cell<TData, unknown>) => {
     const depth = cell.row.depth - Number(isSingleGrouped);
     if (loading ?? false) return <Skeleton />;
@@ -31,6 +34,7 @@ const TableCell = <TData extends RowData>({
           )}
           <CellContent>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {` (${subRowsLength})`}
           </CellContent>
         </CellGrouped>
       );
@@ -56,7 +60,7 @@ const TableCell = <TData extends RowData>({
     );
   };
   return (
-    <BodyCell key={cell.id} width={cell.column.getSize()}>
+    <BodyCell key={cell.id} sticky={sticky} width={cell.column.getSize()}>
       {renderCell(cell)}
     </BodyCell>
   );

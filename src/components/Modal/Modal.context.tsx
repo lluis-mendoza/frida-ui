@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Transition, TransitionGroup } from 'react-transition-group';
 
 import { useModal } from './hooks';
 import { Modal, ModalProps } from './Modal';
@@ -36,24 +35,22 @@ export const ModalProvider = ({ children }: IProps) => {
       }, 200);
       return () => clearTimeout(timer);
     }
+    return () => {};
   }, [currentModal, modals.length, state]);
+
   useEffect(() => {
     if (!state.isOpen) {
       setCurrentModal(null);
     }
   }, [state]);
+
   const raiseModal = (_modal: QueueModalProps) => {
     setModals((_modals) => [..._modals, _modal]);
   };
+
   return (
     <ModalContext.Provider value={{ raiseModal }}>
-      <TransitionGroup>
-        {currentModal !== null && (
-          <Transition timeout={{ exit: 200 }}>
-            <Modal state={state} {...currentModal} />
-          </Transition>
-        )}
-      </TransitionGroup>
+      {currentModal !== null && <Modal state={state} {...currentModal} />}
       {children}
     </ModalContext.Provider>
   );

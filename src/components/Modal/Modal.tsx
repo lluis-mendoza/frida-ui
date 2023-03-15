@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
-import React, { ReactElement, ReactNode, useRef } from 'react';
+import React, { ReactElement, useRef } from 'react';
 import {
   AriaModalOverlayProps,
   FocusScope,
@@ -39,6 +39,10 @@ export function Modal({
 }: ModalProps) {
   const ref = useRef(null);
   const { modalProps, underlayProps } = useModalOverlay(props, state, ref);
+
+  const close = () => {
+    state.close();
+  };
   return (
     <AnimatePresence>
       {state.isOpen && (
@@ -66,13 +70,13 @@ export function Modal({
                     {title !== undefined ? (
                       <ModalTitle>{title}</ModalTitle>
                     ) : null}
-                    <CloseButton onClick={() => state.close()}>
+                    <CloseButton onClick={close}>
                       <CloseIcon />
                     </CloseButton>
                   </ModalHeader>
                   <ModalContent>
                     {React.cloneElement(children, {
-                      closeModal: () => state.close(),
+                      close,
                     })}
                   </ModalContent>
                 </ModalContainer>

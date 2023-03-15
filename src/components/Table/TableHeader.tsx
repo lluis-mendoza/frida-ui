@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { flexRender, Header } from '@tanstack/react-table';
-import useScrollbarSize from 'react-scrollbar-size';
 
 import { useTableContext } from './Table.context';
 import {
@@ -16,7 +15,6 @@ const TableHeader = () => {
   const { table } = useTableContext();
   const headers = table.getHeaderGroups();
   const rowHeight = 47;
-  const { width: scrollbarWidth } = useScrollbarSize();
   const fixColumnOrder = (headers: Array<Header<any, unknown>>) =>
     table
       .getAllColumns()
@@ -24,16 +22,13 @@ const TableHeader = () => {
   return (
     <HeaderContainer>
       {headers.map((headerGroup) => (
-        <HeaderRow
-          key={headerGroup.id}
-          scrollbarWidth={scrollbarWidth}
-          height={rowHeight}
-        >
+        <HeaderRow key={headerGroup.id} style={{ height: rowHeight }}>
           {fixColumnOrder(headerGroup.headers).map((header) => (
             <HeaderCell
               key={header.id}
               data-column-index={header.index}
               width={header.getSize()}
+              sticky={header.column.columnDef.meta?.sticky ?? false}
             >
               <CellContent>
                 {flexRender(
