@@ -11,6 +11,7 @@ import { SelectProps as SelectStateProps, useSelectState } from 'react-stately';
 import {
   FieldContainer,
   FieldError,
+  FieldProps,
   FieldSize,
   FieldSizes,
   FieldVariant,
@@ -24,7 +25,8 @@ import { SelectButton, SelectValue } from './Select.styled';
 
 interface SelectProps<T extends object>
   extends SelectStateProps<T>,
-    AriaSelectOptions<T> {
+    AriaSelectOptions<T>,
+    FieldProps {
   size?: FieldSize;
   variant?: FieldVariant;
   value?: Key | null | undefined;
@@ -36,6 +38,8 @@ export default function Select<T extends object>({
   errorMessage,
   value,
   onChange,
+  block,
+  className,
   ..._props
 }: SelectProps<T>) {
   const refWrapper = useRef<HTMLDivElement>(null);
@@ -56,7 +60,7 @@ export default function Select<T extends object>({
   const hasValue =
     state.selectedItem !== null && state.selectedItem !== undefined;
   return (
-    <FieldContainer>
+    <FieldContainer block={block} className={className}>
       {label !== undefined ? (
         <Label {...labelProps} isRequired={isRequired}>
           {label}
