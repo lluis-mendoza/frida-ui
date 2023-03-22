@@ -59,7 +59,6 @@ export function Modal({
                 <ModalContainer
                   {...modalProps}
                   css={[ModalSizes[size]]}
-                  className={className}
                   ref={ref}
                   initial={{ opacity: 0, y: 50, scale: 0.9 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -74,7 +73,7 @@ export function Modal({
                       <CloseIcon />
                     </CloseButton>
                   </ModalHeader>
-                  <ModalContent>
+                  <ModalContent className={className}>
                     {React.cloneElement(children, {
                       close,
                     })}

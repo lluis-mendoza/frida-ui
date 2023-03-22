@@ -7,7 +7,7 @@ export const Container = tw.div`
     flex-col
     h-full
     flex-auto
-    overflow-hidden
+    overflow-auto
 `;
 
 export const TabList = tw.div`
@@ -57,4 +57,5 @@ export const TabContent = tw.div`
     rounded-md
     bg-white
     p-4
+    overflow-auto
 `;

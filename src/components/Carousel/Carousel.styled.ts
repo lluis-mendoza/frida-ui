@@ -8,7 +8,6 @@ export const StyledSwiper = styled(Swiper)(() => [
   tw`
         h-full
         w-full
-        max-w-full
     `,
 ]);
 

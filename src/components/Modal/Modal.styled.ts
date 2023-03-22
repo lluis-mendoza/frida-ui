@@ -58,8 +58,7 @@ export const ModalTitle = tw.span`
   text-xl
 `;
 export const ModalContent = tw.div`
-  w-full
-  h-full
+
 `;
 export const CloseButton = tw.button`
   outline-none
