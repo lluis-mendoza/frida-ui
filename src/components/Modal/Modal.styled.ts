@@ -16,11 +16,12 @@ export const Underlay = tw.div`
 `;
 
 export const ModalBg = tw(motion.div)`
-  absolute
+  fixed
   inset-0
   bg-gray-500
   opacity-75
-  z-0
+  z-0  
+  pointer-events-none
 `;
 
 export const ModalContainer = styled(motion.div)(

@@ -46,7 +46,7 @@ export function Modal({
   return (
     <AnimatePresence>
       {state.isOpen && (
-        <OverlayContainer>
+        <OverlayContainer onClick={(e) => e.stopPropagation()}>
           {React.cloneElement(
             <Underlay {...underlayProps}>
               <ModalBg
