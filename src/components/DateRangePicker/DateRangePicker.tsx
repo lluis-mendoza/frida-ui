@@ -60,13 +60,17 @@ export function DateRangePicker<T extends DateValue>({
     dialogProps,
     calendarProps,
   } = useDateRangePicker(props, state, ref);
+  const { isDisabled, isRequired } = props;
   const { buttonProps } = useButton(triggerProps, buttonRef);
   return (
     <FieldContainer className={className}>
-      <Label {...labelProps}>{props.label}</Label>
+      <Label {...labelProps} isRequired={isRequired}>
+        {props.label}
+      </Label>
       <FieldWrapper
         {...groupProps}
         css={[FieldVariants[variant], FieldSizes[size]]}
+        isDisabled={isDisabled}
         ref={ref}
       >
         <DateRangeField

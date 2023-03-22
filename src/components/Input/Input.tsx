@@ -42,11 +42,16 @@ function Input({
   ...props
 }: InputProps) {
   const ref = useRef(null);
-  const { label, isDisabled } = props;
+  const { label, isDisabled, isRequired } = props;
   const { labelProps, inputProps } = useTextField(props, ref);
+  console.log(labelProps);
   return (
     <FieldContainer block={block} className={className}>
-      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      {label !== undefined ? (
+        <Label {...labelProps} isRequired={isRequired}>
+          {label}
+        </Label>
+      ) : null}
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}

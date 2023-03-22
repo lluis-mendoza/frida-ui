@@ -31,7 +31,7 @@ export default function TimeField<T extends TimeValue>({
   ...props
 }: TimeFieldProps<T>) {
   const { locale } = useLocale();
-  const { label, isDisabled } = props;
+  const { label, isDisabled, isRequired } = props;
   const state = useTimeFieldState({
     ...props,
     locale,
@@ -40,7 +40,11 @@ export default function TimeField<T extends TimeValue>({
   const { labelProps, fieldProps } = useTimeField(props, state, ref);
   return (
     <FieldContainer>
-      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      {label !== undefined ? (
+        <Label {...labelProps} isRequired={isRequired}>
+          {label}
+        </Label>
+      ) : null}
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}

@@ -33,5 +33,17 @@ export function createSelectionColumn<
         }}
       />
     ),
+    aggregatedCell: ({ row }) => (
+      <Checkbox
+        animate={false}
+        key={row.index}
+        aria-label={`Select row with id: ${row.id}`}
+        {...{
+          defaultSelected: row.getIsSelected(),
+          isIndeterminate: row.getIsSomeSelected(),
+          onChange: row.toggleSelected,
+        }}
+      />
+    ),
   };
 }

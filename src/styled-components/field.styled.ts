@@ -68,14 +68,28 @@ export const FieldSizes = {
   md: fieldSizeMedium,
   lg: fieldSizeLarge,
 };
-export const Label = tw.span`
-    text-sm
-    font-semibold
-    text-gray-700
-    leading-tight
-    mb-[0.15rem]
-    whitespace-nowrap
-`;
+export interface LabelProps {
+  isRequired: boolean;
+}
+export const Label = styled.label(({ isRequired }: LabelProps) => [
+  tw`
+  text-sm
+  font-semibold
+  text-gray-700
+  leading-tight
+  mb-[0.2rem]
+  whitespace-nowrap
+  `,
+
+  isRequired &&
+    tw`
+      after:(
+        content-['*']
+      text-red-500
+        ml-[0.1rem])
+  `,
+]);
+
 export const FieldButton = styled.button(() => [
   tw`
   outline-none

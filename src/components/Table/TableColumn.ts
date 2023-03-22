@@ -1,5 +1,6 @@
 import {
   AccessorFn,
+  CellContext,
   ColumnDef,
   GroupingColumnDef,
   Row,
@@ -17,6 +18,8 @@ export class TableColumn<T extends unknown> {
   private _footer?: ColumnDef<T>['footer'];
   private _meta?: ColumnDef<T>['meta'];
   private _size?: ColumnDef<T>['size'];
+  private _minSize?: ColumnDef<T>['minSize'];
+  private _maxSize?: ColumnDef<T>['maxSize'];
   private _enableColumnFilter?: ColumnDef<T>['enableColumnFilter'];
 
   constructor(idOrKey: keyof T | string) {
@@ -24,13 +27,15 @@ export class TableColumn<T extends unknown> {
     this.key = idOrKey as keyof T;
   }
 
-  cell(ele: (value: unknown) => JSX.Element): TableColumn<T> {
-    this._cell = (info) => ele(info.getValue());
+  cell(cell: (props: CellContext<T, unknown>) => JSX.Element): TableColumn<T> {
+    this._cell = cell;
     return this;
   }
 
-  aggregatedCell(ele: (value: unknown) => JSX.Element): TableColumn<T> {
-    this._aggregatedCell = (info) => ele(info.getValue());
+  aggregatedCell(
+    aggregatedCell: (props: CellContext<T, unknown>) => JSX.Element
+  ): TableColumn<T> {
+    this._aggregatedCell = aggregatedCell;
     return this;
   }
 
@@ -72,6 +77,16 @@ export class TableColumn<T extends unknown> {
     return this;
   }
 
+  maxSize(size: ColumnDef<T>['maxSize']): TableColumn<T> {
+    this._maxSize = size;
+    return this;
+  }
+
+  minSize(size: ColumnDef<T>['minSize']): TableColumn<T> {
+    this._minSize = size;
+    return this;
+  }
+
   accessorFn(fn: (row: T, index: number) => unknown): TableColumn<T> {
     this._accessorFn = fn;
     return this;
@@ -87,6 +102,8 @@ export class TableColumn<T extends unknown> {
       enableColumnFilter: this._enableColumnFilter,
       meta: this._meta,
       size: this._size,
+      minSize: this._minSize,
+      maxSize: this._maxSize,
     };
     if (this._cell !== undefined) {
       column.cell = this._cell;

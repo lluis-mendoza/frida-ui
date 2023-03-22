@@ -29,7 +29,7 @@ export function DateField<T extends DateValue>({
   ...props
 }: DateFieldProps<T>) {
   const { locale } = useLocale();
-  const { isDisabled } = props;
+  const { isDisabled, isRequired } = props;
   const state = useDateFieldState({
     ...props,
     locale,
@@ -40,7 +40,11 @@ export function DateField<T extends DateValue>({
   const { fieldProps, labelProps } = useDateField(props, state, ref);
   return (
     <FieldContainer block={block} className={className}>
-      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      {label !== undefined ? (
+        <Label {...labelProps} isRequired={isRequired}>
+          {label}
+        </Label>
+      ) : null}
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}

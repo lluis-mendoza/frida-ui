@@ -38,7 +38,7 @@ export function DatePicker<T extends DateValue>({
 }: DatePickerProps<T>) {
   const state = useDatePickerState(props);
   const ref = useRef(null);
-  const { label, isDisabled } = props;
+  const { label, isDisabled, isRequired } = props;
   const buttonRef = useRef(null);
   const {
     groupProps,
@@ -51,7 +51,11 @@ export function DatePicker<T extends DateValue>({
   const { buttonProps } = useButton(triggerProps, buttonRef);
   return (
     <FieldContainer block={block} className={className}>
-      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      {label !== undefined ? (
+        <Label {...labelProps} isRequired={isRequired}>
+          {label}
+        </Label>
+      ) : null}
       <FieldWrapper
         {...groupProps}
         css={[FieldVariants[variant], FieldSizes[size]]}

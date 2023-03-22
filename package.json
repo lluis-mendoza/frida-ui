@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -37,16 +37,6 @@
   "name": "frida-ui",
   "author": "Lluis Mendoza",
   "module": "dist/frida-ui.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/frida-ui.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/frida-ui.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@emotion/babel-plugin-jsx-pragmatic": "^0.2.0",

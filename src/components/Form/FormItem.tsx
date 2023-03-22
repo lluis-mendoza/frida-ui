@@ -27,7 +27,7 @@ export function FormItem<TFormValues extends Record<string, unknown>>({
   const variant = error !== undefined ? 'error' : 'default';
   return (
     <React.Fragment>
-      {cloneElement(children, {
+      {React.cloneElement(children, {
         value,
         onChange,
         variant,

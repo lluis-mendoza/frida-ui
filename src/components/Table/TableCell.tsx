@@ -24,6 +24,7 @@ const TableCell = <TData extends RowData>({
     const depth = cell.row.depth - Number(isSingleGrouped);
     if (loading ?? false) return <Skeleton />;
     if (meta?.editable ?? false) return <EditableCell {...cell.getContext()} />;
+
     if (cell.getIsGrouped())
       return (
         <CellGrouped onClick={cell.row.getToggleExpandedHandler()}>

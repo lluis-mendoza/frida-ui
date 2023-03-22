@@ -36,19 +36,19 @@ export default function Select<T extends object>({
   errorMessage,
   value,
   onChange,
-  ...props
+  ..._props
 }: SelectProps<T>) {
   const refWrapper = useRef<HTMLDivElement>(null);
   const refButton = useRef(null);
-  const _props = {
-    ...props,
-    selectedKey: value === undefined ? props.selectedKey : value,
-    onSelectionChange: onChange ?? props.onSelectionChange,
+  const props = {
+    ..._props,
+    selectedKey: value === undefined ? _props.selectedKey : value,
+    onSelectionChange: onChange ?? _props.onSelectionChange,
   };
-  const state = useSelectState(_props);
-  const { label, name, isDisabled } = _props;
+  const state = useSelectState(props);
+  const { label, name, isDisabled, isRequired } = props;
   const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
-    _props,
+    props,
     state,
     refButton
   );
@@ -57,7 +57,11 @@ export default function Select<T extends object>({
     state.selectedItem !== null && state.selectedItem !== undefined;
   return (
     <FieldContainer>
-      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
+      {label !== undefined ? (
+        <Label {...labelProps} isRequired={isRequired}>
+          {label}
+        </Label>
+      ) : null}
       <HiddenSelect
         state={state}
         triggerRef={refButton}

@@ -21,3 +21,8 @@ export const Basic: ComponentStory<typeof Select> = (args) => {
     </div>
   );
 };
+
+Basic.args = {
+  label: 'Appointment date',
+  isRequired: true,
+};
