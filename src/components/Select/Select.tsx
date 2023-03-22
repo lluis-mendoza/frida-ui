@@ -75,7 +75,6 @@ export default function Select<T extends object>({
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}
-        tw="min-w-[10rem]"
         ref={refWrapper}
       >
         <SelectButton {...buttonProps} ref={refButton}>
