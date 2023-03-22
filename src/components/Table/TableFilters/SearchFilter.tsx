@@ -4,7 +4,7 @@ import { useOverlayTriggerState } from 'react-stately';
 
 import { useFocus } from '../../../hooks';
 import { Input } from '../../Input';
-import { InputType } from '../../Input/Input';
+import { InputType } from '../../Input/BaseInput';
 import { Popover } from '../../Popover';
 import { FilterButton, FilterSearchIcon } from '../Table.styled';
 
@@ -48,7 +48,7 @@ export const SearchFilter = ({
               aria-label={headerName}
               type={InputType.TEXT}
               placeholder={`Buscar ${headerName}`}
-              inputRef={inputRef}
+              ref={inputRef}
               value={columnFilterValue}
               onChange={handleInputChange}
               onInput={(e) => e.stopPropagation()}
