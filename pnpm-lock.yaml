@@ -55,7 +55,6 @@ specifiers:
   react-hook-form: ^7.41.0
   react-icons: ^4.7.1
   react-is: ^18.2.0
-  react-loading-icons: ^1.1.0
   react-scrollbar-size: ^5.0.0
   react-stately: ^3.19.0
   react-transition-group: ^4.4.5
@@ -84,7 +83,6 @@ dependencies:
   react-dnd-html5-backend: 16.0.1
   react-hook-form: 7.42.1_react@18.2.0
   react-icons: 4.7.1_react@18.2.0
-  react-loading-icons: 1.1.0
   react-scrollbar-size: 5.0.0_react@18.2.0
   react-stately: 3.20.0_react@18.2.0
   react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
@@ -14815,11 +14813,6 @@ packages:
   /react-lifecycles-compat/3.0.4:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: true
-
-  /react-loading-icons/1.1.0:
-    resolution: {integrity: sha512-Y9eZ6HAufmUd8DIQd6rFrx5Bt/oDlTM9Nsjvf8YpajTa3dI8cLNU8jUN5z7KTANU+Yd6/KJuBjxVlrU2dMw33g==}
-    engines: {node: '>= 12.0.0'}
-    dev: false
 
   /react-merge-refs/1.1.0:
     resolution: {integrity: sha512-alTKsjEL0dKH/ru1Iyn7vliS2QRcBp9zZPGoWxUOvRGWPUYgjo+V01is7p04It6KhgrzhJGnIj9GgX8W4bZoCQ==}

@@ -1,30 +1,36 @@
-import { TailSpin } from 'react-loading-icons';
-
 import {
+  SpinnerCircle,
   SpinnerColors,
-  SpinnerSizes,
-  SpinnerStrokeWidth,
-  SpinnerVariants,
+  SpinnerContainer,
 } from './Spinner.styled';
 
-type SpinnerSize = 'sm' | 'md' | 'lg';
-type SpinnerColor = 'primary' | 'success' | 'info' | 'warning' | 'error';
-type SpinnerVariant = 'text' | 'contained' | 'outlined';
+type SpinnerColor =
+  | 'inherit'
+  | 'primary'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'error'
+  | 'white';
 
 interface SpinnerProps {
-  variant?: SpinnerVariant;
   color?: SpinnerColor;
-  size?: SpinnerSize;
+  className?: string;
+  strokeWidth?: string;
 }
 export default function Spinner({
-  variant = 'contained',
-  color = 'primary',
-  size = 'md',
+  color = 'inherit',
+  className,
+  strokeWidth = '4px',
 }: SpinnerProps) {
   return (
-    <TailSpin
-      css={[SpinnerColors[color], SpinnerVariants[variant], SpinnerSizes[size]]}
-      strokeWidth={SpinnerStrokeWidth[size]}
-    />
+    <SpinnerContainer className={className}>
+      <SpinnerCircle
+        css={SpinnerColors[color]}
+        r={`calc( 50% - ${strokeWidth})`}
+        cx="50%"
+        cy="50%"
+      />
+    </SpinnerContainer>
   );
 }

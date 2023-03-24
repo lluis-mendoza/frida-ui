@@ -52,9 +52,7 @@ export default function Button({
       css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
       className={className}
     >
-      {(loading ?? false) && (
-        <Spinner variant={variant} color={color} size={size} />
-      )}
+      {(loading ?? false) && <Spinner tw="p-[5px]" />}
       {prefix}
       {props.children}
       {sufix}

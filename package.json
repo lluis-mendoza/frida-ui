@@ -1,5 +1,5 @@
 {
-  "version": "0.1.6",
+  "version": "0.1.8",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -100,7 +100,6 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-hook-form": "^7.41.0",
     "react-icons": "^4.7.1",
-    "react-loading-icons": "^1.1.0",
     "react-scrollbar-size": "^5.0.0",
     "react-stately": "^3.19.0",
     "react-transition-group": "^4.4.5",
