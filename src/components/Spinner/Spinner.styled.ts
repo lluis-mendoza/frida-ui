@@ -44,26 +44,23 @@ export const SpinnerContainer = styled('svg')(() => [
 
 const circleAnimation = keyframes`
   0% {
-    stroke-dasharray: 1px,200px;
+    stroke-dasharray: 0, 200;
     stroke-dashoffset: 0;
   }
-  50% {
-    stroke-dasharray: 100px,200px;
-    stroke-dashoffset: -15px;
+  50%{
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -10;
   }
-  100% {
-    stroke-dasharray: 100px,200px;
-    stroke-dashoffset: -100px;
+  100%{
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -150;
   }
 `;
 export const SpinnerCircle = styled('circle')(() => [
   tw`
     fill-transparent
-    stroke-2
-    origin-center
   `,
   css`
-    stroke-linecap: rounded;
-    animation: ${circleAnimation} 1.4s ease-in-out infinite;
+    animation: ${circleAnimation} ease-in-out 1.4s infinite;
   `,
 ]);
