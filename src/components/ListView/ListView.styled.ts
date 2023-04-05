@@ -1,6 +1,7 @@
 import tw, { css, styled } from 'twin.macro';
 
-export type ListRowSize = 'sm' | 'md' | 'lg';
+import { ListRowSize } from './ListView';
+
 const itemSizeSmall = 40;
 const itemSizeMedium = 47;
 const itemsSizeLarge = 54;
@@ -34,39 +35,23 @@ interface ListViewContainerProps {
 export const ListViewContainer = styled.div(
   ({ heightAuto, maxHeight }: ListViewContainerProps) => [
     tw`
-  relative
-  inline-flex
-  flex-col
-  w-full
+    relative
+    inline-flex
+    flex-col
+    flex-1
   `,
-    (heightAuto ?? false) && tw`h-full`,
-    maxHeight !== undefined &&
-      css`
-        max-height: ${maxHeight};
-      `,
   ]
 );
 interface ListViewWrapperProps {
-  itemsToShow?: number;
-  maxItemsToShow?: number;
+  maxItems: number;
   rowSize: ListRowSize;
 }
 export const ListViewWrapper = styled.div(
-  ({ itemsToShow, maxItemsToShow, rowSize }: ListViewWrapperProps) => [
+  ({ maxItems, rowSize }: ListViewWrapperProps) => [
     tw`
       relative
-      flex
-      flex-col
-      h-full
+      flex-1
     `,
-    itemsToShow !== undefined &&
-      css`
-        height: ${itemsToShow * ItemSizes[rowSize] + itemsToShow + 10}px;
-      `,
-    maxItemsToShow !== undefined &&
-      css`
-        max-height: ${maxItemsToShow * ItemSizes[rowSize] + maxItemsToShow}px;
-      `,
   ]
 );
 
@@ -87,6 +72,7 @@ export const ListRowWrapper = styled.div(
     px-3
     border-gray-300
     border-t-[1px]
+    hover:bg-gray-100
     `,
     isSelected &&
       tw`

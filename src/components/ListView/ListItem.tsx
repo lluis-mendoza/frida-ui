@@ -3,13 +3,13 @@ import { useGridListItem } from 'react-aria';
 import { IoIosAdd, IoIosRemove } from 'react-icons/io';
 import { ListState } from 'react-stately';
 
+import { ItemData } from './hooks';
 import { ListCheckbox } from './ListCheckbox';
-import { ItemInfo } from './ListView';
 import { ListRow, ListRowWrapper } from './ListView.styled';
 
 interface ListItemData<T> {
   state: ListState<T>;
-  items: Array<ItemInfo<T>>;
+  items: Array<ItemData<T>>;
   getToggleExpandedHandler: (key: Key) => void;
 }
 interface ListItemProps<T> {
@@ -45,16 +45,16 @@ export function ListItem<T>({ index, style, data }: ListItemProps<T>) {
       <ListRow
         {...gridCellProps}
         onClick={() => getToggleExpandedHandler(item.node.key)}
-        style={{ paddingLeft: node.level ?? 0 * 30 }}
+        style={{ paddingLeft: node.level * 30 }}
       >
+        {showCheckbox && <ListCheckbox item={item} state={state} />}
         {node.hasChildNodes ? (
           expanded ? (
-            <IoIosRemove tw="w-6 h-6 fill-blue-500" />
+            <IoIosRemove tw="w-6 h-6 fill-blue-500 -ml-2" />
           ) : (
-            <IoIosAdd tw="w-6 h-6 fill-blue-500" />
+            <IoIosAdd tw="w-6 h-6 fill-blue-500 -ml-2" />
           )
         ) : null}
-        {showCheckbox && <ListCheckbox node={node} state={state} />}
         {node.rendered}
       </ListRow>
     </ListRowWrapper>
