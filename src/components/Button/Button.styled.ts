@@ -1,13 +1,14 @@
 import tw, { css, styled } from 'twin.macro';
 
 interface ButtonProps {
-  block?: boolean;
+  block: boolean;
   isDisabled?: boolean;
   isFocusVisible?: boolean;
+  loading: boolean;
 }
 
 export const StyledButton = styled.button(
-  ({ block, isDisabled, isFocusVisible }: ButtonProps) => [
+  ({ block, isDisabled, isFocusVisible, loading }: ButtonProps) => [
     tw`
     inline-flex
     flex-shrink-0
@@ -30,8 +31,10 @@ export const StyledButton = styled.button(
     )
     `,
     (block ?? false) && tw`w-full`,
-    (isDisabled ?? false) && tw`cursor-not-allowed opacity-40`,
+    (isDisabled ?? false) && tw`cursor-not-allowed`,
     (isFocusVisible ?? false) && tw`ring-[3px]`,
+    (loading || isDisabled) &&
+      tw`(ring-0 bg-gray-200/[var(--tw-bg-opacity)] text-gray-400 border-gray-300 stroke-gray-400)!`,
     // Flickering text
     css`
       -webkit-backface-visibility: hidden;
@@ -71,4 +74,14 @@ export const ButtonSizes = {
   sm: buttonSizeSmall,
   md: buttonSizeMedium,
   lg: buttonSizeLarge,
+};
+
+export const buttonSpinnerSizeLarge = tw`w-7 h-7`;
+export const buttonSpinnerSizeMedium = tw`w-5 h-5`;
+export const buttonSpinnerSizeSmall = tw`w-4 h-4`;
+
+export const ButtonSpinnerSizes = {
+  sm: buttonSpinnerSizeSmall,
+  md: buttonSpinnerSizeMedium,
+  lg: buttonSpinnerSizeLarge,
 };
