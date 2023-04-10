@@ -8,6 +8,7 @@ import { ToastContainer } from './Alert.styled';
 interface IProps {
   children: JSX.Element | JSX.Element[];
   maxNumberAlerts?: number;
+  delay?: number;
 }
 interface QueueAlertProps extends AlertProps {
   autoHideDuration?: number;
@@ -23,7 +24,11 @@ export const AlertContextEmptyState: IAlertContext = {
 };
 const AlertContext = createContext<IAlertContext>(AlertContextEmptyState);
 
-export const AlertProvider = ({ children, maxNumberAlerts = 4 }: IProps) => {
+export const AlertProvider = ({
+  children,
+  maxNumberAlerts = 4,
+  delay = 300,
+}: IProps) => {
   const [alerts, setAlerts] = useState<QueueAlertItem[]>([]);
 
   const raiseAlert = useCallback((alert: QueueAlertProps) => {
@@ -35,10 +40,11 @@ export const AlertProvider = ({ children, maxNumberAlerts = 4 }: IProps) => {
       setAlerts((_alerts) => _alerts.filter((_alert) => _alert.id !== id));
     }, autoHideDuration);
   }, []);
+
   const handleClose = (id: string) => {
     setAlerts((_alerts) => _alerts.filter((_alert) => _alert.id !== id));
   };
-  const delay = 300;
+
   return (
     <AlertContext.Provider value={{ raiseAlert }}>
       <ToastContainer>
