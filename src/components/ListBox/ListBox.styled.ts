@@ -37,8 +37,8 @@ export const StyledOption = styled.li(
           justify-between
           text-gray-700
       `,
-    (isFocused || isSelected) && tw`text-blue-800 bg-blue-200`,
+    isFocused && tw`text-blue-800 bg-blue-100`,
     isDisabled && tw`text-gray-200`,
-    isSelected && tw`font-bold`,
+    isSelected && tw`text-blue-800 font-bold bg-blue-200`,
   ]
 );

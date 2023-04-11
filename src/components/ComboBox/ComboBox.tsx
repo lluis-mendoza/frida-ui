@@ -1,14 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
 import { Key, useRef } from 'react';
-import {
-  AriaSelectOptions,
-  HiddenSelect,
-  useButton,
-  useSelect,
-} from 'react-aria';
-import { SelectProps as SelectStateProps, useSelectState } from 'react-stately';
+import { useButton, useComboBox, useFilter } from 'react-aria';
+import { ComboBoxStateOptions, useComboBoxState } from 'react-stately';
 
 import {
+  FieldButton,
   FieldContainer,
   FieldError,
   FieldIconSizes,
@@ -20,16 +16,17 @@ import {
 } from '../../styled-components';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Popover';
-import { SelectButton, SelectorIcon, SelectValue } from './Select.styled';
+import { SelectorIcon, StyledInput } from './ComboBox.styled';
 
-interface SelectProps<T extends object>
-  extends SelectStateProps<T>,
-    AriaSelectOptions<T>,
+export interface ComboBoxProps<T extends object>
+  extends ComboBoxStateOptions<T>,
     FieldProps {
+  items?: Iterable<T>;
   value?: Key | null | undefined;
   onChange?: ((key: Key) => any) | undefined;
 }
-export default function Select<T extends object>({
+
+export default function ComboBox<T extends object>({
   size = 'md',
   variant = 'default',
   errorMessage,
@@ -38,24 +35,39 @@ export default function Select<T extends object>({
   block,
   className,
   ..._props
-}: SelectProps<T>) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef(null);
+}: ComboBoxProps<T>) {
   const props = {
     ..._props,
     selectedKey: value === undefined ? _props.selectedKey : value,
     onSelectionChange: onChange ?? _props.onSelectionChange,
   };
-  const state = useSelectState(props);
-  const { label, name, isDisabled, isRequired } = props;
-  const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
-    props,
-    state,
-    buttonRef
+
+  const { contains } = useFilter({ sensitivity: 'base' });
+  const state = useComboBoxState({ ..._props, defaultFilter: contains });
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef(null);
+  const inputRef = useRef(null);
+  const listBoxRef = useRef(null);
+  const popoverRef = useRef(null);
+
+  const { label, isDisabled, isRequired } = props;
+  const {
+    buttonProps: triggerProps,
+    inputProps,
+    listBoxProps,
+    labelProps,
+  } = useComboBox(
+    {
+      ...props,
+      inputRef,
+      buttonRef,
+      listBoxRef,
+      popoverRef,
+    },
+    state
   );
   const { buttonProps } = useButton(triggerProps, buttonRef);
-  const hasValue =
-    state.selectedItem !== null && state.selectedItem !== undefined;
   return (
     <FieldContainer block={block} className={className}>
       {label !== undefined ? (
@@ -63,23 +75,15 @@ export default function Select<T extends object>({
           {label}
         </Label>
       ) : null}
-      <HiddenSelect
-        state={state}
-        triggerRef={buttonRef}
-        label={label}
-        name={name}
-      />
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}
         ref={wrapperRef}
       >
-        <SelectButton {...buttonProps} ref={buttonRef}>
-          <SelectValue {...valueProps} hasValue={hasValue}>
-            {hasValue ? state.selectedItem.rendered : 'Seleccione...'}
-          </SelectValue>
-          <SelectorIcon css={[FieldIconSizes[size]]} />
-        </SelectButton>
+        <StyledInput {...inputProps} ref={inputRef} />
+        <FieldButton {...buttonProps} ref={buttonRef}>
+          <SelectorIcon css={FieldIconSizes[size]} />
+        </FieldButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (
         <FieldError>{errorMessage}</FieldError>
@@ -88,13 +92,14 @@ export default function Select<T extends object>({
         {state.isOpen && (
           <Popover
             state={state}
+            popoverRef={popoverRef}
             triggerRef={wrapperRef}
             placement="bottom start"
             isNonModal
             width={wrapperRef.current?.offsetWidth}
             tw="mt-1"
           >
-            <ListBox {...menuProps} state={state} />
+            <ListBox {...listBoxProps} listBoxRef={listBoxRef} state={state} />
           </Popover>
         )}
       </AnimatePresence>

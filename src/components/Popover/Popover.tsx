@@ -37,6 +37,10 @@ export function Popover({ width, ...props }: PopoverProps) {
         ref={popoverRef}
         width={width}
         className={className}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ ease: 'easeOut', duration: 0.15 }}
       >
         {!(isNonModal ?? false) && <DismissButton onDismiss={state.close} />}
         {children}

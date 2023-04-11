@@ -1,5 +1,6 @@
 import { CalendarDateTime } from '@internationalized/date';
 import { RangeValue } from '@react-types/shared';
+import { AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
 import {
   AriaDateRangePickerProps,
@@ -13,6 +14,7 @@ import {
   FieldButton,
   FieldContainer,
   FieldError,
+  FieldIconSizes,
   FieldSize,
   FieldSizes,
   FieldVariant,
@@ -78,19 +80,21 @@ export function DateRangePicker<T extends DateValue>({
           endFieldProps={endFieldProps}
         />
         <FieldButton {...buttonProps} ref={buttonRef}>
-          <CalendarIcon />
+          <CalendarIcon css={FieldIconSizes[size]} />
         </FieldButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (
         <FieldError>{errorMessage}</FieldError>
       ) : null}
-      {state.isOpen && (
-        <Popover triggerRef={ref} state={state} placement="bottom start">
-          <Dialog {...dialogProps}>
-            <RangeCalendar {...calendarProps} />
-          </Dialog>
-        </Popover>
-      )}
+      <AnimatePresence>
+        {state.isOpen && (
+          <Popover triggerRef={ref} state={state} placement="bottom start">
+            <Dialog {...dialogProps}>
+              <RangeCalendar {...calendarProps} />
+            </Dialog>
+          </Popover>
+        )}
+      </AnimatePresence>
     </FieldContainer>
   );
 }

@@ -3,6 +3,7 @@ import {
   CalendarDateTime,
   ZonedDateTime,
 } from '@internationalized/date';
+import { AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
 import { AriaDatePickerProps, useButton, useDatePicker } from 'react-aria';
 import { BiCalendarEvent as CalendarIcon } from 'react-icons/bi';
@@ -12,6 +13,7 @@ import {
   FieldButton,
   FieldContainer,
   FieldError,
+  FieldIconSizes,
   FieldProps,
   FieldSizes,
   FieldVariants,
@@ -64,24 +66,26 @@ export function DatePicker<T extends DateValue>({
       >
         <DateFieldContent {...fieldProps} />
         <FieldButton {...buttonProps} ref={buttonRef}>
-          <CalendarIcon />
+          <CalendarIcon css={FieldIconSizes[size]} />
         </FieldButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (
         <FieldError>{errorMessage}</FieldError>
       ) : null}
-      {state.isOpen && (
-        <Popover
-          triggerRef={ref}
-          state={state}
-          placement="bottom start"
-          tw="mt-2"
-        >
-          <Dialog {...dialogProps}>
-            <Calendar {...calendarProps} />
-          </Dialog>
-        </Popover>
-      )}
+      <AnimatePresence>
+        {state.isOpen && (
+          <Popover
+            triggerRef={ref}
+            state={state}
+            placement="bottom start"
+            tw="mt-2"
+          >
+            <Dialog {...dialogProps}>
+              <Calendar {...calendarProps} />
+            </Dialog>
+          </Popover>
+        )}
+      </AnimatePresence>
     </FieldContainer>
   );
 }

@@ -1,4 +1,4 @@
-import tw, { css, styled } from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
 export interface FieldProps extends FieldContainerProps {
   size?: FieldSize;
@@ -77,7 +77,7 @@ export const Label = styled.label(({ isRequired }: LabelProps) => [
   font-semibold
   text-gray-700
   leading-tight
-  mb-[0.2rem]
+  mb-[0.3rem]
   whitespace-nowrap
   `,
 
@@ -90,21 +90,19 @@ export const Label = styled.label(({ isRequired }: LabelProps) => [
   `,
 ]);
 
-export const FieldButton = styled.button(() => [
-  tw`
+export const FieldButton = tw.button`
   outline-none
-  h-6
-  w-6
   flex-shrink-0
-  `,
-  css`
-    & svg {
-      height: 100%;
-      width: auto;
-    }
-  `,
-]);
+  `;
+export const fieldIconSizeLarge = tw`w-6 h-6`;
+export const fieldIconSizeMedium = tw`w-5 h-5`;
+export const fieldIconSizeSmall = tw`w-4 h-4`;
 
+export const FieldIconSizes = {
+  sm: fieldIconSizeSmall,
+  md: fieldIconSizeMedium,
+  lg: fieldIconSizeLarge,
+};
 export const FieldError = tw.div`
   text-red-500
   text-sm

@@ -17,6 +17,7 @@ export * from './ListBox';
 export * from './ListGroup';
 export * from './ListView';
 export * from './Modal';
+export * from './MultiStep';
 export * from './NoImage';
 export * from './Popover';
 export * from './Select';

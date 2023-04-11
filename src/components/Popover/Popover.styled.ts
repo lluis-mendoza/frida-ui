@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import tw, { css, styled } from 'twin.macro';
 
 export const Underlay = tw.div`
@@ -7,7 +8,7 @@ export const Underlay = tw.div`
 interface PopoverProps {
   width?: number;
 }
-export const StyledPopover = styled.div(({ width }: PopoverProps) => [
+export const StyledPopover = styled(motion.div)(({ width }: PopoverProps) => [
   tw`
     z-10
     shadow-lg

@@ -1,4 +1,4 @@
-import { Fragment, useRef } from 'react';
+import { Fragment, RefObject, useRef } from 'react';
 import { AriaListBoxOptions, useListBox } from 'react-aria';
 import { ListState } from 'react-stately';
 
@@ -8,6 +8,7 @@ import { ListBoxSection } from './ListBoxSection';
 import Option from './Option';
 
 interface ListBoxProps<T> extends AriaListBoxOptions<T> {
+  listBoxRef?: RefObject<HTMLUListElement>;
   state: ListState<T>;
 }
 
@@ -15,14 +16,14 @@ export default function ListBox<T extends object>({
   state,
   ...props
 }: ListBoxProps<T>) {
-  const { label } = props;
-  const ref = useRef(null);
-  const { listBoxProps, labelProps } = useListBox(props, state, ref);
+  const ref = useRef<HTMLUListElement>(null);
+  const { label, listBoxRef = ref } = props;
+  const { listBoxProps, labelProps } = useListBox(props, state, listBoxRef);
 
   return (
     <Fragment>
       <Label {...labelProps}>{label}</Label>
-      <List {...listBoxProps} ref={ref}>
+      <List {...listBoxProps} ref={listBoxRef}>
         {Array.from(state.collection).map((item) =>
           item.type === 'section' ? (
             <ListBoxSection key={item.key} section={item} state={state} />
