@@ -1,22 +1,26 @@
 import { AnimatePresence } from 'framer-motion';
-import { ReactElement } from 'react';
+import { ReactElement, useRef, useState } from 'react';
 
 import { MultiStepProvider } from './MultiStep.context';
 import StepContainer from './StepContainer';
 
-export type Step = () => ReactElement;
 export interface MultiStepProps {
-  steps: Step[];
+  children: ReactElement[];
 }
-export default function MultiStep({ steps }: MultiStepProps) {
+export default function MultiStep({ children }: MultiStepProps) {
+  const [step, setStep] = useState(0);
+  const oldStep = useRef(0);
+  const providerProps = { step, setStep, oldStep };
   return (
-    <MultiStepProvider>
+    <MultiStepProvider {...providerProps}>
       <AnimatePresence initial={false}>
-        {steps.map((stepContent, index) => (
-          <StepContainer key={index} index={index}>
-            {stepContent()}
-          </StepContainer>
-        ))}
+        {children.map((stepContent, index) =>
+          step === index ? (
+            <StepContainer key={index} step={step} oldStep={0}>
+              {stepContent}
+            </StepContainer>
+          ) : null
+        )}
       </AnimatePresence>
     </MultiStepProvider>
   );

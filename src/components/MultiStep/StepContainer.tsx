@@ -1,16 +1,13 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
-import { useMultiStep } from './MultiStep.context';
-
 interface StepContainerProps {
   children: ReactNode;
-  index: number;
+  step: number;
+  oldStep: number;
 }
 
-const StepContainer = ({ children, index }: StepContainerProps) => {
-  const { step, oldStep } = useMultiStep();
-  if (step !== index) return null;
+const StepContainer = ({ children, step, oldStep }: StepContainerProps) => {
   return (
     <motion.div
       tw="inline"

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useRef, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useContext,
+} from 'react';
 
 export interface IMultiStepContext {
   next: () => void;
@@ -13,20 +19,30 @@ const MultiStepContext = createContext<IMultiStepContext>({
   oldStep: 0,
 });
 
-interface DatePickerProviderProps {
+interface MultiStepProviderProps {
   children?: React.ReactNode;
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
+  oldStep: MutableRefObject<number>;
 }
 
-export const MultiStepProvider = ({ children }: DatePickerProviderProps) => {
-  const [step, setStep] = useState(0);
-  const oldStep = useRef(0);
+export const MultiStepProvider = ({
+  children,
+  step,
+  setStep,
+  oldStep,
+}: MultiStepProviderProps) => {
   const next = () => {
-    oldStep.current = step;
-    setStep(step + 1);
+    setStep((_step) => {
+      oldStep.current = _step;
+      return _step + 1;
+    });
   };
   const back = () => {
-    oldStep.current = step;
-    setStep(step - 1);
+    setStep((_step) => {
+      oldStep.current = _step;
+      return _step - 1;
+    });
   };
   return (
     <MultiStepContext.Provider
@@ -40,9 +56,7 @@ export const MultiStepProvider = ({ children }: DatePickerProviderProps) => {
 export const useMultiStep = () => {
   const context = useContext(MultiStepContext);
   if (context === undefined) {
-    throw new Error(
-      'MultiStepContext must be used within a DatePickerProvider'
-    );
+    throw new Error('MultiStepContext must be used within a MultiStepProvider');
   }
   return context;
 };
