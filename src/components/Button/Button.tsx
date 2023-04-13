@@ -26,7 +26,7 @@ interface ButtonProps extends AriaButtonProps {
   block?: boolean;
   prefix?: ReactNode;
   sufix?: ReactNode;
-  loading?: boolean;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -37,7 +37,7 @@ export default function Button({
   block = false,
   prefix,
   sufix,
-  loading = false,
+  isLoading = false,
   className,
   ...props
 }: ButtonProps) {
@@ -53,10 +53,10 @@ export default function Button({
       isDisabled={isDisabled}
       block={block}
       css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
-      loading={loading}
+      isLoading={isLoading}
       className={className}
     >
-      {loading ? (
+      {isLoading ? (
         <Spinner color="inherit" css={[ButtonSpinnerSizes[size]]} />
       ) : (
         prefix

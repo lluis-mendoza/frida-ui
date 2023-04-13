@@ -6,7 +6,7 @@ export const SelectButton = tw.button`
     inline-flex
     flex-row
     items-center
-    justify-around
+    justify-between
     w-full
     h-full
     gap-2

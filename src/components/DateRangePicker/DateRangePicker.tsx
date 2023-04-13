@@ -15,9 +15,8 @@ import {
   FieldContainer,
   FieldError,
   FieldIconSizes,
-  FieldSize,
+  FieldProps,
   FieldSizes,
-  FieldVariant,
   FieldVariants,
   FieldWrapper,
   Label,
@@ -35,11 +34,9 @@ export interface StaticDateRange {
   endDate: CalendarDateTime;
 }
 interface DateRangePickerProps<T extends DateValue>
-  extends AriaDateRangePickerProps<T> {
-  size?: FieldSize;
-  variant?: FieldVariant;
+  extends AriaDateRangePickerProps<T>,
+    FieldProps {
   onChange?: (value: RangeValue<DateValue>) => void;
-  className?: string;
   staticDateRange?: StaticDateRange;
 }
 
@@ -48,6 +45,7 @@ export function DateRangePicker<T extends DateValue>({
   variant = 'default',
   className,
   errorMessage,
+  block,
   ...props
 }: DateRangePickerProps<T>) {
   const state = useDateRangePickerState(props);
@@ -65,7 +63,7 @@ export function DateRangePicker<T extends DateValue>({
   const { isDisabled, isRequired } = props;
   const { buttonProps } = useButton(triggerProps, buttonRef);
   return (
-    <FieldContainer className={className}>
+    <FieldContainer block={block} className={className}>
       <Label {...labelProps} isRequired={isRequired}>
         {props.label}
       </Label>

@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import tw, { styled } from 'twin.macro';
 
-export const Container = tw.div`
+export const TabsContainer = tw.div`
     relative
     flex
     flex-col

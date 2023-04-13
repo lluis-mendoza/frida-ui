@@ -4,14 +4,14 @@ interface ButtonProps {
   block: boolean;
   isDisabled?: boolean;
   isFocusVisible?: boolean;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 export const StyledButton = styled.button(
-  ({ block, isDisabled, isFocusVisible, loading }: ButtonProps) => [
+  ({ block, isDisabled, isFocusVisible, isLoading }: ButtonProps) => [
     tw`
+    relative
     inline-flex
-    flex-shrink-0
     appearance-none
     cursor-pointer
     select-none
@@ -33,7 +33,7 @@ export const StyledButton = styled.button(
     (block ?? false) && tw`w-full`,
     (isDisabled ?? false) && tw`cursor-not-allowed`,
     (isFocusVisible ?? false) && tw`ring-[3px]`,
-    (loading || isDisabled) &&
+    (isLoading || isDisabled) &&
       tw`(ring-0 bg-gray-200/[var(--tw-bg-opacity)] text-gray-400 border-gray-300 stroke-gray-400)!`,
     // Flickering text
     css`
