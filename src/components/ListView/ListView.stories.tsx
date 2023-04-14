@@ -37,10 +37,10 @@ const Template: ComponentStory<typeof ListView> = (args) => (
       <Item>Hola</Item>
       <Item title={<p>o</p>}>
         <Item title={<p>a</p>}>
-          <Item>Node</Item>
+          <Item>title</Item>
         </Item>
         <Item title={<p>b</p>}>
-          <Item>Node</Item>
+          <Item>title</Item>
         </Item>
         <Item>c</Item>
       </Item>

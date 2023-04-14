@@ -14,7 +14,7 @@ const data = [
 export const Basic: ComponentStory<typeof ComboBox> = (args) => {
   return (
     <div tw="h-[30rem] flex">
-      <ComboBox defaultItems={data}>
+      <ComboBox {...args} defaultItems={data}>
         {(item) => <Item>{item.name}</Item>}
       </ComboBox>
     </div>
