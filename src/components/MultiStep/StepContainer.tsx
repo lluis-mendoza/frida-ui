@@ -10,7 +10,7 @@ interface StepContainerProps {
 const StepContainer = ({ children, step, oldStep }: StepContainerProps) => {
   return (
     <motion.div
-      tw="inline"
+      tw="relative block"
       initial={{ x: step > oldStep ? '100%' : '-100%' }}
       animate={{ x: 0 }}
       exit={{
@@ -19,7 +19,7 @@ const StepContainer = ({ children, step, oldStep }: StepContainerProps) => {
         width: '100%',
         height: '100%',
       }}
-      transition={{ ease: 'easeOut', duration: 0.2 }}
+      transition={{ ease: 'linear', duration: 0.2 }}
     >
       {children}
     </motion.div>

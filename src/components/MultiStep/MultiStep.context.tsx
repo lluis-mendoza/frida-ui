@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 
 export interface IMultiStepContext {
-  next: () => void;
-  back: () => void;
+  next: (index?: number) => void;
+  back: (index?: number) => void;
   step: number;
   oldStep: number;
 }
@@ -32,16 +32,16 @@ export const MultiStepProvider = ({
   setStep,
   oldStep,
 }: MultiStepProviderProps) => {
-  const next = () => {
+  const next = (index = 1) => {
     setStep((_step) => {
       oldStep.current = _step;
-      return _step + 1;
+      return _step + index;
     });
   };
-  const back = () => {
+  const back = (index = 1) => {
     setStep((_step) => {
       oldStep.current = _step;
-      return _step - 1;
+      return _step - index;
     });
   };
   return (
