@@ -1,3 +1,5 @@
+import { SVGAttributes } from 'react';
+
 import {
   SpinnerCircle,
   SpinnerColors,
@@ -13,21 +15,20 @@ type SpinnerColor =
   | 'error'
   | 'white';
 
-interface SpinnerProps {
+interface SpinnerProps<T> extends SVGAttributes<T> {
   color?: SpinnerColor;
-  className?: string;
   strokeWidth?: string;
 }
-export default function Spinner({
+export default function Spinner<T>({
   color = 'primary',
-  className,
   strokeWidth = '8%',
-}: SpinnerProps) {
+  ...props
+}: SpinnerProps<T>) {
   return (
     <SpinnerContainer
       xmlns="http://www.w3.org/2000/svg"
       viewBox="22 22 44 44"
-      className={className}
+      {...props}
     >
       <SpinnerCircle
         cx="44"

@@ -7,9 +7,11 @@ export const Underlay = tw.div`
 `;
 interface PopoverProps {
   width?: number;
+  height?: number;
 }
-export const StyledPopover = styled(motion.div)(({ width }: PopoverProps) => [
-  tw`
+export const StyledPopover = styled(motion.div)(
+  ({ width, height }: PopoverProps) => [
+    tw`
     z-10
     shadow-lg
     border
@@ -21,7 +23,9 @@ export const StyledPopover = styled(motion.div)(({ width }: PopoverProps) => [
     flex-col
     items-center 
     `,
-  css({
-    width,
-  }),
-]);
+    css({
+      width,
+      height,
+    }),
+  ]
+);

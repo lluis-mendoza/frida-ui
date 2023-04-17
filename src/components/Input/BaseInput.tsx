@@ -24,7 +24,6 @@ export interface InputProps extends AriaTextFieldProps, FieldProps {
   type?: InputType;
   prefix?: ReactNode;
   sufix?: ReactNode;
-  className?: string;
 }
 
 export const BaseInput = forwardRef(function Input(

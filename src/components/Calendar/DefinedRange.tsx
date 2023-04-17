@@ -1,7 +1,7 @@
 import { DateValue, isSameDay } from '@internationalized/date';
 import { RangeCalendarState } from 'react-stately';
 
-import { StaticDateRange } from '../DateRangePicker';
+import { StaticDateRange } from '../DateRangePicker/DateRangePicker';
 import { defaultStaticRanges } from '../DateRangePicker/DateRangePicker.utils';
 import { StaticRangeButton, StaticRangeWrapper } from './Calendar.styled';
 import { previewDatesService } from './services';
@@ -30,6 +30,7 @@ export function DefinedRange({
       {staticDateRanges.map((staticRange) => {
         const { label, startDate, endDate } = staticRange;
         const isSelected =
+          selectedDates !== null &&
           isSameDay(startDate, selectedDates.start) &&
           isSameDay(endDate, selectedDates.end);
         return (

@@ -1,6 +1,6 @@
 import { AnimatePresence } from 'framer-motion';
-import { Key, useRef } from 'react';
-import { useButton, useComboBox, useFilter } from 'react-aria';
+import { Key, useEffect, useRef, useState } from 'react';
+import { useButton, useComboBox, useFilter, useFocusWithin } from 'react-aria';
 import { ComboBoxStateOptions, useComboBoxState } from 'react-stately';
 
 import {
@@ -34,16 +34,19 @@ export default function ComboBox<T extends object>({
   onChange,
   block,
   className,
-  ..._props
+  ...props
 }: ComboBoxProps<T>) {
-  const props = {
-    ..._props,
-    selectedKey: value === undefined ? _props.selectedKey : value,
-    onSelectionChange: onChange ?? _props.onSelectionChange,
+  const _props = {
+    ...props,
+    selectedKey: value === undefined ? props.selectedKey : value,
+    onSelectionChange: onChange ?? props.onSelectionChange,
   };
 
   const { contains } = useFilter({ sensitivity: 'base' });
-  const state = useComboBoxState({ ..._props, defaultFilter: contains });
+  const state = useComboBoxState({
+    ..._props,
+    defaultFilter: contains,
+  });
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef(null);
@@ -51,7 +54,7 @@ export default function ComboBox<T extends object>({
   const listBoxRef = useRef(null);
   const popoverRef = useRef(null);
 
-  const { label, isDisabled, isRequired } = props;
+  const { label, isDisabled, isRequired } = _props;
   const {
     buttonProps: triggerProps,
     inputProps,
@@ -59,7 +62,7 @@ export default function ComboBox<T extends object>({
     labelProps,
   } = useComboBox(
     {
-      ...props,
+      ..._props,
       inputRef,
       buttonRef,
       listBoxRef,
@@ -67,7 +70,14 @@ export default function ComboBox<T extends object>({
     },
     state
   );
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
   const { buttonProps } = useButton(triggerProps, buttonRef);
+  const [isFocusWithin, setFocusWithin] = useState(false);
+  const { focusWithinProps } = useFocusWithin({
+    onFocusWithinChange: (isFocusWithin) => setFocusWithin(isFocusWithin),
+  });
   return (
     <FieldContainer block={block} className={className}>
       {label !== undefined ? (
@@ -76,13 +86,17 @@ export default function ComboBox<T extends object>({
         </Label>
       ) : null}
       <FieldWrapper
+        {...focusWithinProps}
         css={[FieldVariants[variant], FieldSizes[size]]}
         isDisabled={isDisabled}
         ref={wrapperRef}
       >
         <StyledInput {...inputProps} ref={inputRef} />
         <FieldButton {...buttonProps} ref={buttonRef}>
-          <SelectorIcon css={FieldIconSizes[size]} />
+          <SelectorIcon
+            css={FieldIconSizes[size]}
+            isFocusWithin={isFocusWithin}
+          />
         </FieldButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (
@@ -96,6 +110,7 @@ export default function ComboBox<T extends object>({
             triggerRef={wrapperRef}
             placement="bottom start"
             isNonModal
+            maxHeight={200}
             width={wrapperRef.current?.offsetWidth}
             tw="mt-1"
           >

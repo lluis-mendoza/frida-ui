@@ -2,8 +2,7 @@ import { ForwardedRef, forwardRef, useState } from 'react';
 import { BiHide, BiShow } from 'react-icons/bi';
 
 import { FieldButton, FieldIconSizes } from '../../styled-components';
-import { InputProps, InputType } from './BaseInput';
-import Input from './Input';
+import { BaseInput, InputProps, InputType } from './BaseInput';
 
 export interface PasswordProps extends InputProps {}
 
@@ -14,7 +13,7 @@ export const Password = forwardRef(function Password(
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { size = 'md' } = props;
   return (
-    <Input
+    <BaseInput
       {...props}
       ref={ref}
       type={showPassword ? InputType.TEXT : InputType.PASSWORD}

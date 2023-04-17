@@ -43,7 +43,7 @@ export default function Button({
 }: ButtonProps) {
   const ref = useRef(null);
   const { buttonProps } = useButton(props, ref);
-  const { isDisabled } = props;
+  const { isDisabled, children } = props;
   const { focusProps, isFocusVisible } = useFocusRing();
   return (
     <StyledButton
@@ -61,7 +61,7 @@ export default function Button({
       ) : (
         prefix
       )}
-      {props.children}
+      {children}
       {sufix}
     </StyledButton>
   );

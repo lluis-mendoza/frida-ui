@@ -12,7 +12,7 @@ import {
 import { useRangeCalendarState } from 'react-stately';
 
 import { DateValue } from '../DatePicker';
-import { RangeValue } from '../DateRangePicker';
+import { RangeValue } from '../DateRangePicker/DateRangePicker';
 import {
   CalendarContainer,
   CalendarWrapper,
@@ -50,6 +50,7 @@ export function RangeCalendar<T extends DateValue>({
     ref
   );
   useEffect(() => {
+    if (state.value === null) return;
     if (
       isSameDay(state.highlightedRange.start, state.value.start) &&
       isSameDay(state.highlightedRange.end, state.value.end)

@@ -12,6 +12,7 @@ export const StyledButton = styled.button(
     tw`
     relative
     inline-flex
+    truncate
     appearance-none
     cursor-pointer
     select-none

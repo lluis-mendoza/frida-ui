@@ -91,6 +91,7 @@ export default function Select<T extends object>({
             triggerRef={wrapperRef}
             placement="bottom start"
             isNonModal
+            maxHeight={200}
             width={wrapperRef.current?.offsetWidth}
             tw="mt-1"
           >

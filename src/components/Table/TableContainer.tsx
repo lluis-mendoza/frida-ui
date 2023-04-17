@@ -9,8 +9,8 @@ import {
 } from 'react';
 import useScrollbarSize from 'react-scrollbar-size';
 
-import { DEFAULT_COL_SIZE } from './Table';
 import { useTableContext } from './Table.context';
+import { DEFAULT_COL_SIZE } from './Table.model';
 import { Container } from './Table.styled';
 
 interface TableContainerProps {

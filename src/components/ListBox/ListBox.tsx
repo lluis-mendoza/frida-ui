@@ -22,7 +22,7 @@ export default function ListBox<T extends object>({
 
   return (
     <Fragment>
-      <Label {...labelProps}>{label}</Label>
+      {label !== undefined ? <Label {...labelProps}>{label}</Label> : null}
       <List {...listBoxProps} ref={listBoxRef}>
         {Array.from(state.collection).map((item) =>
           item.type === 'section' ? (

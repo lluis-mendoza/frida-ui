@@ -1,6 +1,6 @@
 import tw from 'twin.macro';
 
-export const StyledBadge = tw.span`
+export const StyledBadge = tw.div`
     inline-flex
     px-4
     items-center
@@ -30,12 +30,12 @@ export const BadgeVariants = {
   outlined: badgeVariantOutlined,
 };
 
-const badgeSizeSmall = tw`text-xs`;
-const badgeSizeMedium = tw`text-sm`;
-const badgeSizeLarge = tw`text-base`;
+const badgeSizeExtraSmall = tw`text-xs h-5`;
+const badgeSizeSmall = tw`text-sm h-6`;
+const badgeSizeMedium = tw`text-base h-7`;
 
 export const BadgeSizes = {
+  xs: badgeSizeExtraSmall,
   sm: badgeSizeSmall,
   md: badgeSizeMedium,
-  lg: badgeSizeLarge,
 };

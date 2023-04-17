@@ -27,6 +27,7 @@ export const AlertContainer = tw.div`
     sm:text-lg
     text-base
     gap-3
+    h-fit
 `;
 export const CloseButton = tw.button`
   outline-none

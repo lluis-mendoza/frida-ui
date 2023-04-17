@@ -15,9 +15,10 @@ interface PopoverProps extends Omit<AriaPopoverProps, 'popoverRef'> {
   className?: string;
   popoverRef?: React.RefObject<HTMLDivElement>;
   width?: number;
+  height?: number;
 }
 
-export function Popover({ width, ...props }: PopoverProps) {
+export function Popover({ width, height, ...props }: PopoverProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { popoverRef = ref, state, children, className, isNonModal } = props;
 
@@ -36,6 +37,7 @@ export function Popover({ width, ...props }: PopoverProps) {
         {...popoverProps}
         ref={popoverRef}
         width={width}
+        height={height}
         className={className}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

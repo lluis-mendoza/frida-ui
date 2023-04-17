@@ -28,6 +28,7 @@ import { Popover } from '../Popover';
 import { DateRangeField } from './DateRangeField';
 
 export { RangeValue } from '@react-types/shared';
+
 export interface StaticDateRange {
   label: string;
   startDate: CalendarDateTime;
@@ -40,7 +41,7 @@ interface DateRangePickerProps<T extends DateValue>
   staticDateRange?: StaticDateRange;
 }
 
-export function DateRangePicker<T extends DateValue>({
+export default function DateRangePicker<T extends DateValue>({
   size = 'md',
   variant = 'default',
   className,

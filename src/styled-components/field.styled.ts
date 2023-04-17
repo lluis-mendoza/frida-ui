@@ -94,9 +94,9 @@ export const FieldButton = tw.button`
   outline-none
   flex-shrink-0
   `;
-export const fieldIconSizeLarge = tw`w-6 h-6`;
-export const fieldIconSizeMedium = tw`w-5 h-5`;
-export const fieldIconSizeSmall = tw`w-4 h-4`;
+export const fieldIconSizeLarge = tw`w-7 h-7`;
+export const fieldIconSizeMedium = tw`w-6 h-6`;
+export const fieldIconSizeSmall = tw`w-5 h-5`;
 
 export const FieldIconSizes = {
   sm: fieldIconSizeSmall,

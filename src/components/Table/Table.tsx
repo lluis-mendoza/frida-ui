@@ -30,13 +30,11 @@ import {
 import { useMemo, useState } from 'react';
 
 import { TableProvider } from './Table.context';
-import { FilterType, RowFocused } from './Table.model';
+import { DEFAULT_COL_SIZE, FilterType, RowFocused } from './Table.model';
 import TableBody from './TableBody';
 import { TableContainer } from './TableContainer';
 import TableHeader from './TableHeader';
 import { createSelectionColumn } from './TableSelection';
-
-export const DEFAULT_COL_SIZE = 150;
 
 declare module '@tanstack/react-table' {
   interface ColumnMeta<TData extends RowData, TValue> {

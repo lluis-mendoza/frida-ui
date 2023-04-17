@@ -7,7 +7,7 @@ import {
   StyledBadge,
 } from './Badge.styled';
 
-export type BadgeSize = 'sm' | 'md' | 'lg';
+export type BadgeSize = 'xs' | 'sm' | 'md';
 export type BadgeColor = 'green' | 'yellow' | 'blue' | 'red' | 'gray';
 export type BadgeVariant = 'contained' | 'outlined';
 
@@ -17,7 +17,7 @@ interface BadgeProps {
   variant?: BadgeVariant;
   size?: BadgeSize;
 }
-export function Badge({
+export default function Badge({
   children,
   color = 'blue',
   variant = 'outlined',

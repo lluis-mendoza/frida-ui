@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Alert, AlertProps } from './Alert';
+import Alert, { AlertProps } from './Alert';
 import { ToastContainer } from './Alert.styled';
 
 interface IProps {

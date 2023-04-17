@@ -14,7 +14,7 @@ export interface AlertProps {
   message: string;
   onClose?: () => void;
 }
-export function Alert({ variant, message, onClose }: AlertProps) {
+export default function Alert({ variant, message, onClose }: AlertProps) {
   return (
     <AlertContainer css={[AlertVariants[variant]]}>
       <AlertIcon>{AlertIcons[variant]}</AlertIcon>
