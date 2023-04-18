@@ -12,17 +12,7 @@ import {
 } from '../../styled-components';
 import { StyledInput } from './Input.styled';
 
-export enum InputType {
-  NUMBER = 'number',
-  PASSWORD = 'password',
-  SEARCH = 'search',
-  TEXT = 'text',
-  HIDDEN = 'hidden',
-  CHECKBOX = 'checkbox',
-  EMAIL = 'email',
-}
 export interface InputProps extends AriaTextFieldProps, FieldProps {
-  type?: InputType;
   prefix?: ReactNode;
   sufix?: ReactNode;
 }
@@ -30,7 +20,6 @@ export interface InputProps extends AriaTextFieldProps, FieldProps {
 export const BaseInput = forwardRef(function Input(
   {
     size = 'md',
-    type = InputType.TEXT,
     variant = 'default',
     prefix,
     sufix,
@@ -56,7 +45,7 @@ export const BaseInput = forwardRef(function Input(
         isDisabled={isDisabled}
       >
         {prefix}
-        <StyledInput {...inputProps} type={type} ref={ref} />
+        <StyledInput {...inputProps} ref={ref} />
         {sufix}
       </FieldWrapper>
       {errorMessage !== undefined ? (
