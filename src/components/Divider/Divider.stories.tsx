@@ -10,7 +10,7 @@ export default {
 
 export const Vertical: ComponentStory<typeof Divider> = () => {
   return (
-    <div tw="h-[30rem] w-[30rem] mx-auto">
+    <div tw="w-[30rem] mx-auto">
       <Button block>Content</Button>
       <Divider>OR</Divider>
       <Button block>Content</Button>
@@ -20,7 +20,7 @@ export const Vertical: ComponentStory<typeof Divider> = () => {
 
 export const Horizontal: ComponentStory<typeof Divider> = () => {
   return (
-    <div tw="h-[30rem] w-[30rem] mx-auto flex flex-row">
+    <div tw="w-[30rem] mx-auto flex flex-row py-8">
       <Button block>Content</Button>
       <Divider horizontal>OR</Divider>
       <Button block>Content</Button>

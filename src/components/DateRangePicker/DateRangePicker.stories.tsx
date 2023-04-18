@@ -1,6 +1,6 @@
 import { ComponentStory } from '@storybook/react';
 
-import DateRangePicker from './DateRangePicker';
+import { DateRangePicker } from './DateRangePicker';
 
 export default {
   title: 'Components/DateRangePicker',

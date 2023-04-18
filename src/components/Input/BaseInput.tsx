@@ -19,6 +19,7 @@ export enum InputType {
   TEXT = 'text',
   HIDDEN = 'hidden',
   CHECKBOX = 'checkbox',
+  EMAIL = 'email',
 }
 export interface InputProps extends AriaTextFieldProps, FieldProps {
   type?: InputType;

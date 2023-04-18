@@ -34,6 +34,7 @@ export interface StaticDateRange {
   startDate: CalendarDateTime;
   endDate: CalendarDateTime;
 }
+export type DateRangeValue = RangeValue<DateValue>;
 interface DateRangePickerProps<T extends DateValue>
   extends AriaDateRangePickerProps<T>,
     FieldProps {
@@ -41,7 +42,7 @@ interface DateRangePickerProps<T extends DateValue>
   staticDateRange?: StaticDateRange;
 }
 
-export default function DateRangePicker<T extends DateValue>({
+export function DateRangePicker<T extends DateValue>({
   size = 'md',
   variant = 'default',
   className,
