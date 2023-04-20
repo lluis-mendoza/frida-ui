@@ -35,6 +35,7 @@ export const TableContainer = ({ children }: TableContainerProps) => {
     if (width === undefined) return;
     const columns = table.getAllColumns();
 
+    setIsValid(true);
     const hasTableContainerColumns = columns.some(
       (column) => column.columnDef.meta?.autoSize
     );
@@ -73,7 +74,6 @@ export const TableContainer = ({ children }: TableContainerProps) => {
     setWidth(width);
   };
   useEffect(() => {
-    setIsValid(containerRef.current !== null);
     updateSize();
   }, [containerRef]);
   useEffect(() => {

@@ -1,3 +1,3 @@
-export { default as MultiStep } from './MultiStep';
+export { default as useMultiStep } from './hooks/useMultiStep';
+export * from './MultiStep';
 export * from './MultiStep.context';
-export { default as StepContainer } from './StepContainer';

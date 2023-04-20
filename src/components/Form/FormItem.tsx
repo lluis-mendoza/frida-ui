@@ -1,4 +1,4 @@
-import React, { cloneElement, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import {
   FieldErrors,
   FieldPath,
@@ -13,10 +13,14 @@ interface FormItemProps<
 > extends UseControllerProps<TFieldValues, TFieldName> {
   children: ReactElement;
   errors?: FieldErrors;
+  adaptToFormValue?: (value: any) => any;
+  adaptToValue?: (value: any) => any;
 }
 export function FormItem<TFormValues extends Record<string, unknown>>({
   children,
   errors,
+  adaptToFormValue = (value) => value,
+  adaptToValue = (value) => value,
   ...controllerProps
 }: FormItemProps<TFormValues>) {
   const { name } = controllerProps;
@@ -28,8 +32,8 @@ export function FormItem<TFormValues extends Record<string, unknown>>({
   return (
     <React.Fragment>
       {React.cloneElement(children, {
-        value,
-        onChange,
+        value: adaptToValue(value),
+        onChange: (value: any) => onChange(adaptToFormValue(value)),
         variant,
         errorMessage: error?.message,
       })}

@@ -1,27 +1,56 @@
-import { AnimatePresence } from 'framer-motion';
-import { ReactElement, useRef, useState } from 'react';
-
-import { MultiStepProvider } from './MultiStep.context';
-import StepContainer from './StepContainer';
+import { motion } from 'framer-motion';
+import { Fragment, ReactElement, useEffect, useState } from 'react';
 
 export interface MultiStepProps {
   children: ReactElement[];
+  duration?: number;
+  currentStep: number;
+  previousStep: number;
 }
-export default function MultiStep({ children }: MultiStepProps) {
-  const [step, setStep] = useState(0);
-  const oldStep = useRef(0);
-  const providerProps = { step, setStep, oldStep };
+
+export function MultiStep({
+  children,
+  duration = 0.3,
+  currentStep,
+  previousStep,
+}: MultiStepProps) {
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (currentStep === previousStep) return;
+    setIsAnimating(true);
+  }, [currentStep, previousStep]);
+
   return (
-    <MultiStepProvider {...providerProps}>
-      <AnimatePresence initial={false}>
-        {children.map((stepContent, index) =>
-          step === index ? (
-            <StepContainer key={index} step={step} oldStep={0}>
-              {stepContent}
-            </StepContainer>
-          ) : null
-        )}
-      </AnimatePresence>
-    </MultiStepProvider>
+    <Fragment>
+      <motion.div
+        key={currentStep}
+        tw="block px-2"
+        initial={{
+          x:
+            currentStep === previousStep
+              ? 0
+              : currentStep > previousStep
+              ? '100%'
+              : '-100%',
+        }}
+        animate={{ x: 0 }}
+        transition={{ ease: 'linear', duration }}
+        onAnimationComplete={() => setIsAnimating(false)}
+      >
+        {children[currentStep]}
+      </motion.div>
+      {isAnimating && (
+        <motion.div
+          key={previousStep}
+          tw="absolute w-full h-full top-0 left-0 px-2"
+          initial={{ x: 0 }}
+          animate={{ x: currentStep < previousStep ? '100%' : '-100%' }}
+          transition={{ ease: 'linear', duration }}
+        >
+          {children[previousStep]}
+        </motion.div>
+      )}
+    </Fragment>
   );
 }

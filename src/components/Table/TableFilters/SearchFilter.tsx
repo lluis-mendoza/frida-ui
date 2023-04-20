@@ -4,7 +4,6 @@ import { useOverlayTriggerState } from 'react-stately';
 
 import { useFocus } from '../../../hooks';
 import { Input } from '../../Input';
-import { InputType } from '../../Input/BaseInput';
 import { Popover } from '../../Popover';
 import { FilterButton, FilterSearchIcon } from '../Table.styled';
 
@@ -46,7 +45,7 @@ export const SearchFilter = ({
             <Input
               size="sm"
               aria-label={headerName}
-              type={InputType.TEXT}
+              type="text"
               placeholder={`Buscar ${headerName}`}
               ref={inputRef}
               value={columnFilterValue}

@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
-import { Key, useEffect, useRef, useState } from 'react';
+import { Key, useRef, useState } from 'react';
 import { useButton, useComboBox, useFilter, useFocusWithin } from 'react-aria';
 import { ComboBoxStateOptions, useComboBoxState } from 'react-stately';
 
@@ -70,9 +70,6 @@ export default function ComboBox<T extends object>({
     },
     state
   );
-  useEffect(() => {
-    console.log(state);
-  }, [state]);
   const { buttonProps } = useButton(triggerProps, buttonRef);
   const [isFocusWithin, setFocusWithin] = useState(false);
   const { focusWithinProps } = useFocusWithin({
