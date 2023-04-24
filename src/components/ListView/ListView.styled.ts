@@ -11,15 +11,7 @@ export const ItemSizes = {
   md: itemSizeMedium,
   lg: itemsSizeLarge,
 };
-const listRowSizeLarge = tw`text-lg px-5 h-12 min-w-[3rem]`;
-const listRowMedium = tw`text-base px-3 h-11 min-w-[3rem]`;
-const listRowSmall = tw`text-xs px-2 h-6 min-w-[1.5rem]`;
 
-export const ListRowSizes = {
-  sm: listRowSmall,
-  md: listRowMedium,
-  lg: listRowSizeLarge,
-};
 export const Label = tw.label`
   text-sm
   font-semibold
@@ -28,30 +20,33 @@ export const Label = tw.label`
   mb-1
 `;
 
-interface ListViewContainerProps {
-  heightAuto?: boolean;
-  maxHeight?: string;
-}
-export const ListViewContainer = styled.div(
-  ({ heightAuto, maxHeight }: ListViewContainerProps) => [
-    tw`
+export const ListViewContainer = styled.div(() => [
+  tw`
     relative
     inline-flex
     flex-col
     flex-1
   `,
-  ]
-);
+]);
 interface ListViewWrapperProps {
-  maxItems: number;
+  itemsToShow?: number;
+  maxItemsToShow?: number;
   rowSize: ListRowSize;
 }
 export const ListViewWrapper = styled.div(
-  ({ maxItems, rowSize }: ListViewWrapperProps) => [
+  ({ itemsToShow, maxItemsToShow, rowSize }: ListViewWrapperProps) => [
     tw`
       relative
       flex-1
     `,
+    itemsToShow &&
+      css`
+        height: ${itemsToShow * ItemSizes[rowSize]}px;
+      `,
+    maxItemsToShow &&
+      css`
+        max-height: ${maxItemsToShow * ItemSizes[rowSize]}px;
+      `,
   ]
 );
 
@@ -65,7 +60,7 @@ export const ListRowWrapper = styled.div(
     tw`
     relative
     h-full
-    w-auto!
+    w-full
     min-w-full
     outline-none
     cursor-default
@@ -87,6 +82,7 @@ export const ListRowWrapper = styled.div(
 export const ListRow = tw.div`
     relative
     min-w-full
+    w-full
     h-full
     inline-flex
     items-center

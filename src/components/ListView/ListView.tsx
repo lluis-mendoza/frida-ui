@@ -24,19 +24,17 @@ interface ListViewProps<T>
     ListProps<T>,
     LabelAriaProps {
   rowSize?: ListRowSize;
-  width?: number | string;
   itemsToShow?: number;
   maxItemsToShow?: number;
-  heightAuto?: boolean;
-  maxHeight?: string;
+  height?: number | string;
+  maxHeight?: number | string;
 }
 
 export default function ListView<T extends object>({
   rowSize = 'md',
   itemsToShow,
   maxItemsToShow,
-  width: customWidth,
-  heightAuto,
+  height,
   maxHeight,
   ...props
 }: ListViewProps<T>) {
@@ -58,16 +56,17 @@ export default function ListView<T extends object>({
   };
 
   return (
-    <ListViewContainer heightAuto={heightAuto} maxHeight={maxHeight}>
+    <ListViewContainer>
       {props.label !== undefined && (
         <Label {...labelProps}>{props.label}</Label>
       )}
       <ListViewWrapper
         {...gridProps}
         {...fieldProps}
-        itemsToShow={itemsToShow ?? items.length}
+        itemsToShow={itemsToShow}
         maxItemsToShow={maxItemsToShow}
         rowSize={rowSize}
+        style={{ height, maxHeight }}
         ref={ref}
       >
         <List
