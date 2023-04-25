@@ -1,23 +1,36 @@
 import { ReactNode } from 'react';
+import { AriaTooltipProps, mergeProps, useTooltip } from 'react-aria';
+import { TooltipTriggerState } from 'react-stately';
 
-import { tooltipColors, TooltipContainer } from './Tooltip.styled';
+import {
+  StyledTooltip,
+  tooltipColors,
+  tooltipPlacements,
+} from './Tooltip.styled';
 
-export type TooltipDirection = 'top' | 'bottom' | 'left' | 'right';
 export type TooltipColor = 'green' | 'yellow' | 'blue' | 'red' | 'gray';
+export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 
-interface TooltipProps {
-  data: string;
+interface TooltipProps extends AriaTooltipProps {
   children: ReactNode;
+  state?: TooltipTriggerState;
   color?: TooltipColor;
+  placement?: TooltipPlacement;
 }
 export default function Tooltip({
-  data,
+  color = 'blue',
+  placement = 'top',
+  state,
   children,
-  color = 'green',
+  ...props
 }: TooltipProps) {
+  const { tooltipProps } = useTooltip(props, state);
   return (
-    <TooltipContainer data-tip={data} css={[tooltipColors[color]]}>
+    <StyledTooltip
+      {...mergeProps(props, tooltipProps)}
+      css={[tooltipColors[color], tooltipPlacements[placement]]}
+    >
       {children}
-    </TooltipContainer>
+    </StyledTooltip>
   );
 }

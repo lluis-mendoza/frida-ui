@@ -15,6 +15,22 @@ export const Basic: ComponentStory<typeof Input> = (args) => {
   );
 };
 
+export const Password: ComponentStory<typeof Input> = (args) => {
+  return (
+    <div tw="h-[30rem] flex">
+      <Input.Password {...args} />
+    </div>
+  );
+};
+
+export const Copy: ComponentStory<typeof Input> = (args) => {
+  return (
+    <div tw="h-[30rem] flex">
+      <Input.Copy {...args} />
+    </div>
+  );
+};
+
 Basic.args = {
   label: 'Appointment date',
   isRequired: true,

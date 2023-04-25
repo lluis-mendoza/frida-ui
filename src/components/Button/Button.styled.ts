@@ -14,8 +14,6 @@ export const StyledButton = styled.button(
     inline-flex
     truncate
     appearance-none
-    cursor-pointer
-    select-none
     flex-wrap
     items-center
     justify-center

@@ -1,4 +1,5 @@
-import { ReactNode, useRef } from 'react';
+import { useObjectRef } from '@react-aria/utils';
+import { forwardRef, ReactNode } from 'react';
 import {
   AriaButtonProps,
   mergeProps,
@@ -30,25 +31,29 @@ interface ButtonProps extends AriaButtonProps {
   className?: string;
 }
 
-export default function Button({
-  variant = 'contained',
-  color = 'primary',
-  size = 'md',
-  block = false,
-  prefix,
-  sufix,
-  isLoading = false,
-  className,
-  ...props
-}: ButtonProps) {
-  const ref = useRef(null);
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function BaseButton(
+  {
+    variant = 'contained',
+    color = 'primary',
+    size = 'md',
+    block = false,
+    prefix,
+    sufix,
+    isLoading = false,
+    className,
+    ...props
+  },
+  forwardedRef
+) {
+  const ref = useObjectRef(forwardedRef);
   const { buttonProps } = useButton(props, ref);
   const { isDisabled, children } = props;
   const { focusProps, isFocusVisible } = useFocusRing();
+
   return (
     <StyledButton
       {...mergeProps(focusProps, buttonProps)}
-      ref={ref}
+      ref={forwardedRef}
       isFocusVisible={isFocusVisible}
       isDisabled={isDisabled}
       block={block}
@@ -65,4 +70,6 @@ export default function Button({
       {sufix}
     </StyledButton>
   );
-}
+});
+
+export default Button;
