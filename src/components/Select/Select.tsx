@@ -47,7 +47,13 @@ export default function Select<T extends object>({
     onSelectionChange: onChange ?? _props.onSelectionChange,
   };
   const state = useSelectState(props);
-  const { label, name, isDisabled, isRequired } = props;
+  const {
+    label,
+    name,
+    isDisabled,
+    isRequired,
+    placeholder = 'Seleccione...',
+  } = props;
   const { labelProps, triggerProps, valueProps, menuProps } = useSelect(
     props,
     state,
@@ -76,7 +82,7 @@ export default function Select<T extends object>({
       >
         <SelectButton {...buttonProps} ref={buttonRef}>
           <SelectValue {...valueProps} hasValue={hasValue}>
-            {hasValue ? state.selectedItem.rendered : 'Seleccione...'}
+            {hasValue ? state.selectedItem.rendered : placeholder}
           </SelectValue>
           <SelectorIcon css={[FieldIconSizes[size]]} />
         </SelectButton>

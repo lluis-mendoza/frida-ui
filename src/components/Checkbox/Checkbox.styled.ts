@@ -11,7 +11,6 @@ export const CheckboxInput = tw.input`
   w-full
   h-full
   opacity-0
-  z-10
 `;
 
 export const checkboxSizeLarge = tw`text-lg h-8 w-8`;

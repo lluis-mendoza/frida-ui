@@ -16,6 +16,7 @@ export const HeaderContainer = tw.thead`
   inset-0
   sticky
   z-10
+  pointer-events-auto
 `;
 
 export const Row = tw.tr`
