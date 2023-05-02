@@ -17,4 +17,5 @@ export interface CompoundedComponent
 const Input = BaseInput as CompoundedComponent;
 Input.Password = Password;
 Input.Copy = Copy;
+
 export default Input;

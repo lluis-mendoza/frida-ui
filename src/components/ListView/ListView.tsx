@@ -1,4 +1,4 @@
-import { createRef, useRef } from 'react';
+import { useRef } from 'react';
 import {
   AriaGridListOptions,
   LabelAriaProps,
@@ -6,80 +6,69 @@ import {
   useLabel,
 } from 'react-aria';
 import { ListProps, useListState } from 'react-stately';
-import { FixedSizeList as List } from 'react-window';
+import { useVirtual } from 'react-virtual';
 
 import { useItems } from './hooks';
 import { ListItem } from './ListItem';
 import {
-  ItemSizes,
   Label,
+  ListRow,
   ListViewContainer,
   ListViewWrapper,
 } from './ListView.styled';
 
-export type ListRowSize = 'sm' | 'md' | 'lg';
+export type RowSize = 'sm' | 'md' | 'lg';
 
 interface ListViewProps<T>
   extends AriaGridListOptions<T>,
     ListProps<T>,
     LabelAriaProps {
-  rowSize?: ListRowSize;
-  itemsToShow?: number;
-  maxItemsToShow?: number;
-  height?: number | string;
-  maxHeight?: number | string;
+  rowSize?: RowSize;
 }
 
 export default function ListView<T extends object>({
   rowSize = 'md',
-  itemsToShow,
-  maxItemsToShow,
-  height,
-  maxHeight,
   ...props
 }: ListViewProps<T>) {
   const state = useListState(props);
   const { items, getToggleExpandedHandler } = useItems(state.collection);
-  const ref = useRef<HTMLDivElement>(null);
-  const listRef = createRef<List>();
+  const containerRef = useRef<HTMLDivElement>(null);
   const { gridProps } = useGridList(
     { ...props, isVirtualized: true },
     state,
-    ref
+    containerRef
   );
   const { labelProps, fieldProps } = useLabel(props);
 
   const itemData = {
+    rowSize,
     state,
     items,
     getToggleExpandedHandler,
   };
-
+  const rowVirtualizer = useVirtual({
+    parentRef: containerRef,
+    size: items.length,
+    overscan: 4,
+  });
+  const { virtualItems, totalSize } = rowVirtualizer;
+  const paddingTop =
+    virtualItems.length > 0 ? virtualItems?.[0]?.start ?? 0 : 0;
+  const paddingBottom =
+    virtualItems.length > 0
+      ? totalSize - (virtualItems?.[virtualItems.length - 1]?.end ?? 0)
+      : 0;
   return (
     <ListViewContainer>
       {props.label !== undefined && (
         <Label {...labelProps}>{props.label}</Label>
       )}
-      <ListViewWrapper
-        {...gridProps}
-        {...fieldProps}
-        itemsToShow={itemsToShow}
-        maxItemsToShow={maxItemsToShow}
-        rowSize={rowSize}
-        style={{ height, maxHeight }}
-        ref={ref}
-      >
-        <List
-          height={ref.current?.clientHeight ?? 0}
-          itemCount={items.length}
-          width={ref.current?.clientWidth ?? 0}
-          itemSize={ItemSizes[rowSize]}
-          itemData={itemData}
-          ref={listRef}
-          useIsScrolling
-        >
-          {ListItem}
-        </List>
+      <ListViewWrapper {...gridProps} {...fieldProps} ref={containerRef}>
+        {paddingTop > 0 && <ListRow style={{ height: paddingTop }} />}
+        {virtualItems.map((virtualRow, index) => (
+          <ListItem key={index} index={virtualRow.index} {...itemData} />
+        ))}
+        {paddingBottom > 0 && <ListRow style={{ height: paddingBottom }} />}
       </ListViewWrapper>
     </ListViewContainer>
   );

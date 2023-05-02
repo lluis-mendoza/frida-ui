@@ -7,6 +7,7 @@ import { useTooltipTriggerState } from 'react-stately';
 
 import { FieldButton, FieldIconSizes } from '../../styled-components';
 import { Tooltip } from '../Tooltip';
+import TooltipContainer from '../Tooltip/TooltipContainer';
 import { BaseInput, InputProps } from './BaseInput';
 
 export interface CopyProps extends InputProps {}
@@ -28,6 +29,7 @@ export const Copy = forwardRef(function Copy(
   const handleBlur = () => tooltipState.close();
   return (
     <BaseInput
+      isReadOnly={true}
       {...props}
       ref={ref}
       sufix={
@@ -40,7 +42,7 @@ export const Copy = forwardRef(function Copy(
             )}
           </FieldButton>
           {tooltipState.isOpen && (
-            <Tooltip state={tooltipState}>Copiado!</Tooltip>
+            <TooltipContainer state={tooltipState}>Copiado!</TooltipContainer>
           )}
         </div>
       }

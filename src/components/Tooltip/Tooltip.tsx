@@ -1,36 +1,42 @@
-import { ReactNode } from 'react';
-import { AriaTooltipProps, mergeProps, useTooltip } from 'react-aria';
-import { TooltipTriggerState } from 'react-stately';
+import { AnimatePresence } from 'framer-motion';
+import { ReactNode, useRef } from 'react';
+import { TooltipTriggerProps, useTooltipTrigger } from 'react-aria';
+import { useTooltipTriggerState } from 'react-stately';
 
-import {
-  StyledTooltip,
-  tooltipColors,
-  tooltipPlacements,
-} from './Tooltip.styled';
+import { Container, Trigger } from './Tooltip.styled';
+import TooltipContainer, { TooltipContainerProps } from './TooltipContainer';
 
-export type TooltipColor = 'green' | 'yellow' | 'blue' | 'red' | 'gray';
-export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
-
-interface TooltipProps extends AriaTooltipProps {
+interface TooltipProps
+  extends Omit<TooltipContainerProps, 'state'>,
+    TooltipTriggerProps {
   children: ReactNode;
-  state?: TooltipTriggerState;
-  color?: TooltipColor;
-  placement?: TooltipPlacement;
+  tooltip: ReactNode;
+  className?: string;
 }
 export default function Tooltip({
-  color = 'blue',
-  placement = 'top',
-  state,
   children,
+  tooltip,
+  className,
   ...props
 }: TooltipProps) {
-  const { tooltipProps } = useTooltip(props, state);
+  const state = useTooltipTriggerState({
+    ...props,
+    delay: 100,
+  });
+  const ref = useRef(null);
+  const { triggerProps, tooltipProps } = useTooltipTrigger(props, state, ref);
   return (
-    <StyledTooltip
-      {...mergeProps(props, tooltipProps)}
-      css={[tooltipColors[color], tooltipPlacements[placement]]}
-    >
-      {children}
-    </StyledTooltip>
+    <Container className={className}>
+      <Trigger ref={ref} {...triggerProps}>
+        {children}
+      </Trigger>
+      <AnimatePresence>
+        {state.isOpen && (
+          <TooltipContainer state={state} {...tooltipProps} {...props}>
+            {tooltip}
+          </TooltipContainer>
+        )}
+      </AnimatePresence>
+    </Container>
   );
 }

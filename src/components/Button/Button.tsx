@@ -46,20 +46,21 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function BaseButton(
   forwardedRef
 ) {
   const ref = useObjectRef(forwardedRef);
-  const { buttonProps } = useButton(props, ref);
-  const { isDisabled, children } = props;
+  const { buttonProps, isPressed } = useButton(props, ref);
+  const { isDisabled = false, children } = props;
   const { focusProps, isFocusVisible } = useFocusRing();
 
   return (
     <StyledButton
       {...mergeProps(focusProps, buttonProps)}
-      ref={forwardedRef}
+      css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
       isFocusVisible={isFocusVisible}
       isDisabled={isDisabled}
-      block={block}
-      css={[ButtonColors[color], ButtonVariants[variant], ButtonSizes[size]]}
+      isPressed={isPressed}
       isLoading={isLoading}
+      block={block}
       className={className}
+      ref={ref}
     >
       {isLoading ? (
         <Spinner color="inherit" css={[ButtonSpinnerSizes[size]]} />

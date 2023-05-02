@@ -38,6 +38,7 @@ export default function ComboBox<T extends object>({
 }: ComboBoxProps<T>) {
   const _props = {
     ...props,
+    placeholder: props.placeholder ?? 'Seleccione...',
     selectedKey: value === undefined ? props.selectedKey : value,
     onSelectionChange: onChange ?? props.onSelectionChange,
   };
@@ -88,7 +89,12 @@ export default function ComboBox<T extends object>({
         isDisabled={isDisabled}
         ref={wrapperRef}
       >
-        <StyledInput {...inputProps} ref={inputRef} />
+        <StyledInput
+          {...inputProps}
+          onClick={state.open}
+          onBlur={state.close}
+          ref={inputRef}
+        />
         <FieldButton {...buttonProps} ref={buttonRef}>
           <SelectorIcon
             css={FieldIconSizes[size]}

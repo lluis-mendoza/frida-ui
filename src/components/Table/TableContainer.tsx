@@ -11,13 +11,13 @@ import useScrollbarSize from 'react-scrollbar-size';
 
 import { useTableContext } from './Table.context';
 import { DEFAULT_COL_SIZE } from './Table.model';
-import { Container } from './Table.styled';
+import { Container, TableElement } from './Table.styled';
 
 interface TableContainerProps {
   children: ReactElement | ReactElement[];
 }
 interface ITableContainerContext {
-  containerRef: RefObject<HTMLTableElement>;
+  containerRef: RefObject<HTMLDivElement>;
 }
 
 const TableContainerContext = createContext<ITableContainerContext>({
@@ -25,9 +25,10 @@ const TableContainerContext = createContext<ITableContainerContext>({
 });
 
 export const TableContainer = ({ children }: TableContainerProps) => {
-  const containerRef = useRef<HTMLTableElement>(null);
-  const [isValid, setIsValid] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState<number | undefined>(undefined);
+  const [isValid, setIsValid] = useState(false);
+
   const { table } = useTableContext();
   const { width: widthScrollbar } = useScrollbarSize();
 
@@ -83,7 +84,7 @@ export const TableContainer = ({ children }: TableContainerProps) => {
   return (
     <TableContainerContext.Provider value={{ containerRef }}>
       <Container ref={containerRef}>
-        {isValid && <table tw="w-full h-full">{children}</table>}
+        {isValid && <TableElement>{children}</TableElement>}
       </Container>
     </TableContainerContext.Provider>
   );

@@ -6,7 +6,8 @@ export interface ItemData<T> {
   expanded: boolean;
   childItems: Array<ItemData<T>>;
 }
-export function useItems<T extends object>(collection: Collection<Node<T>>) {
+
+export function useItems<T>(collection: Collection<Node<T>>) {
   const [itemsData, setItemsData] = useState<Array<ItemData<T>>>([]);
 
   const getToggleExpandedHandler = useCallback((key: Key) => {

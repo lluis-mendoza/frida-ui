@@ -57,6 +57,7 @@ specifiers:
   react-icons: ^4.7.1
   react-is: ^18.2.0
   react-scrollbar-size: ^5.0.0
+  react-split: ^2.0.14
   react-stately: ^3.19.0
   react-transition-group: ^4.4.5
   react-virtual: ^2.10.4
@@ -86,6 +87,7 @@ dependencies:
   react-hook-form: 7.42.1_react@18.2.0
   react-icons: 4.7.1_react@18.2.0
   react-scrollbar-size: 5.0.0_react@18.2.0
+  react-split: 2.0.14_react@18.2.0
   react-stately: 3.20.0_react@18.2.0
   react-transition-group: 4.4.5_biqbaboplfbrettd7655fr4n2y
   react-virtual: 2.10.4_react@18.2.0
@@ -14876,6 +14878,16 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-split/2.0.14_react@18.2.0:
+    resolution: {integrity: sha512-bKWydgMgaKTg/2JGQnaJPg51T6dmumTWZppFgEbbY0Fbme0F5TuatAScCLaqommbGQQf/ZT1zaejuPDriscISA==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      split.js: 1.6.5
+    dev: false
+
   /react-stately/3.20.0_react@18.2.0:
     resolution: {integrity: sha512-5011Pmn8d17d1kbl7ScnQw1z+tXKsmTwVsAqrTARdZdH6NBmVNHEMlybU1t3/3PfcVn5XoRYwWvCgeTNZtNb8w==}
     peerDependencies:
@@ -16038,6 +16050,10 @@ packages:
     dependencies:
       extend-shallow: 3.0.2
     dev: true
+
+  /split.js/1.6.5:
+    resolution: {integrity: sha512-mPTnGCiS/RiuTNsVhCm9De9cCAUsrNFFviRbADdKiiV+Kk8HKp/0fWu7Kr8pi3/yBmsqLFHuXGT9UUZ+CNLwFw==}
+    dev: false
 
   /sprintf-js/1.0.3:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==}

@@ -9,7 +9,7 @@ export default {
 };
 
 const Template: ComponentStory<typeof ListView> = (args) => (
-  <div tw="w-[40rem] h-[30rem] flex mx-auto">
+  <div tw="w-[40rem] h-[30rem] flex mx-auto overflow-auto">
     <ListView {...args} label="Test list" selectionMode="multiple">
       <Item>Hola</Item>
       <Item>Hola</Item>

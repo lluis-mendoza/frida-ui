@@ -102,6 +102,7 @@
     "react-hook-form": "^7.41.0",
     "react-icons": "^4.7.1",
     "react-scrollbar-size": "^5.0.0",
+    "react-split": "^2.0.14",
     "react-stately": "^3.19.0",
     "react-transition-group": "^4.4.5",
     "react-virtual": "^2.10.4",

@@ -24,6 +24,18 @@ const data = [
   { firstName: 'Alberto', lastName: 'Ramírez' },
   { firstName: 'Paco', lastName: 'Merla' },
   { firstName: 'Elena', lastName: 'Nito' },
+  { firstName: 'Alberto', lastName: 'Picapiedra' },
+  { firstName: 'Alberto', lastName: 'Ramírez' },
+  { firstName: 'Paco', lastName: 'Merla' },
+  { firstName: 'Elena', lastName: 'Nito' },
+  { firstName: 'Alberto', lastName: 'Picapiedra' },
+  { firstName: 'Alberto', lastName: 'Ramírez' },
+  { firstName: 'Paco', lastName: 'Merla' },
+  { firstName: 'Elena', lastName: 'Nito' },
+  { firstName: 'Alberto', lastName: 'Picapiedra' },
+  { firstName: 'Alberto', lastName: 'Ramírez' },
+  { firstName: 'Paco', lastName: 'Merla' },
+  { firstName: 'Elena', lastName: 'Nito' },
 ];
 export const Basic: ComponentStory<typeof Table> = (args) => {
   return (

@@ -3,21 +3,15 @@ import tw, { css, styled } from 'twin.macro';
 
 export const Container = tw.div`
   relative
-  flex-1
+  h-full
+  w-full
   overflow-auto
   scroll-smooth
-  inline-flex
 `;
-export const BodyContainer = tw.tbody`
-  outline-none
-  h-full
-`;
-export const HeaderContainer = tw.thead`
-  inset-0
-  sticky
-  z-10
-  pointer-events-auto
-`;
+
+export const TableElement = tw.table`w-full`;
+export const BodyContainer = tw.tbody`outline-none`;
+export const HeaderContainer = tw.thead`sticky top-0 z-10`;
 
 export const Row = tw.tr`
   flex
@@ -28,7 +22,6 @@ export const Row = tw.tr`
 
 export const HeaderRow = tw(Row)`
   bg-gray-100
-  z-10
 `;
 interface BodyRowProps {
   isSelected: boolean;
@@ -48,38 +41,38 @@ export const BodyRow = styled(Row)(
   ]
 );
 
-interface CellProps {
+const Cell = tw`items-center inline-flex text-left px-4 overflow-hidden h-full bg-inherit`;
+
+interface BodyCellProps {
   width: number;
-  sticky: boolean;
 }
-export const Cell = styled.td(({ width, sticky }: CellProps) => [
+export const BodyCell = styled.td(({ width }: BodyCellProps) => [
+  Cell,
   tw`
-    items-center
-    inline-flex
-    text-left
-    px-4
-    overflow-hidden
-    h-full
-    bg-inherit
+    text-gray-800
+    font-normal
+    text-base
   `,
-  sticky && tw`sticky! z-10 right-0`,
   css`
     width: ${width}px;
   `,
 ]);
-export const BodyCell = tw(Cell)`
-  text-gray-800
-  font-normal
-  text-base
-`;
-export const HeaderCell = styled(Cell)(() => [
+interface HeaderCellProps {
+  width: number;
+}
+export const HeaderCell = styled.th(({ width }: HeaderCellProps) => [
+  Cell,
   tw`
-    relative
-    text-gray-700
+  text-gray-700
     font-semibold
     text-base
+    sticky
+  `,
+  css`
+    width: ${width}px;
   `,
 ]);
+
 export const EmptyContainer = tw(Row)`
   h-full
   inset-0

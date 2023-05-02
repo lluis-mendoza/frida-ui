@@ -1,9 +1,19 @@
-import { EmptyIcon, EmptyText, EmptyWrapper } from './Empty.styled';
+import {
+  EmptyIcon,
+  EmptyIconSizes,
+  EmptyText,
+  EmptyWrapper,
+} from './Empty.styled';
 
-export default function Empty() {
+type EmptySize = 'sm' | 'md' | 'lg';
+
+export interface EmptyProps {
+  size?: EmptySize;
+}
+export default function Empty({ size = 'md' }: EmptyProps) {
   return (
     <EmptyWrapper>
-      <EmptyIcon />
+      <EmptyIcon css={[EmptyIconSizes[size]]} />
       <EmptyText>Sin datos</EmptyText>
     </EmptyWrapper>
   );

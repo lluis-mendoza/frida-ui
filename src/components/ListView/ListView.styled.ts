@@ -1,15 +1,13 @@
-import tw, { css, styled } from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 
-import { ListRowSize } from './ListView';
+const rowSizeSmall = 40;
+const rowSizeMedium = 47;
+const rowsSizeLarge = 54;
 
-const itemSizeSmall = 40;
-const itemSizeMedium = 47;
-const itemsSizeLarge = 54;
-
-export const ItemSizes = {
-  sm: itemSizeSmall,
-  md: itemSizeMedium,
-  lg: itemsSizeLarge,
+export const RowSizes = {
+  sm: rowSizeSmall,
+  md: rowSizeMedium,
+  lg: rowsSizeLarge,
 };
 
 export const Label = tw.label`
@@ -23,40 +21,27 @@ export const Label = tw.label`
 export const ListViewContainer = styled.div(() => [
   tw`
     relative
+    h-full
+    w-full
+    overflow-auto
+    scroll-smooth
     inline-flex
     flex-col
-    flex-1
   `,
 ]);
-interface ListViewWrapperProps {
-  itemsToShow?: number;
-  maxItemsToShow?: number;
-  rowSize: ListRowSize;
-}
-export const ListViewWrapper = styled.div(
-  ({ itemsToShow, maxItemsToShow, rowSize }: ListViewWrapperProps) => [
-    tw`
-      relative
-      flex-1
-    `,
-    itemsToShow &&
-      css`
-        height: ${itemsToShow * ItemSizes[rowSize]}px;
-      `,
-    maxItemsToShow &&
-      css`
-        max-height: ${maxItemsToShow * ItemSizes[rowSize]}px;
-      `,
-  ]
-);
+export const ListViewWrapper = tw.div`
+  relative
+  flex-1
+  overflow-auto
+`;
 
 interface ListRowWrapperProps {
   isSelected: boolean;
-  isFirstItem: boolean;
+  isFirstrow: boolean;
   isDisabled: boolean;
 }
 export const ListRowWrapper = styled.div(
-  ({ isSelected, isFirstItem, isDisabled }: ListRowWrapperProps) => [
+  ({ isSelected, isFirstrow, isDisabled }: ListRowWrapperProps) => [
     tw`
     relative
     h-full
@@ -74,7 +59,7 @@ export const ListRowWrapper = styled.div(
       bg-blue-200/75
       hover:bg-blue-200
     `,
-    isFirstItem && tw`border-t-0`,
+    isFirstrow && tw`border-t-0`,
     isDisabled && tw`bg-gray-50`,
   ]
 );
@@ -91,4 +76,5 @@ export const ListRow = tw.div`
     text-gray-800
     stroke-gray-800
     fill-gray-800
+    truncate
 `;
