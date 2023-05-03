@@ -10,18 +10,18 @@ interface TableRowProps {
   index: number;
 }
 const TableRow = ({ index }: TableRowProps) => {
-  const { table, onClick, onDoubleClick, rowFocused, rowsDisabled } =
+  const { table, onClick, onDoubleClick, rowFocused, isRowDisabled } =
     useTableContext();
   const { rows } = table.getRowModel();
 
   const rowHeight = 47;
   const isSingleGrouped = rows[index].subRows.length === 1;
   const row = isSingleGrouped ? rows[index].subRows[0] : rows[index];
-  const { id } = row;
+  const { id, original } = row;
 
   const isSelected = row.getIsSelected();
   const isFocused = rowFocused !== null && rowFocused === row.index;
-  const isDisabled = rowsDisabled?.includes(index);
+  const isDisabled = isRowDisabled(original);
   const cells = table
     .getAllColumns()
     .map((col) => row.getAllCells().find((cell) => cell.column.id === col.id)!);

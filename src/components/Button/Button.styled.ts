@@ -23,7 +23,7 @@ export const StyledButton = styled.button(
     appearance-none
     cursor-pointer
     select-none
-    flex-wrap
+    flex-nowrap
     items-center
     justify-center
     text-center

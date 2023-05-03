@@ -13,7 +13,7 @@ interface ITableContext {
   onDoubleClick?: (index: number) => void;
   onKeyboardUpdate?: (index: number) => void;
   rowFocused: RowFocused;
-  rowsDisabled: number[];
+  isRowDisabled: (data: any) => boolean;
   scrollDown?: boolean;
   setScrollDown?: (data: boolean) => void;
   enableKeyboard?: boolean;
@@ -26,7 +26,7 @@ const TableContext = createContext<ITableContext>({
   onDoubleClick: () => undefined,
   onKeyboardUpdate: () => undefined,
   rowFocused: null,
-  rowsDisabled: [],
+  isRowDisabled: () => false,
   scrollDown: false,
   setScrollDown: () => undefined,
   enableKeyboard: undefined,

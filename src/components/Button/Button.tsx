@@ -20,7 +20,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonColor = 'primary' | 'success' | 'info' | 'warning' | 'error';
 export type ButtonVariant = 'text' | 'contained' | 'outlined';
 
-interface ButtonProps extends AriaButtonProps {
+export interface ButtonProps extends AriaButtonProps {
   size?: ButtonSize;
   variant?: ButtonVariant;
   color?: ButtonColor;

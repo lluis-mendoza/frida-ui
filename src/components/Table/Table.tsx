@@ -66,7 +66,7 @@ export interface TableProps<TData extends RowData> {
       RowSelectionTableState
   >;
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
-  rowsDisabled?: number[];
+  isRowDisabled?: (data: TData) => boolean;
   groupBy?: GroupingState;
   toggleAllRowsExpanded?: boolean;
   loading?: boolean;
@@ -85,7 +85,7 @@ const Table = <TData extends RowData>({
   initialState,
   state,
   onRowSelectionChange,
-  rowsDisabled = [],
+  isRowDisabled = () => false,
   groupBy = [],
   toggleAllRowsExpanded,
   loading,
@@ -158,7 +158,7 @@ const Table = <TData extends RowData>({
     scrollDown,
     setScrollDown,
     rowFocused,
-    rowsDisabled,
+    isRowDisabled,
     enableKeyboard,
     loading,
   };
