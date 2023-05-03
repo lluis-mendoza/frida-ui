@@ -7,6 +7,7 @@ export const StyledSplit = styled(Split)(() => [
         flex
         flex-row
         h-full
+        overflow-hidden
         `,
   css`
     .gutter {
