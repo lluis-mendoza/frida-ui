@@ -32,12 +32,10 @@ const TableRow = ({ index }: TableRowProps) => {
     if (eventDetail === 1) onClick?.(row.index);
     else if (eventDetail === 2) onDoubleClick?.(row.index);
   };
-  const onTouch = () => {
-    onClick?.(row.index);
-  };
-  const onDoubleTouch = () => {
-    onDoubleClick?.(row.index);
-  };
+
+  const onTouch = () => onClick?.(row.index);
+  const onDoubleTouch = () => onDoubleClick?.(row.index);
+
   const handleTouchStart = useTouch(onTouch, onDoubleTouch);
   return (
     <BodyRow

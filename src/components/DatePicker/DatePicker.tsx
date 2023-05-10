@@ -1,8 +1,4 @@
-import {
-  CalendarDate,
-  CalendarDateTime,
-  ZonedDateTime,
-} from '@internationalized/date';
+import { DateValue } from '@internationalized/date';
 import { AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
 import { AriaDatePickerProps, useButton, useDatePicker } from 'react-aria';
@@ -25,7 +21,6 @@ import { DateFieldContent } from '../DateField';
 import { Dialog } from '../Dialog';
 import { Popover } from '../Popover';
 
-export type DateValue = CalendarDate | CalendarDateTime | ZonedDateTime;
 interface DatePickerProps<T extends DateValue>
   extends AriaDatePickerProps<T>,
     FieldProps {}

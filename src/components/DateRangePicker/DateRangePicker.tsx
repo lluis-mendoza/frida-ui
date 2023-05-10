@@ -1,4 +1,4 @@
-import { CalendarDateTime } from '@internationalized/date';
+import { DateValue, ZonedDateTime } from '@internationalized/date';
 import { RangeValue } from '@react-types/shared';
 import { AnimatePresence } from 'framer-motion';
 import { useRef } from 'react';
@@ -22,7 +22,6 @@ import {
   Label,
 } from '../../styled-components';
 import { RangeCalendar } from '../Calendar/RangeCalendar';
-import { DateValue } from '../DatePicker';
 import { Dialog } from '../Dialog';
 import { Popover } from '../Popover';
 import { DateRangeField } from './DateRangeField';
@@ -31,10 +30,11 @@ export { RangeValue } from '@react-types/shared';
 
 export interface StaticDateRange {
   label: string;
-  startDate: CalendarDateTime;
-  endDate: CalendarDateTime;
+  startDate: ZonedDateTime;
+  endDate: ZonedDateTime;
 }
 export type DateRangeValue = RangeValue<DateValue>;
+
 interface DateRangePickerProps<T extends DateValue>
   extends AriaDateRangePickerProps<T>,
     FieldProps {

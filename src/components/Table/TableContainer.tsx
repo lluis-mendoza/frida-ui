@@ -69,11 +69,13 @@ export const TableContainer = ({ children }: TableContainerProps) => {
       )
     );
   }, [table, width, widthScrollbar]);
+
   const updateSize = () => {
     if (containerRef.current === null) return;
     const width = containerRef.current.offsetWidth;
     setWidth(width);
   };
+
   useEffect(() => {
     updateSize();
   }, [containerRef]);

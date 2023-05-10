@@ -17,8 +17,6 @@ import {
   getSortedRowModel,
   GroupingState,
   GroupingTableState,
-  InitialTableState,
-  OnChangeFn,
   PaginationTableState,
   RowData,
   RowSelectionState,
@@ -27,7 +25,7 @@ import {
   useReactTable,
   VisibilityTableState,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { TableProvider } from './Table.context';
 import { DEFAULT_COL_SIZE, FilterType, RowFocused } from './Table.model';
@@ -49,35 +47,34 @@ declare module '@tanstack/react-table' {
   }
 }
 
+type TableState = Partial<
+  VisibilityTableState &
+    ColumnOrderTableState &
+    ColumnPinningTableState &
+    FiltersTableState &
+    SortingTableState &
+    ExpandedTableState &
+    GroupingTableState &
+    ColumnSizingTableState &
+    PaginationTableState &
+    RowSelectionTableState
+>;
 export interface TableProps<TData extends RowData> {
   data: TData[];
   columns: Array<ColumnDef<TData>>;
-  initialState?: InitialTableState;
-  state?: Partial<
-    VisibilityTableState &
-      ColumnOrderTableState &
-      ColumnPinningTableState &
-      FiltersTableState &
-      SortingTableState &
-      ExpandedTableState &
-      GroupingTableState &
-      ColumnSizingTableState &
-      PaginationTableState &
-      RowSelectionTableState
-  >;
-  onRowSelectionChange?: OnChangeFn<RowSelectionState>;
-  isRowDisabled?: (data: TData) => boolean;
-  groupBy?: GroupingState;
-  toggleAllRowsExpanded?: boolean;
-  loading?: boolean;
+  initialState?: TableState;
+  state?: TableState;
   updateData?: (rowIndex: number, columnId: string, value: unknown) => void;
+  isRowDisabled?: (data: TData) => boolean;
+  onRowSelectionChange?: (data: RowSelectionState) => void;
+  onGroupingChange?: (data: GroupingState) => void;
+  onColumnFiltersChange?: (data: ColumnFiltersState) => void;
+  isLoading?: boolean;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
   onKeyboardUpdate?: (index: number) => void;
   rowFocused?: RowFocused;
   enableKeyboard?: boolean;
-  scrollDown?: boolean;
-  setScrollDown?: (data: boolean) => void;
 }
 const Table = <TData extends RowData>({
   data,
@@ -85,25 +82,30 @@ const Table = <TData extends RowData>({
   initialState,
   state,
   onRowSelectionChange,
+  onGroupingChange,
+  onColumnFiltersChange,
+  isLoading = false,
   isRowDisabled = () => false,
-  groupBy = [],
-  toggleAllRowsExpanded,
-  loading,
   rowFocused = null,
   updateData,
   onClick,
   onDoubleClick,
   onKeyboardUpdate,
   enableKeyboard,
-  scrollDown,
-  setScrollDown,
 }: TableProps<TData>) => {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [grouping, setGrouping] = useState<GroupingState>(groupBy);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+    initialState?.columnFilters ?? []
+  );
+  const [grouping, setGrouping] = useState<GroupingState>(
+    initialState?.grouping ?? []
+  );
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+    initialState?.rowSelection ?? {}
+  );
 
   const _data = useMemo(
-    () => (loading ?? false ? Array(30).fill({}) : data),
-    [loading, data]
+    () => (isLoading ?? false ? Array(30).fill({}) : data),
+    [isLoading, data]
   );
   const defaultColumn = useMemo(
     () => ({
@@ -112,37 +114,36 @@ const Table = <TData extends RowData>({
     }),
     []
   );
-  const _initialState = useMemo(() => initialState, [initialState]);
-  const _state = useMemo(() => state, [state]);
   const _columns = useMemo(() => {
-    const { rowSelection } = _state ?? {};
+    const { rowSelection } = state ?? {};
     let cols = columns;
     if (rowSelection !== undefined) {
       cols = [createSelectionColumn(), ...columns];
     }
     return cols;
-  }, [_state, columns]);
+  }, [state, columns]);
 
   const table = useReactTable({
     data: _data,
     columns: _columns,
     defaultColumn,
-    initialState: _initialState,
+    initialState,
     state: {
       grouping,
       columnFilters,
-      ..._state,
+      rowSelection,
+      ...state,
     },
     columnResizeMode: 'onChange',
     getExpandedRowModel: getExpandedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
     onGroupingChange: setGrouping,
     onColumnFiltersChange: setColumnFilters,
+    onRowSelectionChange: setRowSelection,
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    onRowSelectionChange,
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     meta: {
@@ -150,17 +151,36 @@ const Table = <TData extends RowData>({
     },
     autoResetAll: false,
   });
+  const tableState = table.getState();
+  const {
+    rowSelection: _rowSelection,
+    grouping: _grouping,
+    columnFilters: _columnFilters,
+  } = tableState;
+
+  useEffect(() => {
+    onRowSelectionChange?.(_rowSelection);
+  }, [_rowSelection, onRowSelectionChange]);
+  useEffect(() => {
+    onGroupingChange?.(_grouping);
+  }, [_grouping, onGroupingChange]);
+  useEffect(() => {
+    onColumnFiltersChange?.(_columnFilters);
+  }, [_columnFilters, onColumnFiltersChange]);
+
+  useEffect(() => {
+    if (isLoading) table.setGrouping([]);
+  }, [isLoading, table]);
+
   const tableContext = {
     table,
     onClick,
     onDoubleClick,
     onKeyboardUpdate,
-    scrollDown,
-    setScrollDown,
     rowFocused,
     isRowDisabled,
     enableKeyboard,
-    loading,
+    isLoading,
   };
 
   return (

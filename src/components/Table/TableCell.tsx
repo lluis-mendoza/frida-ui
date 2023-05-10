@@ -15,14 +15,14 @@ const TableCell = <TData extends RowData>({
   cell,
   isSingleGrouped,
 }: Props<TData>) => {
-  const { loading } = useTableContext();
+  const { isLoading } = useTableContext();
   const meta = cell.column.columnDef.meta;
   const sticky = meta?.sticky ?? false;
   const subRowsLength = cell.row.subRows.length;
 
   const renderCell = (cell: Cell<TData, unknown>) => {
     const depth = cell.row.depth - Number(isSingleGrouped);
-    if (loading ?? false) return <Skeleton />;
+    if (isLoading ?? false) return <Skeleton />;
     if (meta?.editable ?? false) return <EditableCell {...cell.getContext()} />;
 
     if (cell.getIsGrouped())

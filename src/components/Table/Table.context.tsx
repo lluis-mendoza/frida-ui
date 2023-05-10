@@ -14,10 +14,8 @@ interface ITableContext {
   onKeyboardUpdate?: (index: number) => void;
   rowFocused: RowFocused;
   isRowDisabled: (data: any) => boolean;
-  scrollDown?: boolean;
-  setScrollDown?: (data: boolean) => void;
   enableKeyboard?: boolean;
-  loading?: boolean;
+  isLoading?: boolean;
 }
 
 const TableContext = createContext<ITableContext>({
@@ -27,10 +25,8 @@ const TableContext = createContext<ITableContext>({
   onKeyboardUpdate: () => undefined,
   rowFocused: null,
   isRowDisabled: () => false,
-  scrollDown: false,
-  setScrollDown: () => undefined,
   enableKeyboard: undefined,
-  loading: undefined,
+  isLoading: undefined,
 });
 export const TableProvider = ({ children, ...props }: IProps) => {
   return (
