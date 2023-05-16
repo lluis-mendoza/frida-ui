@@ -15,12 +15,8 @@ export const StyledInput = styled.input(() => [
   `,
 ]);
 
-interface SelectorIconProps {
-  isFocusWithin: boolean;
-}
-export const SelectorIcon = styled(FaChevronDown)(
-  ({ isFocusWithin }: SelectorIconProps) => [
-    tw`text-gray-400 p-[0.15rem]`,
-    isFocusWithin && tw`text-gray-600`,
-  ]
-);
+export const SelectorIcon = styled(FaChevronDown)(() => [
+  tw`text-gray-400 p-[0.15rem]`,
+]);
+
+export const SelectorIconFocusWithin = tw`text-gray-500`;

@@ -25,7 +25,14 @@ import {
   useReactTable,
   VisibilityTableState,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
 import { TableProvider } from './Table.context';
 import { DEFAULT_COL_SIZE, FilterType, RowFocused } from './Table.model';
@@ -66,9 +73,9 @@ export interface TableProps<TData extends RowData> {
   state?: TableState;
   updateData?: (rowIndex: number, columnId: string, value: unknown) => void;
   isRowDisabled?: (data: TData) => boolean;
-  onRowSelectionChange?: (data: RowSelectionState) => void;
-  onGroupingChange?: (data: GroupingState) => void;
-  onColumnFiltersChange?: (data: ColumnFiltersState) => void;
+  onRowSelectionChange?: Dispatch<SetStateAction<RowSelectionState>>;
+  onGroupingChange?: Dispatch<SetStateAction<GroupingState>>;
+  onColumnFiltersChange?: Dispatch<SetStateAction<ColumnFiltersState>>;
   isLoading?: boolean;
   onClick?: (index: number) => void;
   onDoubleClick?: (index: number) => void;
@@ -133,13 +140,14 @@ const Table = <TData extends RowData>({
       columnFilters,
       rowSelection,
       ...state,
+      ...(isLoading && { grouping: [] }),
     },
     columnResizeMode: 'onChange',
     getExpandedRowModel: getExpandedRowModel(),
     getGroupedRowModel: getGroupedRowModel(),
-    onGroupingChange: setGrouping,
-    onColumnFiltersChange: setColumnFilters,
-    onRowSelectionChange: setRowSelection,
+    onGroupingChange: onGroupingChange ?? setGrouping,
+    onColumnFiltersChange: onColumnFiltersChange ?? setColumnFilters,
+    onRowSelectionChange: onRowSelectionChange ?? setRowSelection,
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -151,26 +159,6 @@ const Table = <TData extends RowData>({
     },
     autoResetAll: false,
   });
-  const tableState = table.getState();
-  const {
-    rowSelection: _rowSelection,
-    grouping: _grouping,
-    columnFilters: _columnFilters,
-  } = tableState;
-
-  useEffect(() => {
-    onRowSelectionChange?.(_rowSelection);
-  }, [_rowSelection, onRowSelectionChange]);
-  useEffect(() => {
-    onGroupingChange?.(_grouping);
-  }, [_grouping, onGroupingChange]);
-  useEffect(() => {
-    onColumnFiltersChange?.(_columnFilters);
-  }, [_columnFilters, onColumnFiltersChange]);
-
-  useEffect(() => {
-    if (isLoading) table.setGrouping([]);
-  }, [isLoading, table]);
 
   const tableContext = {
     table,

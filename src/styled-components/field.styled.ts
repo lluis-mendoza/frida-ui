@@ -15,7 +15,6 @@ export const FieldContainer = styled.div(({ block }: FieldContainerProps) => [
     flex-col
     text-left
     w-auto
-    p-[2px]
     `,
   (block ?? false) && tw`w-full`,
 ]);
@@ -92,7 +91,8 @@ export const Label = styled.label(({ isRequired }: LabelProps) => [
 
 export const FieldButton = tw.button`
   outline-none
-  flex-shrink-0
+  flex-shrink-0  
+  stroke-gray-400
   `;
 export const fieldIconSizeLarge = tw`w-7 h-7`;
 export const fieldIconSizeMedium = tw`w-6 h-6`;

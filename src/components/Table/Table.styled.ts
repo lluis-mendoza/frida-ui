@@ -41,7 +41,7 @@ export const BodyRow = styled(Row)(
   ]
 );
 
-const Cell = tw`items-center inline-flex text-left px-4 overflow-hidden h-full bg-inherit`;
+const Cell = tw`items-center inline-flex text-left px-4 overflow-hidden h-full bg-inherit select-none`;
 
 interface BodyCellProps {
   width: number;

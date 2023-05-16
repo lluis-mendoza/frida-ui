@@ -10,6 +10,23 @@ export interface ItemData<T> {
 export function useItems<T>(collection: Collection<Node<T>>) {
   const [itemsData, setItemsData] = useState<Array<ItemData<T>>>([]);
 
+  useEffect(() => {
+    const getItems = (nodes: Array<Node<T>>): Array<ItemData<T>> => {
+      const result: Array<ItemData<T>> = [];
+      nodes.forEach((node) => {
+        result.push({
+          node,
+          expanded: false,
+          childItems: node.hasChildNodes
+            ? Array.from(getItems([...node.childNodes]))
+            : [],
+        });
+      });
+      return result;
+    };
+    setItemsData(getItems(Array.from(collection)));
+  }, [collection]);
+
   const getToggleExpandedHandler = useCallback((key: Key) => {
     setItemsData((items) => {
       const updatedItems = [...items];
@@ -40,22 +57,6 @@ export function useItems<T>(collection: Collection<Node<T>>) {
       })(itemsData),
     [itemsData]
   );
-  useEffect(() => {
-    const getItems = (nodes: Array<Node<T>>): Array<ItemData<T>> => {
-      const result: Array<ItemData<T>> = [];
-      nodes.forEach((node) => {
-        result.push({
-          node,
-          expanded: false,
-          childItems: node.hasChildNodes
-            ? Array.from(getItems([...node.childNodes]))
-            : [],
-        });
-      });
-      return result;
-    };
-    setItemsData(getItems(Array.from(collection)));
-  }, [collection]);
 
   return { items, getToggleExpandedHandler };
 }

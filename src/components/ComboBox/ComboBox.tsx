@@ -16,11 +16,17 @@ import {
 } from '../../styled-components';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Popover';
-import { SelectorIcon, StyledInput } from './ComboBox.styled';
+import { Spinner } from '../Spinner';
+import {
+  SelectorIcon,
+  SelectorIconFocusWithin,
+  StyledInput,
+} from './ComboBox.styled';
 
 export interface ComboBoxProps<T extends object>
   extends ComboBoxStateOptions<T>,
     FieldProps {
+  isLoading?: boolean;
   items?: Iterable<T>;
   value?: Key | null | undefined;
   onChange?: ((key: Key) => any) | undefined;
@@ -33,6 +39,7 @@ export default function ComboBox<T extends object>({
   value,
   onChange,
   block,
+  isLoading = false,
   className,
   ...props
 }: ComboBoxProps<T>) {
@@ -86,7 +93,7 @@ export default function ComboBox<T extends object>({
       <FieldWrapper
         {...focusWithinProps}
         css={[FieldVariants[variant], FieldSizes[size]]}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled ?? isLoading}
         ref={wrapperRef}
       >
         <StyledInput
@@ -96,10 +103,16 @@ export default function ComboBox<T extends object>({
           ref={inputRef}
         />
         <FieldButton {...buttonProps} ref={buttonRef}>
-          <SelectorIcon
-            css={FieldIconSizes[size]}
-            isFocusWithin={isFocusWithin}
-          />
+          {isLoading ? (
+            <Spinner color="inherit" css={[FieldIconSizes[size]]} />
+          ) : (
+            <SelectorIcon
+              css={[
+                FieldIconSizes[size],
+                isFocusWithin ? SelectorIconFocusWithin : null,
+              ]}
+            />
+          )}
         </FieldButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (

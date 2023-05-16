@@ -11,6 +11,7 @@ export const SelectButton = tw.button`
     h-full
     gap-2
     text-gray-800
+    stroke-gray-400
 `;
 
 export const SelectValue = styled.span(

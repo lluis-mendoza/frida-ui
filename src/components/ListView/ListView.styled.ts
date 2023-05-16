@@ -77,4 +77,5 @@ export const ListRow = tw.div`
     stroke-gray-800
     fill-gray-800
     truncate
+    select-none
 `;

@@ -1,4 +1,4 @@
-import { Key, useRef } from 'react';
+import { Key, MouseEvent, useRef } from 'react';
 import { useGridListItem } from 'react-aria';
 import { IoIosAdd, IoIosRemove } from 'react-icons/io';
 import { ListState } from 'react-stately';
@@ -14,6 +14,8 @@ interface ListItemProps<T> {
   items: Array<ItemData<T>>;
   getToggleExpandedHandler: (key: Key) => void;
   rowSize: RowSize;
+  onClick?: (index: number) => void;
+  onDoubleClick?: (index: number) => void;
 }
 
 export function ListItem<T>({
@@ -22,6 +24,8 @@ export function ListItem<T>({
   items,
   getToggleExpandedHandler,
   rowSize,
+  onClick,
+  onDoubleClick,
 }: ListItemProps<T>) {
   const ref = useRef(null);
   const item = items[index];
@@ -36,12 +40,19 @@ export function ListItem<T>({
   const showCheckbox =
     state.selectionManager.selectionMode !== 'none' &&
     state.selectionManager.selectionBehavior === 'toggle';
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    if (isDisabled) return;
+    const eventDetail = event.detail;
+    if (eventDetail === 1) onClick?.(index);
+    else if (eventDetail === 2) onDoubleClick?.(index);
+  };
   return (
     <ListRowWrapper
       {...rowProps}
       {...listCellState}
       key={index}
       isFirstItem={index === 0}
+      onClick={handleClick}
       style={{ height: RowSizes[rowSize] }}
       ref={ref}
     >

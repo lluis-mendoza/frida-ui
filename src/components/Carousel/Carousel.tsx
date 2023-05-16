@@ -10,7 +10,7 @@ import { StyledSwiper, StyledSwiperSlide } from './Carousel.styled';
 import CarouselImage from './CarouselImage';
 
 export interface SlideData {
-  imageData?: string;
+  data?: string;
 }
 export interface CarouselProps {
   slides: SlideData[];
@@ -28,7 +28,7 @@ export function Carousel({ slides }: CarouselProps) {
     >
       {slides.map((slide, index) => (
         <StyledSwiperSlide key={`slide_${index}`}>
-          <CarouselImage imageData={slide.imageData} />
+          <CarouselImage data={slide.data} />
         </StyledSwiperSlide>
       ))}
     </StyledSwiper>

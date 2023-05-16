@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { NoImage } from '../NoImage';
 
 interface CarouselImageProps {
-  imageData?: string;
+  data?: string;
 }
 async function isBase64UrlImage(base64String: string) {
   const image = new Image();
@@ -22,15 +22,15 @@ async function isBase64UrlImage(base64String: string) {
   });
 }
 
-const CarouselImage = ({ imageData }: CarouselImageProps) => {
+const CarouselImage = ({ data }: CarouselImageProps) => {
   const [loading, setLoading] = useState(true);
   const [valid, setValid] = useState(false);
   useEffect(() => {
-    if (imageData === undefined) {
+    if (data === undefined) {
       setLoading(false);
       return;
     }
-    isBase64UrlImage(imageData)
+    isBase64UrlImage(data)
       .then((value) => {
         setLoading(false);
         setValid(!!value);
@@ -39,11 +39,11 @@ const CarouselImage = ({ imageData }: CarouselImageProps) => {
         setLoading(false);
         setValid(false);
       });
-  }, [imageData]);
+  }, [data]);
 
   if (loading) return <p>Loading</p>;
-  if (imageData !== undefined && valid)
-    return <img src={`data:image/jpeg;base64,${imageData}`} />;
+  if (data !== undefined && valid)
+    return <img src={`data:image/jpeg;base64,${data}`} />;
   return <NoImage />;
 };
 

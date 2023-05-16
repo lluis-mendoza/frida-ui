@@ -20,12 +20,14 @@ import {
 } from '../../styled-components';
 import { ListBox } from '../ListBox';
 import { Popover } from '../Popover';
+import { Spinner } from '../Spinner';
 import { SelectButton, SelectorIcon, SelectValue } from './Select.styled';
 
 interface SelectProps<T extends object>
   extends SelectStateProps<T>,
     AriaSelectOptions<T>,
     FieldProps {
+  isLoading?: boolean;
   value?: Key | null | undefined;
   onChange?: ((key: Key) => any) | undefined;
 }
@@ -35,6 +37,7 @@ export default function Select<T extends object>({
   errorMessage,
   value,
   onChange,
+  isLoading = false,
   block,
   className,
   ..._props
@@ -77,14 +80,18 @@ export default function Select<T extends object>({
       />
       <FieldWrapper
         css={[FieldVariants[variant], FieldSizes[size]]}
-        isDisabled={isDisabled}
+        isDisabled={isDisabled ?? isLoading}
         ref={wrapperRef}
       >
         <SelectButton {...buttonProps} ref={buttonRef}>
           <SelectValue {...valueProps} hasValue={hasValue}>
             {hasValue ? state.selectedItem.rendered : placeholder}
           </SelectValue>
-          <SelectorIcon css={[FieldIconSizes[size]]} />
+          {isLoading ? (
+            <Spinner color="inherit" css={[FieldIconSizes[size]]} />
+          ) : (
+            <SelectorIcon css={[FieldIconSizes[size]]} />
+          )}
         </SelectButton>
       </FieldWrapper>
       {errorMessage !== undefined ? (

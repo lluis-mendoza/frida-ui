@@ -15,15 +15,15 @@ type SpinnerColor =
   | 'error'
   | 'white';
 
-interface SpinnerProps<T> extends SVGAttributes<T> {
+interface SpinnerProps extends SVGAttributes<SVGSVGElement> {
   color?: SpinnerColor;
   strokeWidth?: string;
 }
-export default function Spinner<T>({
+export default function Spinner({
   color = 'primary',
   strokeWidth = '8%',
   ...props
-}: SpinnerProps<T>) {
+}: SpinnerProps) {
   return (
     <SpinnerContainer
       xmlns="http://www.w3.org/2000/svg"

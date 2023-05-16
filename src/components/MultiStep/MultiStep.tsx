@@ -25,7 +25,7 @@ export function MultiStep({
     <Fragment>
       <motion.div
         key={currentStep}
-        tw="block px-2"
+        tw="block p-2"
         initial={{
           x:
             currentStep === previousStep
@@ -43,7 +43,7 @@ export function MultiStep({
       {isAnimating && (
         <motion.div
           key={previousStep}
-          tw="absolute w-full h-full top-0 left-0 px-2"
+          tw="absolute w-full h-full top-0 left-0 p-2"
           initial={{ x: 0 }}
           animate={{ x: currentStep < previousStep ? '100%' : '-100%' }}
           transition={{ ease: 'linear', duration }}

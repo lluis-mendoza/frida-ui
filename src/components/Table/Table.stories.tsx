@@ -40,7 +40,7 @@ const data = [
 export const Basic: ComponentStory<typeof Table> = (args) => {
   return (
     <div tw="h-[30rem] flex">
-      <Table {...args} data={data} columns={columns} groupBy={['firstName']} />
+      <Table {...args} data={data} columns={columns} />
     </div>
   );
 };

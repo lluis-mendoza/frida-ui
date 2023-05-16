@@ -1,3 +1,4 @@
+import { Collection, Node } from '@react-types/shared';
 import { useRef } from 'react';
 import {
   AriaGridListOptions,
@@ -24,14 +25,21 @@ interface ListViewProps<T>
     ListProps<T>,
     LabelAriaProps {
   rowSize?: RowSize;
+  onClick?: (index: number) => void;
+  onDoubleClick?: (index: number) => void;
 }
 
 export default function ListView<T extends object>({
   rowSize = 'md',
+  onClick,
+  onDoubleClick,
   ...props
 }: ListViewProps<T>) {
   const state = useListState(props);
-  const { items, getToggleExpandedHandler } = useItems(state.collection);
+  const { collection } = state;
+  const { items, getToggleExpandedHandler } = useItems(
+    collection as Collection<Node<T>>
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const { gridProps } = useGridList(
     { ...props, isVirtualized: true },
@@ -45,6 +53,8 @@ export default function ListView<T extends object>({
     state,
     items,
     getToggleExpandedHandler,
+    onClick,
+    onDoubleClick,
   };
   const rowVirtualizer = useVirtual({
     parentRef: containerRef,

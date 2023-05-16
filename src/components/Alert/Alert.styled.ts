@@ -14,7 +14,7 @@ export const ToastContainer = tw.div`
     left-5
     right-5
     md:min-w-[30rem]
-    z-50
+    z-[1000]
 `;
 
 export const AlertContainer = tw.div`
