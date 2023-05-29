@@ -81,12 +81,18 @@ export const EmptyContainer = tw(Row)`
   justify-center
   sticky
 `;
-export const CellContent = tw.div`
-  text-ellipsis
-  whitespace-nowrap
-  overflow-x-hidden
-  overflow-y-visible
-`;
+
+interface CellContentProps {
+  showOverflow: boolean;
+}
+export const CellContent = styled.div(({ showOverflow }: CellContentProps) => [
+  !showOverflow &&
+    tw`
+    text-ellipsis
+    whitespace-nowrap
+    overflow-hidden
+  `,
+]);
 export const CellGrouped = styled.button(() => [
   tw`
   inline-flex
