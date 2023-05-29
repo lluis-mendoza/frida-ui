@@ -41,7 +41,7 @@ export const BodyRow = styled(Row)(
   ]
 );
 
-const Cell = tw`items-center inline-flex text-left px-4 overflow-hidden h-full bg-inherit select-none`;
+const Cell = tw`items-center inline-flex text-left px-4 h-full bg-inherit select-none`;
 
 interface BodyCellProps {
   width: number;
@@ -84,7 +84,8 @@ export const EmptyContainer = tw(Row)`
 export const CellContent = tw.div`
   text-ellipsis
   whitespace-nowrap
-  overflow-hidden
+  overflow-x-hidden
+  overflow-y-visible
 `;
 export const CellGrouped = styled.button(() => [
   tw`

@@ -1,6 +1,6 @@
 import { StyledSkeleton } from './Skeleton.styled';
 
-interface SkeletonProps extends HTMLSpanElement {}
+interface SkeletonProps {}
 export default function Skeleton(props: SkeletonProps) {
   return <StyledSkeleton {...props} />;
 }

@@ -20,6 +20,7 @@ const TableCell = <TData extends RowData>({
   const sticky = meta?.sticky ?? false;
   const subRowsLength = cell.row.subRows.length;
 
+  const contentProps = { showOverflow: meta?.showOverflow };
   const renderCell = (cell: Cell<TData, unknown>) => {
     const depth = cell.row.depth - Number(isSingleGrouped);
     if (isLoading ?? false) return <Skeleton />;
@@ -33,7 +34,7 @@ const TableCell = <TData extends RowData>({
           ) : (
             <IoIosAdd tw="w-6 h-6 fill-blue-500" />
           )}
-          <CellContent>
+          <CellContent {...contentProps}>
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
             {` (${subRowsLength})`}
           </CellContent>
@@ -41,7 +42,7 @@ const TableCell = <TData extends RowData>({
       );
     if (cell.getIsAggregated())
       return (
-        <CellContent>
+        <CellContent {...contentProps}>
           {flexRender(
             cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell,
             cell.getContext()
@@ -50,12 +51,12 @@ const TableCell = <TData extends RowData>({
       );
     if (cell.getIsPlaceholder())
       return (
-        <CellContent css={{ paddingLeft: depth * 30 }}>
+        <CellContent css={{ paddingLeft: depth * 30 }} {...contentProps}>
           {flexRender(cell.column.columnDef.cell, cell.getContext())}
         </CellContent>
       );
     return (
-      <CellContent>
+      <CellContent {...contentProps}>
         {flexRender(cell.column.columnDef.cell, cell.getContext())}
       </CellContent>
     );
