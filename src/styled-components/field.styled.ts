@@ -67,6 +67,16 @@ export const FieldSizes = {
   md: fieldSizeMedium,
   lg: fieldSizeLarge,
 };
+const skeletonSizeLarge = tw`h-14`;
+const skeletonSizeMedium = tw`h-12`;
+const skeletonSizeSmall = tw`h-8`;
+
+export const SkeletonSizes = {
+  sm: skeletonSizeSmall,
+  md: skeletonSizeMedium,
+  lg: skeletonSizeLarge,
+};
+
 export interface LabelProps {
   isRequired: boolean;
 }

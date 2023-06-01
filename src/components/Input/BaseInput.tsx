@@ -10,12 +10,15 @@ import {
   FieldVariants,
   FieldWrapper,
   Label,
+  SkeletonSizes,
 } from '../../styled-components';
+import { Skeleton } from '../Skeleton';
 import { StyledInput } from './Input.styled';
 
 export interface InputProps extends AriaTextFieldProps, FieldProps {
   prefix?: ReactNode;
   sufix?: ReactNode;
+  isLoading?: boolean;
 }
 
 export const BaseInput = forwardRef<HTMLInputElement, InputProps>(
@@ -33,7 +36,7 @@ export const BaseInput = forwardRef<HTMLInputElement, InputProps>(
     forwardRef
   ) {
     const ref = useObjectRef(forwardRef);
-    const { label, isDisabled, isRequired } = props;
+    const { label, isDisabled, isRequired, isLoading = false } = props;
     const { labelProps, inputProps } = useTextField(props, ref);
     return (
       <FieldContainer block={block} className={className}>
@@ -42,14 +45,18 @@ export const BaseInput = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </Label>
         ) : null}
-        <FieldWrapper
-          css={[FieldVariants[variant], FieldSizes[size]]}
-          isDisabled={isDisabled}
-        >
-          {prefix}
-          <StyledInput {...inputProps} ref={ref} />
-          {sufix}
-        </FieldWrapper>
+        {isLoading ? (
+          <Skeleton css={[SkeletonSizes[size]]} />
+        ) : (
+          <FieldWrapper
+            css={[FieldVariants[variant], FieldSizes[size]]}
+            isDisabled={isDisabled}
+          >
+            {prefix}
+            <StyledInput {...inputProps} ref={ref} />
+            {sufix}
+          </FieldWrapper>
+        )}
         {errorMessage !== undefined ? (
           <FieldError>{errorMessage}</FieldError>
         ) : null}
