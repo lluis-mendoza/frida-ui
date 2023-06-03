@@ -27,17 +27,18 @@ export const ModalBg = tw(motion.div)`
 export const ModalContainer = styled(motion.div)(
   ({ width, height }: ModalProps) => [
     tw`
-  z-50
-  shadow-lg
-  border
-  border-gray-300
-  bg-white
-  rounded-md
-  border-solid
-  flex
-  flex-col
-  items-center
-  overflow-hidden
+    relative
+    z-50
+    shadow-lg
+    border
+    border-gray-300
+    bg-white
+    rounded-md
+    border-solid
+    flex
+    flex-col
+    items-center
+    overflow-hidden
   `,
     css({
       width,
@@ -58,7 +59,10 @@ export const ModalTitle = tw.span`
   text-xl
 `;
 export const ModalContent = tw.div`
-
+  relative
+  flex-1
+  w-full
+  overflow-auto
 `;
 export const CloseButton = tw.button`
   outline-none
@@ -70,9 +74,9 @@ export const CloseIcon = tw(BiX)`
   hover:text-gray-500
 `;
 
-export const modalSizeLarge = tw``;
-export const modalSizeMedium = tw`p-5`;
-export const modalSizeSmall = tw``;
+export const modalSizeLarge = tw`p-5 m-5 max-w-7xl h-full w-full max-h-[90vh]`;
+export const modalSizeMedium = tw`p-5 m-5 max-w-4xl h-full w-full max-h-[80vh]`;
+export const modalSizeSmall = tw`p-5 m-5 max-w-xl h-full w-full max-h-[60vh]`;
 
 export const ModalSizes = {
   sm: modalSizeSmall,

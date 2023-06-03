@@ -66,9 +66,7 @@ export function Modal({
                   transition={{ ease: 'easeOut', duration: 0.2 }}
                 >
                   <ModalHeader>
-                    {title !== undefined ? (
-                      <ModalTitle>{title}</ModalTitle>
-                    ) : null}
+                    <ModalTitle>{title}</ModalTitle>
                     <CloseButton onClick={close}>
                       <CloseIcon />
                     </CloseButton>
