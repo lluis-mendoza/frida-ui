@@ -77,8 +77,10 @@ export const CloseIcon = tw(BiX)`
 export const modalSizeLarge = tw`p-5 m-5 max-w-7xl h-full w-full max-h-[90vh]`;
 export const modalSizeMedium = tw`p-5 m-5 max-w-4xl h-full w-full max-h-[80vh]`;
 export const modalSizeSmall = tw`p-5 m-5 max-w-xl h-full w-full max-h-[60vh]`;
+export const modalSizeExtraSmall = tw`p-5 m-5 max-w-md h-full w-full max-h-[35vh]`;
 
 export const ModalSizes = {
+  xs: modalSizeExtraSmall,
   sm: modalSizeSmall,
   md: modalSizeMedium,
   lg: modalSizeLarge,
